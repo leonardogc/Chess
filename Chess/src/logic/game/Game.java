@@ -1,5 +1,19 @@
 package logic.game;
 
-public class Game {
+import logic.board.Board;
+import logic.player.Player;
+import logic.util.GameUtil.PieceColor;
 
+public class Game {
+	
+	private Board board;
+	private Player white_player;
+	private Player black_player;
+	
+	public Game() {
+		this.board = new Board();
+		this.white_player = new Player(PieceColor.White);
+		this.black_player = new Player(PieceColor.Black);
+	}
+	
 }
