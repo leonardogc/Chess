@@ -2,11 +2,20 @@ package logic.util;
 
 public class GameUtil {
 	public enum PieceColor {
-		White, Black
+		White, Black;
+		
+		public PieceColor change() {
+			if(this == PieceColor.White) {
+				return PieceColor.Black;
+			}
+			else {
+				return PieceColor.White;
+			}
+		}
 	}
 	
 	public enum PieceType {
-		King, Queen, Bishop, Rook, Knight, Pawn
+		King, Queen, Bishop, Rook, Knight, Pawn;
 	}
 	
 	//for each player

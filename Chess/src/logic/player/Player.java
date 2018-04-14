@@ -1,7 +1,5 @@
 package logic.player;
 
-import java.util.LinkedList;
-
 import logic.pieces.Piece;
 import logic.util.GameUtil.PieceColor;
 import logic.util.GameUtil.PieceType;
