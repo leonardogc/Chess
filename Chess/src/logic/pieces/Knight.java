@@ -14,4 +14,9 @@ public class Knight extends Piece{
 	public boolean move(int x, int y, int dest_x, int dest_y, Game game) {
 		return false;
 	}
+	
+	@Override
+	public Piece makeCopy() {
+		return new Knight(this.color);
+	}
 }

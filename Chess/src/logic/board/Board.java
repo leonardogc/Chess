@@ -1,6 +1,8 @@
 package logic.board;
 
 import java.util.Hashtable;
+import java.util.Map.Entry;
+import java.util.Set;
 
 import logic.pieces.Bishop;
 import logic.pieces.King;
@@ -74,5 +76,19 @@ public class Board {
 	
 	public Piece get(int x, int y) {
 		return this.board.get(GameUtil.toString(x, y));
+	}
+	
+	public Board makeCopy() {
+		Hashtable<String, Piece> table_copy = new Hashtable<>();
+		
+		Set<Entry<String, Piece>> elements = this.board.entrySet();
+		
+		for(Entry<String, Piece> entry : elements) {
+			table_copy.put(new String(entry.getKey()), entry.getValue().makeCopy());
+		}
+		
+		Board board_copy = new Board(table_copy);
+		
+		return board_copy;
 	}
 }
