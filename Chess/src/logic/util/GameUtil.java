@@ -30,10 +30,6 @@ public class GameUtil {
 	
 	public static final int boardSize = 8;
 	
-	public static String toString(int x, int y) {
-		return (""+x)+(""+y);
-	}
-	
 	public static boolean isPathFree(Piece[][] board, int x, int y, int dest_x, int dest_y) {
 		if(!validCoordinates(x, y) || !validCoordinates(dest_x, dest_y)) {
 			return false;
