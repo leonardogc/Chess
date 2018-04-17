@@ -94,7 +94,19 @@ public class Game {
 		return this.turn;
 	}
 	
+	public void setTurn(PieceColor turn) {
+		this.turn = turn;
+	}
+
 	public boolean move(int x, int y, int dest_x, int dest_y) {
+		if(!GameUtil.isPathFree(this.board, x, y, dest_x, dest_y)) {
+			return false;
+		}
+
+		if(this.board[x][y].getColor() != this.turn) {
+			return false;
+		}
+		
 		return this.board[x][y].move(x, y, dest_x, dest_y, this);
 	}
 }

@@ -13,10 +13,6 @@ public class Bishop extends Piece{
 
 	@Override
 	public boolean move(int x, int y, int dest_x, int dest_y, Game game) {
-		if(!GameUtil.isPathFree(game.getBoard(), x, y, dest_x, dest_y)) {
-			return false;
-		}
-		
 		int dx = dest_x - x;
 		int dy = dest_y - y;
 		
@@ -29,6 +25,8 @@ public class Bishop extends Piece{
 		board[dest_x][dest_y] = board[x][y];
 		
 		board[x][y] = null;
+		
+		game.setTurn(game.getTurn().change());
 		
 		return true;
 	}
