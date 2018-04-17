@@ -76,5 +76,4 @@ public class Game {
 		//add black king
 		board[4][7] = new King(PieceColor.Black);
 	}
-
 }

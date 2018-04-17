@@ -34,7 +34,7 @@ public class GameUtil {
 		return (""+x)+(""+y);
 	}
 	
-	public boolean isPathFree(Piece[][] board, int x, int y, int dest_x, int dest_y) {
+	public static boolean isPathFree(Piece[][] board, int x, int y, int dest_x, int dest_y) {
 		
 		if(board[x][y]==null) {
 			return false;
