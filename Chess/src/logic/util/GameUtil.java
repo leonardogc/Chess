@@ -35,6 +35,9 @@ public class GameUtil {
 	}
 	
 	public static boolean isPathFree(Piece[][] board, int x, int y, int dest_x, int dest_y) {
+		if(!validCoordinates(x, y) || !validCoordinates(dest_x, dest_y)) {
+			return false;
+		}
 		
 		if(board[x][y]==null) {
 			return false;
@@ -52,6 +55,7 @@ public class GameUtil {
 		if(dx == 0 && dy == 0) {
 			return false;
 		}
+		
 		
 		int amount;
 
@@ -74,6 +78,13 @@ public class GameUtil {
 			}
 		}
 
+		return true;
+	}
+	
+	public static boolean validCoordinates(int x, int y) {
+		if(x < 0 || y < 0 || x > boardSize - 1 || y > boardSize - 1) {
+			return false;
+		}
 		return true;
 	}
 }

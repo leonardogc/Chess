@@ -76,4 +76,28 @@ public class Game {
 		//add black king
 		board[4][7] = new King(PieceColor.Black);
 	}
+	
+	
+	public Piece[][] getBoard() {
+		return this.board;
+	}
+	
+	public Player getWhitePlayer() {
+		return this.white_player;
+	}
+	
+	public Player getBlackPlayer() {
+		return this.black_player;
+	}
+	
+	public PieceColor getTurn() {
+		return this.turn;
+	}
+	
+	public boolean move(int x, int y, int dest_x, int dest_y) {
+		if(GameUtil.isPathFree(this.board, x, y, dest_x, dest_y)) {
+			return this.board[x][y].move(x, y, dest_x, dest_y, this);
+		}
+		return false;
+	}
 }
