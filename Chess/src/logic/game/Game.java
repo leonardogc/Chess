@@ -95,9 +95,6 @@ public class Game {
 	}
 	
 	public boolean move(int x, int y, int dest_x, int dest_y) {
-		if(GameUtil.isPathFree(this.board, x, y, dest_x, dest_y)) {
-			return this.board[x][y].move(x, y, dest_x, dest_y, this);
-		}
-		return false;
+		return this.board[x][y].move(x, y, dest_x, dest_y, this);
 	}
 }
