@@ -112,14 +112,26 @@ public class Pawn extends Piece{
 						if(!game.getWhitePlayer().getEnPassant()) {
 							return false;
 						}
-						
-						
 					}
 					else {
-						if(game.getBlackPlayer().getEnPassant()) {
-
+						if(!game.getBlackPlayer().getEnPassant()) {
+							return false;
 						}
 					}
+					
+					if(game.getBoard()[dest_x][y] == null) {
+						return false;
+					}
+					
+					if(game.getBoard()[dest_x][y].getType() != PieceType.Pawn) {
+						return false;
+					}
+					
+					if(game.getBoard()[dest_x][y].getColor() == game.getBoard()[x][y].getColor()) {
+						return false;
+					}
+					
+					game.getBoard()[dest_x][y] = null;
 				}
 			}
 			else if(amount == 2) {
