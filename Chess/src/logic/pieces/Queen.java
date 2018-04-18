@@ -13,11 +13,7 @@ public class Queen extends Piece{
 
 	@Override
 	public boolean move(int x, int y, int dest_x, int dest_y, Game game) {
-		if(!GameUtil.isPathFree(game.getBoard(), x, y, dest_x, dest_y)) {
-			return false;
-		}
-
-		if(game.getBoard()[x][y].getColor() != game.getTurn()) {
+		if(!GameUtil.isPathValid(game.getBoard(), x, y, dest_x, dest_y)) {
 			return false;
 		}
 		
@@ -26,8 +22,6 @@ public class Queen extends Piece{
 		board[dest_x][dest_y] = board[x][y];
 		
 		board[x][y] = null;
-		
-		game.setTurn(game.getTurn().change());
 		
 		return true;
 	}

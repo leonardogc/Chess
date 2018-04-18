@@ -44,8 +44,6 @@ public class Knight extends Piece{
 
 		board[x][y] = null;
 
-		game.setTurn(game.getTurn().change());
-
 		return true;
 	}
 

@@ -1,5 +1,7 @@
 package logic.game;
 
+import java.util.LinkedList;
+
 import logic.pieces.Bishop;
 import logic.pieces.King;
 import logic.pieces.Knight;
@@ -107,22 +109,28 @@ public class Game {
 	}
 
 	public boolean move(int x, int y, int dest_x, int dest_y) {
-		if(this.board[x][y] != null) {
-			return this.board[x][y].move(x, y, dest_x, dest_y, this);
+		LinkedList<Move> moves = calculateMoves();
+		Move move = new Move(x, y, dest_x, dest_y);
+		
+		while(moves.size() > 0) {
+			if(move.equals(moves.poll())){
+				applyMove(move);
+				return true;
+			}
 		}
-
+		
 		return false;
 	}
 
-	public boolean kingInCheck(Game game, PieceColor color) {
+	public boolean otherPlayerInCheck() {
 		int king_x = -1;
 		int king_y = -1;
 
 		search: {
 			for(int y = 0; y < GameUtil.boardSize; y++) {
 				for(int x = 0; x < GameUtil.boardSize; x++) {
-					if(game.getBoard()[x][y] != null) {
-						if(game.getBoard()[x][y].getColor() == color && game.getBoard()[x][y].getType() == PieceType.King) {
+					if(this.board[x][y] != null) {
+						if(this.board[x][y].getColor() == turn.change() && this.board[x][y].getType() == PieceType.King) {
 							king_x = x;
 							king_y = y;
 							break search;
@@ -139,9 +147,9 @@ public class Game {
 		
 		for(int y = 0; y < GameUtil.boardSize; y++) {
 			for(int x = 0; x < GameUtil.boardSize; x++) {
-				if(game.getBoard()[x][y] != null) {
-					if(game.getBoard()[x][y].getColor() == color.change()) {
-						if(game.getBoard()[x][y].move(x, y, king_x, king_y, game.makeCopy())) {
+				if(this.board[x][y] != null) {
+					if(this.board[x][y].getColor() == turn) {
+						if(this.board[x][y].move(x, y, king_x, king_y, this.makeCopy())) {
 							return true;
 						}
 					}
@@ -164,5 +172,51 @@ public class Game {
 		}
 		
 		return new Game(board, this.white_player.makeCopy(), this.black_player.makeCopy(), this.turn);
+	}
+
+	public LinkedList<Move> calculateMoves(){
+		LinkedList<Move> queue = new LinkedList<>();
+
+		for(int y=0; y < GameUtil.boardSize; y++) {
+			for(int x=0; x < GameUtil.boardSize; x++) {
+				if(this.board[x][y] != null) {
+					if(this.board[x][y].getColor() == turn) {
+
+						for(int dest_y=0; dest_y < GameUtil.boardSize; dest_y++) {
+							for(int dest_x=0; dest_x < GameUtil.boardSize; dest_x++) {
+								Game game_copy = this.makeCopy();
+								if(game_copy.applyMove(new Move(x, y, dest_x, dest_y))) {
+									if(!game_copy.otherPlayerInCheck()) {
+										queue.add(new Move(x, y, dest_x, dest_y));
+									}
+								}
+							}
+						}
+
+
+					}
+				}
+			}
+		}
+
+		
+		return queue;
+	}
+	
+	
+	public boolean applyMove(Move move) {
+		if(this.board[move.x][move.y].move(move.x, move.y, move.dest_x, move.dest_y, this)) {
+			this.turn = turn.change();
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public static void main(String[] args) {
+		Game g = new Game();
+		
+		System.out.println(g.calculateMoves().size());
+		
 	}
 }
