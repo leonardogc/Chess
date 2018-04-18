@@ -114,6 +114,10 @@ public class Game {
 	public void setTurn(PieceColor turn) {
 		this.turn = turn;
 	}
+	
+	public void setState(GameState state) {
+		this.state = state;
+	}
 
 	public boolean move(int x, int y, int dest_x, int dest_y) {
 		LinkedList<Move> moves = calculateMoves();

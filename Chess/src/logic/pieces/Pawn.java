@@ -1,6 +1,7 @@
 package logic.pieces;
 
 import logic.game.Game;
+import logic.game.Game.GameState;
 import logic.util.GameUtil;
 import logic.util.GameUtil.PieceColor;
 import logic.util.GameUtil.PieceType;
@@ -147,6 +148,10 @@ public class Pawn extends Piece{
 		board[x][y] = null;
 		
 		this.moved = true;
+		
+		if(dest_y == 0 || dest_y == GameUtil.boardSize - 1) {
+			game.setState(GameState.ChoosingPiece);
+		}
 		
 		return true;
 	}
