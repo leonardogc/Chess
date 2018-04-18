@@ -10,6 +10,7 @@ import logic.pieces.Rook;
 import logic.player.Player;
 import logic.util.GameUtil;
 import logic.util.GameUtil.PieceColor;
+import logic.util.GameUtil.PieceType;
 
 public class Game {
 	
@@ -23,6 +24,13 @@ public class Game {
 		this.black_player = new Player(PieceColor.Black);
 		this.turn = PieceColor.White;
 		initialize_board();
+	}
+	
+	public Game(Piece[][] board, Player white_player, Player black_player, PieceColor turn) {
+		this.board = board;
+		this.white_player = white_player;
+		this.black_player = black_player;
+		this.turn = turn;
 	}
 
 	private void initialize_board() {
@@ -102,7 +110,59 @@ public class Game {
 		if(this.board[x][y] != null) {
 			return this.board[x][y].move(x, y, dest_x, dest_y, this);
 		}
-		
+
 		return false;
+	}
+
+	public boolean kingInCheck(Game game, PieceColor color) {
+		int king_x = -1;
+		int king_y = -1;
+
+		search: {
+			for(int y = 0; y < GameUtil.boardSize; y++) {
+				for(int x = 0; x < GameUtil.boardSize; x++) {
+					if(game.getBoard()[x][y] != null) {
+						if(game.getBoard()[x][y].getColor() == color && game.getBoard()[x][y].getType() == PieceType.King) {
+							king_x = x;
+							king_y = y;
+							break search;
+						}
+					}
+				}
+			}
+		}
+		
+		if(king_x == -1 || king_y == -1) {
+			System.out.println("There is no king in the board!");
+			return false;
+		}
+		
+		for(int y = 0; y < GameUtil.boardSize; y++) {
+			for(int x = 0; x < GameUtil.boardSize; x++) {
+				if(game.getBoard()[x][y] != null) {
+					if(game.getBoard()[x][y].getColor() == color.change()) {
+						if(game.getBoard()[x][y].move(x, y, king_x, king_y, game.makeCopy())) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+
+		return false;
+	}
+
+	public Game makeCopy() {
+		Piece[][] board = new Piece[GameUtil.boardSize][GameUtil.boardSize];
+
+		for(int y=0; y < GameUtil.boardSize; y++) {
+			for(int x=0; x < GameUtil.boardSize; x++) {
+				if(this.board[x][y] != null) {
+					board[x][y] = this.board[x][y].makeCopy();
+				}
+			}
+		}
+		
+		return new Game(board, this.white_player, this.black_player, this.turn);
 	}
 }
