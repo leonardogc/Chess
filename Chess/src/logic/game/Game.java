@@ -163,6 +163,6 @@ public class Game {
 			}
 		}
 		
-		return new Game(board, this.white_player, this.black_player, this.turn);
+		return new Game(board, this.white_player.makeCopy(), this.black_player.makeCopy(), this.turn);
 	}
 }
