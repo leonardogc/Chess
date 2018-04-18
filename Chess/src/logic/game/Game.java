@@ -16,23 +16,30 @@ import logic.util.GameUtil.PieceType;
 
 public class Game {
 	
+	public enum GameState {
+		RegularMove, ChoosingPiece;
+	}
+	
 	private Piece[][] board;
 	private Player white_player;
 	private Player black_player;
 	private PieceColor turn;
+	private GameState state;
 	
 	public Game() {
 		this.white_player = new Player(PieceColor.White);
 		this.black_player = new Player(PieceColor.Black);
 		this.turn = PieceColor.White;
+		this.state = GameState.RegularMove;
 		initialize_board();
 	}
 	
-	public Game(Piece[][] board, Player white_player, Player black_player, PieceColor turn) {
+	public Game(Piece[][] board, Player white_player, Player black_player, PieceColor turn, GameState state) {
 		this.board = board;
 		this.white_player = white_player;
 		this.black_player = black_player;
 		this.turn = turn;
+		this.state = state;
 	}
 
 	private void initialize_board() {
@@ -122,7 +129,7 @@ public class Game {
 		return false;
 	}
 
-	public boolean otherPlayerInCheck() {
+	public boolean playerInCheck(PieceColor color) {
 		int king_x = -1;
 		int king_y = -1;
 
@@ -130,7 +137,7 @@ public class Game {
 			for(int y = 0; y < GameUtil.boardSize; y++) {
 				for(int x = 0; x < GameUtil.boardSize; x++) {
 					if(this.board[x][y] != null) {
-						if(this.board[x][y].getColor() == turn.change() && this.board[x][y].getType() == PieceType.King) {
+						if(this.board[x][y].getColor() == color && this.board[x][y].getType() == PieceType.King) {
 							king_x = x;
 							king_y = y;
 							break search;
@@ -148,7 +155,7 @@ public class Game {
 		for(int y = 0; y < GameUtil.boardSize; y++) {
 			for(int x = 0; x < GameUtil.boardSize; x++) {
 				if(this.board[x][y] != null) {
-					if(this.board[x][y].getColor() == turn) {
+					if(this.board[x][y].getColor() == color.change()) {
 						if(this.board[x][y].move(x, y, king_x, king_y, this.makeCopy())) {
 							return true;
 						}
@@ -171,7 +178,7 @@ public class Game {
 			}
 		}
 		
-		return new Game(board, this.white_player.makeCopy(), this.black_player.makeCopy(), this.turn);
+		return new Game(board, this.white_player.makeCopy(), this.black_player.makeCopy(), this.turn, this.state);
 	}
 
 	public LinkedList<Move> calculateMoves(){
@@ -186,7 +193,7 @@ public class Game {
 							for(int dest_x=0; dest_x < GameUtil.boardSize; dest_x++) {
 								Game game_copy = this.makeCopy();
 								if(game_copy.applyMove(new Move(x, y, dest_x, dest_y))) {
-									if(!game_copy.otherPlayerInCheck()) {
+									if(!game_copy.playerInCheck(turn)) {
 										queue.add(new Move(x, y, dest_x, dest_y));
 									}
 								}
@@ -207,6 +214,14 @@ public class Game {
 	public boolean applyMove(Move move) {
 		if(this.board[move.x][move.y].move(move.x, move.y, move.dest_x, move.dest_y, this)) {
 			this.turn = turn.change();
+			
+			if(this.turn == PieceColor.White) {
+				this.black_player.setEnPassant(false);
+			}
+			else {
+				this.white_player.setEnPassant(false);
+			}
+			
 			return true;
 		}
 		
