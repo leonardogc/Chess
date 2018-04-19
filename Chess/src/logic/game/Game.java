@@ -1,5 +1,6 @@
 package logic.game;
 
+import java.util.Collections;
 import java.util.LinkedList;
 
 import logic.pieces.Bishop;
@@ -210,6 +211,7 @@ public class Game {
 			}
 		}
 
+		Collections.shuffle(queue);
 		
 		return queue;
 	}
