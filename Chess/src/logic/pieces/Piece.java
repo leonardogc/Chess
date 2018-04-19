@@ -13,6 +13,7 @@ public abstract class Piece {
 		this.color = color;
 	}
 	
+	public abstract boolean isMoveValid(int x, int y, int dest_x, int dest_y, Game game);
 	public abstract boolean move(int x, int y, int dest_x, int dest_y, Game game);
 	public abstract Piece makeCopy();
 	

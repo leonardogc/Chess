@@ -12,7 +12,7 @@ public class Rook extends Piece{
 	}
 
 	@Override
-	public boolean move(int x, int y, int dest_x, int dest_y, Game game) {
+	public boolean isMoveValid(int x, int y, int dest_x, int dest_y, Game game) {
 		if(!GameUtil.isPathValid(game.getBoard(), x, y, dest_x, dest_y)) {
 			return false;
 		}
@@ -24,10 +24,20 @@ public class Rook extends Piece{
 			return false;
 		}
 		
+		return true;
+	}
+	
+	
+	@Override
+	public boolean move(int x, int y, int dest_x, int dest_y, Game game) {
+		if(!isMoveValid(x, y, dest_x, dest_y, game)){
+			return false;
+		}
+		
 		Piece[][] board = game.getBoard();
-		
+
 		board[dest_x][dest_y] = board[x][y];
-		
+
 		board[x][y] = null;
 		
 		return true;

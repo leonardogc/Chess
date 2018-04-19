@@ -12,7 +12,7 @@ public class Knight extends Piece{
 	}
 
 	@Override
-	public boolean move(int x, int y, int dest_x, int dest_y, Game game) {
+	public boolean isMoveValid(int x, int y, int dest_x, int dest_y, Game game) {
 		if(!GameUtil.validCoordinates(x, y) || !GameUtil.validCoordinates(dest_x, dest_y)) {
 			return false;
 		}
@@ -29,21 +29,26 @@ public class Knight extends Piece{
 
 		int dx = dest_x - x;
 		int dy = dest_y - y;
-		
-		if(dx == 0 && dy == 0) {
-			return false;
-		}
 
 		if(!((Math.abs(dx) == 2 && Math.abs(dy) == 1) || (Math.abs(dx) == 1 && Math.abs(dy) == 2)))  {
 			return false;
 		}
 
+		return true;
+	}
+	
+	@Override
+	public boolean move(int x, int y, int dest_x, int dest_y, Game game) {
+		if(!isMoveValid(x, y, dest_x, dest_y, game)){
+			return false;
+		}
+		
 		Piece[][] board = game.getBoard();
 
 		board[dest_x][dest_y] = board[x][y];
 
 		board[x][y] = null;
-
+		
 		return true;
 	}
 

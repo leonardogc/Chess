@@ -160,7 +160,7 @@ public class Game {
 			for(int x = 0; x < GameUtil.boardSize; x++) {
 				if(this.board[x][y] != null) {
 					if(this.board[x][y].getColor() == color.change()) {
-						if(this.board[x][y].move(x, y, king_x, king_y, this.makeCopy())) {
+						if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this.makeCopy())) {
 							return true;
 						}
 					}
@@ -216,7 +216,7 @@ public class Game {
 	
 	
 	public boolean applyMove(Move move) {
-		if(this.board[move.x][move.y].move(move.x, move.y, move.dest_x, move.dest_y, this)) {
+		if(this.board[move.x][move.y].isMoveValid(move.x, move.y, move.dest_x, move.dest_y, this)) {
 			this.turn = turn.change();
 			
 			if(this.turn == PieceColor.White) {
