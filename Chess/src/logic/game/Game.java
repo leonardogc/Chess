@@ -152,7 +152,7 @@ public class Game {
 		}
 		
 		if(king_x == -1 || king_y == -1) {
-			System.out.println("There is no king in the board!");
+			System.out.println("There is no king on the board!");
 			return false;
 		}
 		
@@ -160,7 +160,7 @@ public class Game {
 			for(int x = 0; x < GameUtil.boardSize; x++) {
 				if(this.board[x][y] != null) {
 					if(this.board[x][y].getColor() == color.change()) {
-						if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this.makeCopy())) {
+						if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this)) {
 							return true;
 						}
 					}
@@ -216,7 +216,7 @@ public class Game {
 	
 	
 	public boolean applyMove(Move move) {
-		if(this.board[move.x][move.y].isMoveValid(move.x, move.y, move.dest_x, move.dest_y, this)) {
+		if(this.board[move.x][move.y].move(move.x, move.y, move.dest_x, move.dest_y, this)) {
 			this.turn = turn.change();
 			
 			if(this.turn == PieceColor.White) {
