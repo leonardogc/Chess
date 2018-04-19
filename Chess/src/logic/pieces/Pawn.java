@@ -9,15 +9,21 @@ import logic.util.GameUtil.PieceType;
 public class Pawn extends Piece{
 	
 	private boolean moved;
+	private boolean enPassant;
+	private boolean enPassantVictim;
 
 	public Pawn(PieceColor color) {
 		super(PieceType.Pawn, color);
-		this.moved=false;
+		this.moved = false;
+		this.enPassant = false;
+		this.enPassantVictim = false;
 	}
 	
-	public Pawn(PieceColor color, boolean moved) {
+	public Pawn(PieceColor color, boolean moved, boolean enPassant, boolean enPassantVictim) {
 		super(PieceType.Pawn, color);
 		this.moved=moved;
+		this.enPassant = enPassant;
+		this.enPassantVictim = enPassantVictim;
 	}
 	
 	
@@ -67,7 +73,7 @@ public class Pawn extends Piece{
 				//do nothing
 			}
 			else if(amount == 2) {
-				if(moved) {
+				if(this.moved) {
 					return false;
 				}
 			}
@@ -75,28 +81,18 @@ public class Pawn extends Piece{
 		else {
 			if(amount == 1) {
 				if(game.getBoard()[dest_x][dest_y] == null) {
-					if(game.getBoard()[x][y].getColor() == PieceColor.White) {
-						if(!game.getWhitePlayer().getEnPassant()) {
-							return false;
-						}
-					}
-					else {
-						if(!game.getBlackPlayer().getEnPassant()) {
-							return false;
-						}
-					}
-					
-					if(game.getBoard()[dest_x][y] == null) {
+					if(!this.enPassant) {
 						return false;
 					}
 					
-					if(game.getBoard()[dest_x][y].getType() != PieceType.Pawn) {
+					if(!pawnAt(dest_x, y, game.getBoard(), game.getBoard()[x][y].getColor().change())) {
 						return false;
 					}
 					
-					if(game.getBoard()[dest_x][y].getColor() == game.getBoard()[x][y].getColor()) {
+					if(!((Pawn)game.getBoard()[dest_x][y]).getEnPassantVictim()) {
 						return false;
 					}
+					
 				}
 			}
 			else if(amount == 2){
@@ -134,21 +130,13 @@ public class Pawn extends Piece{
 			if(amount == 2) {
 
 				if(pawnAt(dest_x + 1, dest_y, game.getBoard(), game.getBoard()[x][y].getColor().change())) {
-					if(game.getBoard()[dest_x + 1][dest_y].getColor() == PieceColor.White) {
-						game.getWhitePlayer().setEnPassant(true);
-					}
-					else {
-						game.getBlackPlayer().setEnPassant(true);
-					}
+					((Pawn) game.getBoard()[dest_x + 1][dest_y]).setEnPassant(true);
+					this.enPassantVictim = true;
 				}
-
+				
 				if(pawnAt(dest_x - 1, dest_y, game.getBoard(), game.getBoard()[x][y].getColor().change())) {
-					if(game.getBoard()[dest_x - 1][dest_y].getColor() == PieceColor.White) {
-						game.getWhitePlayer().setEnPassant(true);
-					}
-					else {
-						game.getBlackPlayer().setEnPassant(true);
-					}
+					((Pawn) game.getBoard()[dest_x - 1][dest_y]).setEnPassant(true);
+					this.enPassantVictim = true;
 				}
 
 			}
@@ -188,8 +176,20 @@ public class Pawn extends Piece{
 		return false;
 	}
 	
+	public void setEnPassant(boolean enPassant) {
+		this.enPassant = enPassant;
+	}
+	
+	public void setEnPassantVictim(boolean enPassantVictim) {
+		this.enPassantVictim = enPassantVictim;
+	}
+	
+	public boolean getEnPassantVictim(){
+		return this.enPassantVictim;
+	}
+	
 	@Override
 	public Piece makeCopy() {
-		return new Pawn(this.color, this.moved);
+		return new Pawn(this.color, this.moved, this.enPassant, this.enPassantVictim);
 	}
 }

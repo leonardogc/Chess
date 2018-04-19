@@ -217,19 +217,30 @@ public class Game {
 	
 	public boolean applyMove(Move move) {
 		if(this.board[move.x][move.y].move(move.x, move.y, move.dest_x, move.dest_y, this)) {
-			this.turn = turn.change();
-			
-			if(this.turn == PieceColor.White) {
-				this.black_player.setEnPassant(false);
-			}
-			else {
-				this.white_player.setEnPassant(false);
-			}
-			
+			changeTurns();
 			return true;
 		}
 		
 		return false;
+	}
+
+	private void changeTurns() {
+		for(int y=0; y < GameUtil.boardSize; y++) {
+			for(int x=0; x < GameUtil.boardSize; x++) {
+				if(this.board[x][y] != null) {
+					if(this.board[x][y].getType() == PieceType.Pawn) {
+						if(this.board[x][y].getColor() == turn) {
+							((Pawn)this.board[x][y]).setEnPassant(false);
+						}
+						else {
+							((Pawn)this.board[x][y]).setEnPassantVictim(false);
+						}
+					}
+				}
+			}
+		}
+		
+		this.turn = turn.change();
 	}
 	
 	public static void main(String[] args) {
