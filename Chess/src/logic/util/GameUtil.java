@@ -20,14 +20,6 @@ public class GameUtil {
 		King, Queen, Bishop, Rook, Knight, Pawn;
 	}
 	
-	//for each player
-	public static final int KingNumber = 1;
-	public static final int QueenNumber = 1;
-	public static final int RookNumber = 2;
-	public static final int BishopNumber = 2;
-	public static final int KnightNumber = 2;
-	public static final int PawnNumber = 8;
-	
 	public static final int boardSize = 8;
 	
 	public static boolean isPathValid(Piece[][] board, int x, int y, int dest_x, int dest_y) {

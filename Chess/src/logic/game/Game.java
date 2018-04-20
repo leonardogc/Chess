@@ -10,7 +10,6 @@ import logic.pieces.Pawn;
 import logic.pieces.Piece;
 import logic.pieces.Queen;
 import logic.pieces.Rook;
-import logic.player.Player;
 import logic.util.GameUtil;
 import logic.util.GameUtil.PieceColor;
 import logic.util.GameUtil.PieceType;
@@ -22,23 +21,17 @@ public class Game {
 	}
 	
 	private Piece[][] board;
-	private Player white_player;
-	private Player black_player;
 	private PieceColor turn;
 	private GameState state;
 	
 	public Game() {
-		this.white_player = new Player(PieceColor.White);
-		this.black_player = new Player(PieceColor.Black);
 		this.turn = PieceColor.White;
 		this.state = GameState.RegularMove;
 		initialize_board();
 	}
 	
-	public Game(Piece[][] board, Player white_player, Player black_player, PieceColor turn, GameState state) {
+	public Game(Piece[][] board, PieceColor turn, GameState state) {
 		this.board = board;
-		this.white_player = white_player;
-		this.black_player = black_player;
 		this.turn = turn;
 		this.state = state;
 	}
@@ -100,14 +93,6 @@ public class Game {
 		return this.board;
 	}
 	
-	public Player getWhitePlayer() {
-		return this.white_player;
-	}
-	
-	public Player getBlackPlayer() {
-		return this.black_player;
-	}
-	
 	public PieceColor getTurn() {
 		return this.turn;
 	}
@@ -123,6 +108,20 @@ public class Game {
 	public boolean move(int x, int y, int dest_x, int dest_y) {
 		LinkedList<Move> moves = calculateMoves();
 		Move move = new Move(x, y, dest_x, dest_y);
+		
+		while(moves.size() > 0) {
+			if(move.equals(moves.poll())){
+				applyMove(move);
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean promotePawn(PieceType piece) {
+		LinkedList<Move> moves = calculateMoves();
+		Move move = new Move(piece);
 		
 		while(moves.size() > 0) {
 			if(move.equals(moves.poll())){
@@ -183,46 +182,101 @@ public class Game {
 			}
 		}
 		
-		return new Game(board, this.white_player.makeCopy(), this.black_player.makeCopy(), this.turn, this.state);
+		return new Game(board, this.turn, this.state);
 	}
 
 	public LinkedList<Move> calculateMoves(){
 		LinkedList<Move> queue = new LinkedList<>();
 
-		for(int y=0; y < GameUtil.boardSize; y++) {
-			for(int x=0; x < GameUtil.boardSize; x++) {
-				if(this.board[x][y] != null) {
-					if(this.board[x][y].getColor() == turn) {
+		if(this.state == GameState.RegularMove) {
 
-						for(int dest_y=0; dest_y < GameUtil.boardSize; dest_y++) {
-							for(int dest_x=0; dest_x < GameUtil.boardSize; dest_x++) {
-								Game game_copy = this.makeCopy();
-								if(game_copy.applyMove(new Move(x, y, dest_x, dest_y))) {
-									if(!game_copy.playerInCheck(turn)) {
-										queue.add(new Move(x, y, dest_x, dest_y));
+			for(int y=0; y < GameUtil.boardSize; y++) {
+				for(int x=0; x < GameUtil.boardSize; x++) {
+					if(this.board[x][y] != null) {
+						if(this.board[x][y].getColor() == this.turn) {
+
+							for(int dest_y=0; dest_y < GameUtil.boardSize; dest_y++) {
+								for(int dest_x=0; dest_x < GameUtil.boardSize; dest_x++) {
+									Game game_copy = this.makeCopy();
+									if(game_copy.applyMove(new Move(x, y, dest_x, dest_y))) {
+										if(!game_copy.playerInCheck(this.turn)) {
+											queue.add(new Move(x, y, dest_x, dest_y));
+										}
 									}
 								}
 							}
+
+
 						}
-
-
 					}
 				}
 			}
+
+		}
+		else if(this.state == GameState.ChoosingPiece) {
+			queue.add(new Move(PieceType.Rook));
+			queue.add(new Move(PieceType.Knight));
+			queue.add(new Move(PieceType.Queen));
+			queue.add(new Move(PieceType.Bishop));
 		}
 
 		Collections.shuffle(queue);
-		
+
 		return queue;
 	}
-	
-	
+
+
 	public boolean applyMove(Move move) {
-		if(this.board[move.x][move.y].move(move.x, move.y, move.dest_x, move.dest_y, this)) {
+		if(move.type != null) {
+			int y;
+
+			if(this.turn == PieceColor.White) {
+				y = GameUtil.boardSize - 1;
+			}
+			else {
+				y = 0;
+			}
+
+			for(int x=0; x < GameUtil.boardSize; x++) {
+				if(this.board[x][y] != null) {
+					if(this.board[x][y].getType() == PieceType.Pawn) {
+						if(this.board[x][y].getColor() == this.turn) {
+							switch(move.type) {
+							case Bishop:
+								this.board[x][y] = new Bishop(this.turn);
+								break;
+							case Queen:
+								this.board[x][y] = new Queen(this.turn);
+								break;
+							case Knight:
+								this.board[x][y] = new Knight(this.turn);
+								break;
+							case Rook:
+								this.board[x][y] = new Rook(this.turn);
+								break;
+							default:
+								return false;
+							}
+
+							break;
+						}
+					}
+				}
+			}
+
+			this.state = GameState.RegularMove;
 			changeTurns();
 			return true;
 		}
-		
+		else {
+			if(this.board[move.x][move.y].move(move.x, move.y, move.dest_x, move.dest_y, this)) {
+				if(this.state != GameState.ChoosingPiece) {
+					changeTurns();
+				}
+				return true;
+			}
+		}
+
 		return false;
 	}
 
