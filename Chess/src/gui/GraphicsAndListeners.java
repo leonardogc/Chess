@@ -34,6 +34,19 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 	}
 	
 	private void drawBoard(Graphics g) {
+		for(int y = 0; y < GameUtil.boardSize; y++) {
+			for(int x = 0; x < GameUtil.boardSize; x++) {
+				if((x % 2 == 0 && y % 2 == 0) || (x % 2 != 0 && y % 2 != 0)) {
+					g.setColor(new Color(245,222,179));
+				}
+				else {
+					g.setColor(new Color(205,133,63));
+				}
+				
+				g.fillRect(dx+x*square_size, dy+y*square_size, square_size, square_size);
+			}
+		}
+		
 		g.setColor(Color.BLACK);
 		for(int i = 0; i < GameUtil.boardSize + 1; i++) {
 			//vertical
@@ -56,7 +69,18 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		if(e.getX() > dx + GameUtil.boardSize * square_size  || e.getX() < dx) {
+			return;
+		}
+		
+		if(e.getY() > dy + GameUtil.boardSize * square_size  || e.getY() < dy) {
+			return;
+		}
+		
+		int x = (e.getX() - dx)/square_size;
+		int y = (GameUtil.boardSize - 1) - (e.getY() - dy)/square_size;
+		
+		System.out.println("Clicked on: " + "(" + x + ", " + y + ")");
 		
 	}
 
