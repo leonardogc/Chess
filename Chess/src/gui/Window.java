@@ -3,6 +3,7 @@ package gui;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class Window {
 
@@ -36,8 +37,12 @@ public class Window {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 676, 699);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(null);
+		
+		JPanel panel = new GraphicsAndListeners();
+		panel.setBounds(0, 0, 660, 660);
+		frame.getContentPane().add(panel);
 	}
-
 }
