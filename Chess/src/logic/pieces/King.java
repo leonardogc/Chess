@@ -71,6 +71,21 @@ public class King extends Piece{
 		return true;
 	}
 	
+	private boolean rookAt(int x, int y, Piece[][] board, PieceColor color) {
+		if(GameUtil.validCoordinates(x, y)) {
+			if(board[x][y] != null) {
+				if(board[x][y].getType() == PieceType.Rook) {
+					if(board[x][y].getColor() == color) {
+						if(!((Rook)board[x][y]).getMoved()) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
+	}
+	
 	@Override
 	public Piece makeCopy() {
 		return new King(this.color, this.moved);

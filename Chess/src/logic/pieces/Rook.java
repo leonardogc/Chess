@@ -55,6 +55,10 @@ public class Rook extends Piece{
 	public boolean getMoved() {
 		return this.moved;
 	}
+	
+	public void setMoved(boolean moved) {
+		this.moved = moved;
+	}
 
 	@Override
 	public Piece makeCopy() {
