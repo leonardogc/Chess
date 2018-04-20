@@ -24,23 +24,68 @@ public class King extends Piece{
 			return false;
 		}
 		
+		if(game.getBoard()[x][y].getType() != PieceType.King) {
+			return false;
+		}
+		
 		int dx = dest_x - x;
 		int dy = dest_y - y;
 		int amount;
 
-		if(dx == 0 || dy == 0) {
-			amount = Math.abs(dx) + Math.abs(dy);
+		if(dy == 0) {
+			amount = Math.abs(dx);
 			
 			if(amount != 1) {
 				if(amount != 2) {
 					return false;
 				}
 				
-				if(this.moved) {
+				if(((King)game.getBoard()[x][y]).getMoved()) {
 					return false;
 				}
 				
 				
+				if(dx > 0) {
+					if(!rookAt(GameUtil.boardSize - 1, y , game.getBoard(), game.getBoard()[x][y].getColor())) {
+						return false;
+					}
+					
+					if(!GameUtil.isBoardFree(game.getBoard(), x+1, y, GameUtil.boardSize - 2, y)) {
+						return false;
+					}
+				}
+				else {
+					if(!rookAt(0, y , game.getBoard(), game.getBoard()[x][y].getColor())) {
+						return false;
+					}
+					
+					if(!GameUtil.isBoardFree(game.getBoard(), x-1, y, 1, y)) {
+						return false;
+					}
+				}
+				
+				int vx = dx/amount;
+				Game copy = game.makeCopy();
+				
+				for(int i = 0; i <= amount; i++) {
+					if(copy.playerInCheck(game.getBoard()[x][y].getColor())) {
+						return false;
+					}
+					
+					if(i == amount) {
+						break;
+					}
+					
+					copy.getBoard()[x+(i+1)*vx][y] = copy.getBoard()[x+i*vx][y];
+					copy.getBoard()[x+i*vx][y] = null;
+				}
+			}
+		}
+		else if(dx == 0) {
+			amount = Math.abs(dy);
+			
+			if(amount != 1) {
+				return false;
 			}
 		}
 		else {
@@ -60,13 +105,30 @@ public class King extends Piece{
 			return false;
 		}
 		
+		int dx = dest_x - x;
+		int dy = dest_y - y;
+		int amount;
+
+		if(dy == 0) {
+			amount = Math.abs(dx);
+			
+			if(amount != 1) {
+				if(dx > 0) {
+					game.getBoard()[GameUtil.boardSize-1][dest_y].move(GameUtil.boardSize-1, dest_y, dest_x-1, dest_y, game);
+				}
+				else {
+					game.getBoard()[GameUtil.boardSize-1][dest_y].move(0, dest_y, dest_x+1, dest_y, game);
+				}
+			}
+		}
+		
 		Piece[][] board = game.getBoard();
 
 		board[dest_x][dest_y] = board[x][y];
 
 		board[x][y] = null;
 		
-		this.moved = true;
+		((King)board[dest_x][dest_y]).setMoved(true);
 		
 		return true;
 	}
@@ -84,6 +146,14 @@ public class King extends Piece{
 			}
 		}
 		return false;
+	}
+	
+	public boolean getMoved() {
+		return this.moved;
+	}
+	
+	public void setMoved(boolean moved) {
+		this.moved = moved;
 	}
 	
 	@Override

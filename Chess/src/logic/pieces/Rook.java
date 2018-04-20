@@ -24,6 +24,10 @@ public class Rook extends Piece{
 			return false;
 		}
 		
+		if(game.getBoard()[x][y].getType() != PieceType.Rook) {
+			return false;
+		}
+		
 		int dx = dest_x - x;
 		int dy = dest_y - y;
 		
@@ -47,7 +51,7 @@ public class Rook extends Piece{
 
 		board[x][y] = null;
 		
-		this.moved = true;
+		((Rook)board[dest_x][dest_y]).setMoved(true);
 		
 		return true;
 	}

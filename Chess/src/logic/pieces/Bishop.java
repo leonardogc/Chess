@@ -17,6 +17,10 @@ public class Bishop extends Piece{
 			return false;
 		}
 		
+		if(game.getBoard()[x][y].getType() != PieceType.Bishop) {
+			return false;
+		}
+		
 		int dx = dest_x - x;
 		int dy = dest_y - y;
 		

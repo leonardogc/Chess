@@ -21,6 +21,10 @@ public class Knight extends Piece{
 			return false;
 		}
 		
+		if(game.getBoard()[x][y].getType() != PieceType.Knight) {
+			return false;
+		}
+		
 		if(game.getBoard()[dest_x][dest_y] != null) {
 			if(game.getBoard()[x][y].getColor() == game.getBoard()[dest_x][dest_y].getColor()) {
 				return false;

@@ -77,6 +77,44 @@ public class GameUtil {
 		return true;
 	}
 	
+	//both coordinates are inclusive
+	public static boolean isBoardFree(Piece[][] board, int x, int y, int dest_x, int dest_y) {
+		if(!validCoordinates(x, y) || !validCoordinates(dest_x, dest_y)) {
+			return false;
+		}
+
+		int dx = dest_x - x;
+		int dy = dest_y - y;
+		
+		if(dx == 0 && dy == 0) {
+			return false;
+		}
+		
+		
+		int amount;
+
+		if(dx == 0 || dy == 0) {
+			amount = Math.abs(dx) + Math.abs(dy);
+		}
+		else if(Math.abs(dx) == Math.abs(dy)) {
+			amount = Math.abs(dx);
+		}
+		else {
+			return false;
+		}
+		
+		int vx = dx/amount;
+		int vy = dy/amount;
+		
+		for(int i = 0; i <= amount; i++) {
+			if(board[x+i*vx][y+i*vy] != null) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+	
 	public static boolean validCoordinates(int x, int y) {
 		if(x < 0 || y < 0 || x > boardSize - 1 || y > boardSize - 1) {
 			return false;

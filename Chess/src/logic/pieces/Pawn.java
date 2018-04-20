@@ -33,6 +33,10 @@ public class Pawn extends Piece{
 			return false;
 		}
 		
+		if(game.getBoard()[x][y].getType() != PieceType.Pawn) {
+			return false;
+		}
+		
 		int dx = dest_x - x;
 		int dy = dest_y - y;
 		
@@ -73,7 +77,7 @@ public class Pawn extends Piece{
 				//do nothing
 			}
 			else if(amount == 2) {
-				if(this.moved) {
+				if(((Pawn)game.getBoard()[x][y]).getMoved()) {
 					return false;
 				}
 			}
@@ -81,7 +85,7 @@ public class Pawn extends Piece{
 		else {
 			if(amount == 1) {
 				if(game.getBoard()[dest_x][dest_y] == null) {
-					if(!this.enPassant) {
+					if(!((Pawn)game.getBoard()[x][y]).getEnPassant()) {
 						return false;
 					}
 					
@@ -131,12 +135,12 @@ public class Pawn extends Piece{
 
 				if(pawnAt(dest_x + 1, dest_y, game.getBoard(), game.getBoard()[x][y].getColor().change())) {
 					((Pawn) game.getBoard()[dest_x + 1][dest_y]).setEnPassant(true);
-					this.enPassantVictim = true;
+					((Pawn) game.getBoard()[x][y]).setEnPassantVictim(true);
 				}
 				
 				if(pawnAt(dest_x - 1, dest_y, game.getBoard(), game.getBoard()[x][y].getColor().change())) {
 					((Pawn) game.getBoard()[dest_x - 1][dest_y]).setEnPassant(true);
-					this.enPassantVictim = true;
+					((Pawn) game.getBoard()[x][y]).setEnPassantVictim(true);
 				}
 
 			}
@@ -154,7 +158,7 @@ public class Pawn extends Piece{
 
 		board[x][y] = null;
 		
-		this.moved = true;
+		((Pawn)board[dest_x][dest_y]).setMoved(true);
 		
 		if(dest_y == 0 || dest_y == GameUtil.boardSize - 1) {
 			game.setState(GameState.ChoosingPiece);
@@ -184,8 +188,20 @@ public class Pawn extends Piece{
 		this.enPassantVictim = enPassantVictim;
 	}
 	
+	public void setMoved(boolean moved) {
+		this.moved = moved;
+	}
+	
 	public boolean getEnPassantVictim(){
 		return this.enPassantVictim;
+	}
+	
+	public boolean getEnPassant(){
+		return this.enPassant;
+	}
+	
+	public boolean getMoved() {
+		return this.moved;
 	}
 	
 	@Override

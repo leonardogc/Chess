@@ -17,6 +17,10 @@ public class Queen extends Piece{
 			return false;
 		}
 		
+		if(game.getBoard()[x][y].getType() != PieceType.Queen) {
+			return false;
+		}
+		
 		return true;
 	}
 	
