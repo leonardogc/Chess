@@ -6,11 +6,18 @@ import logic.util.GameUtil.PieceColor;
 import logic.util.GameUtil.PieceType;
 
 public class Rook extends Piece{
+	private boolean moved;
 
 	public Rook(PieceColor color) {
 		super(PieceType.Rook, color);
+		this.moved = false;
 	}
 
+	public Rook(PieceColor color, boolean moved) {
+		super(PieceType.Rook, color);
+		this.moved = moved;
+	}
+	
 	@Override
 	public boolean isMoveValid(int x, int y, int dest_x, int dest_y, Game game) {
 		if(!GameUtil.isPathValid(game.getBoard(), x, y, dest_x, dest_y)) {
@@ -40,11 +47,17 @@ public class Rook extends Piece{
 
 		board[x][y] = null;
 		
+		this.moved = true;
+		
 		return true;
+	}
+	
+	public boolean getMoved() {
+		return this.moved;
 	}
 
 	@Override
 	public Piece makeCopy() {
-		return new Rook(this.color);
+		return new Rook(this.color, this.moved);
 	}
 }

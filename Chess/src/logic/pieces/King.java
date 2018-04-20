@@ -6,9 +6,16 @@ import logic.util.GameUtil.PieceColor;
 import logic.util.GameUtil.PieceType;
 
 public class King extends Piece{
+	private boolean moved;
 
 	public King(PieceColor color) {
 		super(PieceType.King, color);
+		this.moved = false;
+	}
+	
+	public King(PieceColor color, boolean moved) {
+		super(PieceType.King, color);
+		this.moved = moved;
 	}
 
 	@Override
@@ -23,14 +30,25 @@ public class King extends Piece{
 
 		if(dx == 0 || dy == 0) {
 			amount = Math.abs(dx) + Math.abs(dy);
+			
+			if(amount != 1) {
+				if(amount != 2) {
+					return false;
+				}
+				
+				if(this.moved) {
+					return false;
+				}
+				
+				
+			}
 		}
 		else {
 			amount = Math.abs(dx);
-		}
-		
-		if(amount != 1) {
-			//TODO special move
-			return false;
+			
+			if(amount != 1) {
+				return false;
+			}
 		}
 		
 		return true;
@@ -48,11 +66,13 @@ public class King extends Piece{
 
 		board[x][y] = null;
 		
+		this.moved = true;
+		
 		return true;
 	}
 	
 	@Override
 	public Piece makeCopy() {
-		return new King(this.color);
+		return new King(this.color, this.moved);
 	}
 }
