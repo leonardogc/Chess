@@ -26,13 +26,12 @@ public class GameLoop extends Thread{
 			
 			if(gui.game.getTurn() == PieceColor.White) {
 				StopWatch total = new StopWatch();
-				StopWatch time = new StopWatch();
 				
 				total.start();
-				Minimax.minimax_alpha_beta(gui.game, Turn.Max, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, time);
+				Minimax.minimax_alpha_beta(gui.game, Turn.Max, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
 				total.stop();
 				
-				System.out.println(time.time*100/total.time + "%");
+				System.out.println(total.time + " s");
 			}
 			else {
 				gui.queue.clear();

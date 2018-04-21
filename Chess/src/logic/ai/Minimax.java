@@ -17,7 +17,7 @@ public class Minimax {
 	
 	public static final int win = 10000;
 	public static final int loss = -10000;
-	public static final int max_depth = 5;
+	public static final int max_depth = 4;
 	
 	public static final int king_score = 10;
 	public static final int queen_score = 9;
@@ -27,15 +27,15 @@ public class Minimax {
 	public static final int pawn_score = 1;
 	
 	
-	public static int minimax_alpha_beta(Game game, Turn turn, int depth, int alpha, int beta, StopWatch timer) {
+	public static int minimax_alpha_beta(Game game, Turn turn, int depth, int alpha, int beta) {
 		int max_score=Integer.MIN_VALUE;
 		int min_score=Integer.MAX_VALUE;
 		int result=0;
 		
 		Move best_move=null;
-		timer.start();
 		LinkedList<Move> moves = game.calculateMoves();
-		timer.stop();
+		
+		
 		//check if game ended
 		if(moves.size() == 0) {
 			if(turn == Turn.Max) {
@@ -72,10 +72,10 @@ public class Minimax {
 				if(turn == Turn.Max) {
 					if(game_copy.getState() == GameState.ChoosingPiece) {
 						//max plays again
-						result = minimax_alpha_beta(game_copy, Turn.Max, depth+1, alpha, beta, timer);
+						result = minimax_alpha_beta(game_copy, Turn.Max, depth+1, alpha, beta);
 					}
 					else {
-						result = minimax_alpha_beta(game_copy, Turn.Min, depth+1, alpha, beta, timer);
+						result = minimax_alpha_beta(game_copy, Turn.Min, depth+1, alpha, beta);
 					}
 					
 					if(result > alpha) {
@@ -97,10 +97,10 @@ public class Minimax {
 				else if(turn == Turn.Min){
 					if(game_copy.getState() == GameState.ChoosingPiece) {
 						//min plays again
-						result = minimax_alpha_beta(game_copy, Turn.Min, depth+1, alpha, beta, timer);
+						result = minimax_alpha_beta(game_copy, Turn.Min, depth+1, alpha, beta);
 					}
 					else {
-						result = minimax_alpha_beta(game_copy, Turn.Max, depth+1, alpha, beta, timer);
+						result = minimax_alpha_beta(game_copy, Turn.Max, depth+1, alpha, beta);
 					}
 					
 					if(result < beta) {
