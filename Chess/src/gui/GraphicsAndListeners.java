@@ -90,7 +90,6 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 		Game copy = this.game.makeCopy();
 		drawBoard(g);
 		drawPieces(g, copy);
-		g.drawImage(rook_b,dx,dy,square_size,square_size, null);
 	}
 	
 	private void drawBoard(Graphics g) {
@@ -192,6 +191,7 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+	
 		if(move_piece) {
 			if(e.getX() > dx + GameUtil.boardSize * square_size  || e.getX() < dx) {
 				return;

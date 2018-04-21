@@ -48,4 +48,13 @@ public class Move {
 		
 		return true;
 	}
+	
+	public void print() {
+		if(this.type == null) {
+			System.out.println("Moved from ("+this.x+", "+this.y+") to ("+this.dest_x+", "+this.dest_y+")");
+		}
+		else {
+			System.out.println("Promoted to "+ type);
+		}
+	}
 }

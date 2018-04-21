@@ -286,6 +286,7 @@ public class Game {
 				if(this.state != GameState.ChoosingPiece) {
 					changeTurns();
 				}
+				
 				return true;
 			}
 		}
