@@ -6,6 +6,7 @@ import logic.game.Game.GameState;
 import logic.game.Move;
 import logic.util.GameUtil.PieceColor;
 import logic.util.GameUtil.PieceType;
+import logic.util.StopWatch;
 
 import java.util.Scanner;
 
@@ -24,7 +25,14 @@ public class GameLoop extends Thread{
 			System.out.println("It's "+gui.game.getTurn()+"'s turn");
 			
 			if(gui.game.getTurn() == PieceColor.White) {
-				Minimax.minimax_alpha_beta(gui.game, Turn.Max, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+				StopWatch total = new StopWatch();
+				StopWatch time = new StopWatch();
+				
+				total.start();
+				Minimax.minimax_alpha_beta(gui.game, Turn.Max, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, time);
+				total.stop();
+				
+				System.out.println(time.time*100/total.time + "%");
 			}
 			else {
 				gui.queue.clear();

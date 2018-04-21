@@ -1,6 +1,9 @@
 package logic.pieces;
 
+import java.util.LinkedList;
+
 import logic.game.Game;
+import logic.game.Move;
 import logic.util.GameUtil.PieceColor;
 import logic.util.GameUtil.PieceType;
 
@@ -15,6 +18,8 @@ public abstract class Piece {
 	
 	public abstract boolean isMoveValid(int x, int y, int dest_x, int dest_y, Game game);
 	public abstract boolean move(int x, int y, int dest_x, int dest_y, Game game);
+	public abstract void calculateMoves(int x, int y, Game game, LinkedList<Move> queue);
+	
 	public abstract Piece makeCopy();
 	
 	public PieceType getType() {
@@ -23,5 +28,17 @@ public abstract class Piece {
 	
 	public PieceColor getColor() {
 		return this.color;
+	}
+	
+	protected void addMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
+		if(isMoveValid(x, y, dest_x, dest_y, game)) {
+			Game copy = game.makeCopy();
+			
+			copy.getBoard()[x][y].move(x, y, dest_x, dest_y, copy);
+			
+			if(!copy.playerInCheck(game.getTurn())) {
+				queue.add(new Move(x, y, dest_x, dest_y));
+			}
+		}
 	}
 }

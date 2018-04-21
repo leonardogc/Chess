@@ -1,6 +1,9 @@
 package logic.pieces;
 
+import java.util.LinkedList;
+
 import logic.game.Game;
+import logic.game.Move;
 import logic.util.GameUtil;
 import logic.util.GameUtil.PieceColor;
 import logic.util.GameUtil.PieceType;
@@ -101,10 +104,6 @@ public class King extends Piece{
 	
 	@Override
 	public boolean move(int x, int y, int dest_x, int dest_y, Game game) {
-		if(!isMoveValid(x, y, dest_x, dest_y, game)){
-			return false;
-		}
-		
 		int dx = dest_x - x;
 		int dy = dest_y - y;
 		int amount;
@@ -160,4 +159,26 @@ public class King extends Piece{
 	public Piece makeCopy() {
 		return new King(this.color, this.moved);
 	}
+
+	@Override
+	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queue) {
+			int amount = 1;
+		
+			addMove(x, y, x+amount, y+amount, game, queue);
+			addMove(x, y, x-amount, y+amount, game, queue);
+			addMove(x, y, x+amount, y-amount, game, queue);
+			addMove(x, y, x-amount, y-amount, game, queue);
+			
+			
+			addMove(x, y, x, y+amount, game, queue);
+			addMove(x, y, x, y-amount, game, queue);
+			addMove(x, y, x-amount, y, game, queue);
+			addMove(x, y, x+amount, y, game, queue);
+			
+			amount = 2;
+			
+			addMove(x, y, x-amount, y, game, queue);
+			addMove(x, y, x+amount, y, game, queue);
+	}
+
 }

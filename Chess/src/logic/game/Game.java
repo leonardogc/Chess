@@ -104,20 +104,6 @@ public class Game {
 	public void setState(GameState state) {
 		this.state = state;
 	}
-
-	public boolean move(int x, int y, int dest_x, int dest_y) {
-		LinkedList<Move> moves = calculateMoves();
-		Move move = new Move(x, y, dest_x, dest_y);
-		
-		while(moves.size() > 0) {
-			if(move.equals(moves.poll())){
-				applyMove(move);
-				return true;
-			}
-		}
-		
-		return false;
-	}
 	
 	public boolean move(Move move) {
 		LinkedList<Move> moves = calculateMoves();
@@ -197,7 +183,7 @@ public class Game {
 		
 		return new Game(board, this.turn, this.state);
 	}
-
+		
 	public LinkedList<Move> calculateMoves(){
 		LinkedList<Move> queue = new LinkedList<>();
 
@@ -207,19 +193,7 @@ public class Game {
 				for(int x=0; x < GameUtil.boardSize; x++) {
 					if(this.board[x][y] != null) {
 						if(this.board[x][y].getColor() == this.turn) {
-
-							for(int dest_y=0; dest_y < GameUtil.boardSize; dest_y++) {
-								for(int dest_x=0; dest_x < GameUtil.boardSize; dest_x++) {
-									Game game_copy = this.makeCopy();
-									if(game_copy.applyMove(new Move(x, y, dest_x, dest_y))) {
-										if(!game_copy.playerInCheck(this.turn)) {
-											queue.add(new Move(x, y, dest_x, dest_y));
-										}
-									}
-								}
-							}
-
-
+							this.board[x][y].calculateMoves(x, y, this, queue);
 						}
 					}
 				}
@@ -279,19 +253,16 @@ public class Game {
 
 			this.state = GameState.RegularMove;
 			changeTurns();
-			return true;
 		}
 		else {
-			if(this.board[move.x][move.y].move(move.x, move.y, move.dest_x, move.dest_y, this)) {
-				if(this.state != GameState.ChoosingPiece) {
-					changeTurns();
-				}
-				
-				return true;
+			this.board[move.x][move.y].move(move.x, move.y, move.dest_x, move.dest_y, this);
+
+			if(this.state != GameState.ChoosingPiece) {
+				changeTurns();
 			}
 		}
 
-		return false;
+		return true;
 	}
 
 	private void changeTurns() {
