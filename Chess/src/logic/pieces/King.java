@@ -117,7 +117,7 @@ public class King extends Piece{
 					game.getBoard()[GameUtil.boardSize-1][dest_y].move(GameUtil.boardSize-1, dest_y, dest_x-1, dest_y, game);
 				}
 				else {
-					game.getBoard()[GameUtil.boardSize-1][dest_y].move(0, dest_y, dest_x+1, dest_y, game);
+					game.getBoard()[0][dest_y].move(0, dest_y, dest_x+1, dest_y, game);
 				}
 			}
 		}
