@@ -29,6 +29,7 @@ public class OutputThread extends Thread{
 	    public void run() {
 	       while(running) {
 	    	   if(sendMessage) {
+	    		   System.out.println("sending board");
 	    		  sendBoard(); 
 	    		  sendMessage = false;
 	    	   }
@@ -54,47 +55,47 @@ public class OutputThread extends Thread{
 	    				switch(s.game.getBoard()[x][y].getType()) {
 						case King:
 							if(s.game.getBoard()[x][y].getColor() == PieceColor.White) {
-								piece = "kw";
+								piece = "wk";
 							}
 							else {
-								piece = "kb";
+								piece = "bk";
 							}
 							break;
 						case Rook:
 							if(s.game.getBoard()[x][y].getColor() == PieceColor.White) {
-								piece = "rw";
+								piece = "wr";
 							}
 							else {
-								piece = "rb";
+								piece = "br";
 							}
 							break;
 						case Queen:
 							if(s.game.getBoard()[x][y].getColor() == PieceColor.White) {
-								piece = "qw";
+								piece = "wq";
 							}
 							else {
-								piece = "qb";
+								piece = "bq";
 							}
 							break;
 						case Pawn:
 							if(s.game.getBoard()[x][y].getColor() == PieceColor.White) {
-								piece = "pw";
+								piece = "wp";
 							}
 							else {
-								piece = "pb";
+								piece = "bp";
 							}
 							break;
 						case Knight:
 							if(s.game.getBoard()[x][y].getColor() == PieceColor.White) {
-								piece = "knw";
+								piece = "wkn";
 							}
 							else {
-								piece = "knb";
+								piece = "bkn";
 							}
 							break;
 						case Bishop:
 							if(s.game.getBoard()[x][y].getColor() == PieceColor.White) {
-								piece = "bw";
+								piece = "wb";
 							}
 							else {
 								piece = "bb";

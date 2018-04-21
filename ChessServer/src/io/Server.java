@@ -30,6 +30,7 @@ public class Server {
 	
 	public void startServer() {
 		findPlayers();
+		sendPlayer();
 		
 		game=new Game();
 		
@@ -47,7 +48,7 @@ public class Server {
 		outputThread.start();
 	}
 	
-	/*private void sendPlayer() {
+	private void sendPlayer() {
 		try {
 			player1.getOutputStream().write("white;".getBytes());
 		} catch (IOException e) {
@@ -60,7 +61,7 @@ public class Server {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}*/
+	}
 
 	public void closeServer(){
 		outputThread.setRunning(false);

@@ -42,7 +42,7 @@ public class InputThread extends Thread {
 	
 	private void parseData() {
 		String[] data = new String(input_buffer).split(";"); 
-		//System.out.println("Message length: "+new String(input_buffer));
+		System.out.println(new String(input_buffer));
 		
 		switch(data[0]) {
 		case "q":
