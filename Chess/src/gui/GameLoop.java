@@ -4,7 +4,6 @@ import logic.game.Game.GameState;
 import logic.util.GameUtil.PieceType;
 
 import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 
 import logic.game.Move;
 
@@ -59,7 +58,7 @@ public class GameLoop extends Thread{
 			
 			gui.repaint();
 		}
-		
+		scanner.close();
 		System.out.println(gui.game.getTurn().change()+" wins!");
 	}
 }
