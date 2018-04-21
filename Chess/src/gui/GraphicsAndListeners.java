@@ -4,10 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.swing.JPanel;
 
 import logic.game.Game;
+import logic.game.Move;
 import logic.util.GameUtil;
 
 public class GraphicsAndListeners extends JPanel implements MouseListener{
@@ -19,8 +21,24 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 	private final int dx = (660-(square_size*GameUtil.boardSize))/2;
 	private final int dy = (660-(square_size*GameUtil.boardSize))/2;
 	
+	private int sel_x;
+	private int sel_y;
+	private int x;
+	private int y;
+	private boolean sel_square;
+	public boolean move_piece;
+	
+	public ConcurrentLinkedQueue<Move> queue;
+	
 	public GraphicsAndListeners() {
 		addMouseListener(this);
+		
+		this.queue = new ConcurrentLinkedQueue<>();
+		
+		this.sel_x=-1;
+		this.sel_y=-1;
+		this.sel_square = false;
+		this.move_piece = false;
 		
 		this.game = new Game();
 		this.thread = new GameLoop(this);
@@ -47,6 +65,11 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 			}
 		}
 		
+		if(sel_square) {
+			g.setColor(Color.GREEN);
+			g.fillRect(dx+sel_x*square_size, dy+sel_y*square_size, square_size, square_size);
+		}
+		
 		g.setColor(Color.BLACK);
 		for(int i = 0; i < GameUtil.boardSize + 1; i++) {
 			//vertical
@@ -69,19 +92,35 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if(e.getX() > dx + GameUtil.boardSize * square_size  || e.getX() < dx) {
-			return;
+		if(move_piece) {
+			if(e.getX() > dx + GameUtil.boardSize * square_size  || e.getX() < dx) {
+				return;
+			}
+
+			if(e.getY() > dy + GameUtil.boardSize * square_size  || e.getY() < dy) {
+				return;
+			}
+			
+			if(!sel_square) {
+				sel_x = (e.getX() - dx)/square_size;
+				sel_y = (e.getY() - dy)/square_size;
+				
+				x = (e.getX() - dx)/square_size;
+				y = (GameUtil.boardSize - 1) - (e.getY() - dy)/square_size;
+				sel_square = true;
+				repaint();
+			}
+			else {
+				int x2 = (e.getX() - dx)/square_size;
+				int y2 = (GameUtil.boardSize - 1) - (e.getY() - dy)/square_size;
+				
+				sel_square = false;
+				queue.add(new Move(x, y, x2, y2));
+			}
 		}
-		
-		if(e.getY() > dy + GameUtil.boardSize * square_size  || e.getY() < dy) {
-			return;
+		else {
+			sel_square = false;
 		}
-		
-		int x = (e.getX() - dx)/square_size;
-		int y = (GameUtil.boardSize - 1) - (e.getY() - dy)/square_size;
-		
-		System.out.println("Clicked on: " + "(" + x + ", " + y + ")");
-		
 	}
 
 	@Override

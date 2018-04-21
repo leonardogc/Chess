@@ -97,8 +97,8 @@ public class Game {
 		return this.turn;
 	}
 	
-	public void setTurn(PieceColor turn) {
-		this.turn = turn;
+	public GameState getState() {
+		return this.state;
 	}
 	
 	public void setState(GameState state) {
@@ -108,6 +108,19 @@ public class Game {
 	public boolean move(int x, int y, int dest_x, int dest_y) {
 		LinkedList<Move> moves = calculateMoves();
 		Move move = new Move(x, y, dest_x, dest_y);
+		
+		while(moves.size() > 0) {
+			if(move.equals(moves.poll())){
+				applyMove(move);
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean move(Move move) {
+		LinkedList<Move> moves = calculateMoves();
 		
 		while(moves.size() > 0) {
 			if(move.equals(moves.poll())){
