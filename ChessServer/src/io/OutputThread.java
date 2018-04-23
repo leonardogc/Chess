@@ -1,6 +1,7 @@
 package io;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import io.Server;
 import logic.game.Game.GameState;
@@ -33,6 +34,12 @@ public class OutputThread extends Thread{
 	    		  sendBoard(); 
 	    		  sendMessage = false;
 	    	   }
+	    	   try {
+				TimeUnit.MILLISECONDS.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	       }
 	    }
 	    

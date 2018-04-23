@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.TimeUnit;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -33,8 +34,14 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 			while(true) {
 				if(c.repaint) {
 					g.repaint();
-					g.repaint();
 					c.repaint = false;
+				}
+				
+				try {
+					TimeUnit.MILLISECONDS.sleep(100);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 		}
@@ -228,6 +235,7 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 				int y2 = (GameUtil.boardSize - 1) - (e.getY() - dy)/square_size;
 				
 				sel_square = false;
+				repaint();
 				
 				try {
         			client.server.getOutputStream().write((x+";"+y+";"+x2+";"+y2+";").getBytes());
