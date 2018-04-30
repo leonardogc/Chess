@@ -77,7 +77,7 @@ public class InputThread extends Thread {
 				}
 			}
 			
-			scanner.close();
+			//scanner.close();
 
 			try {
     			c.server.getOutputStream().write((piece+";").getBytes());
