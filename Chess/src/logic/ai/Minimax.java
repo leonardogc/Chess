@@ -17,7 +17,7 @@ public class Minimax {
 	
 	public static final int win = 10000;
 	public static final int loss = -10000;
-	public static final int max_depth = 4;
+	public static final int max_depth = 5;
 	
 	public static final int king_score = 10;
 	public static final int queen_score = 9;
@@ -31,11 +31,27 @@ public class Minimax {
 		int max_score=Integer.MIN_VALUE;
 		int min_score=Integer.MAX_VALUE;
 		int result=0;
-		
+
 		Move best_move=null;
+
+		//limit depth
+		if(depth == max_depth) {
+			PieceColor color;
+
+			if(turn == Turn.Max) {
+				color = game.getTurn();
+			}
+			else{
+				color = game.getTurn().change();
+			}
+
+			return heuristic(game, color);
+		}
+
+		
+		
 		LinkedList<Move> moves = game.calculateMoves();
-		
-		
+
 		//check if game ended
 		if(moves.size() == 0) {
 			if(turn == Turn.Max) {
@@ -45,21 +61,7 @@ public class Minimax {
 				return win;
 			}
 		}
-		
-		//limit depth
-		if(depth == max_depth) {
-			PieceColor color;
-			
-			if(turn == Turn.Max) {
-				color = game.getTurn();
-			}
-			else{
-				color = game.getTurn().change();
-			}
-			
-			return heuristic(game, color);
-		}
-		
+
 		//iterate through possible plays calling minimax each time
 		while(moves.size() > 0) {
 			/*if(depth == 0) {
