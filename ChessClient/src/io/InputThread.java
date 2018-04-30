@@ -17,12 +17,14 @@ import logic.util.GameUtil.PieceType;
 
 public class InputThread extends Thread {
 	private Client c;
-	public byte[] input_buffer;
+	private byte[] input_buffer;
 	private int inputBufferSize = 65536;
+	private Scanner scanner;
 	
 	public InputThread(Client c) {
 		this.c=c;
-		input_buffer=new byte[inputBufferSize];
+		this.input_buffer=new byte[inputBufferSize];
+		this.scanner = new Scanner(System.in);
 	}
 	
 	@Override
@@ -55,7 +57,6 @@ public class InputThread extends Thread {
 			c.turn = 0; 
 			c.repaint = true;
 
-			Scanner scanner = new Scanner(System.in);
 			String piece = "";
 			while(piece.equals("")) {
 				System.out.println("Write:\n\tb for Bishop\n\tq for Queen\n\tk for Knight\n\tr for Rook");
@@ -76,8 +77,6 @@ public class InputThread extends Thread {
 					break;
 				}
 			}
-			
-			//scanner.close();
 
 			try {
     			c.server.getOutputStream().write((piece+";").getBytes());

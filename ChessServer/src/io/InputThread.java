@@ -10,7 +10,7 @@ public class InputThread extends Thread {
 	private boolean running;
 	private Socket player;
 	private Server s;
-	public byte[] input_buffer;
+	private byte[] input_buffer;
 	private int inputBufferSize = 65536;
 	
 	public InputThread(Socket player, Server s) {
