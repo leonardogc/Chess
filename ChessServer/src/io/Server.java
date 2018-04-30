@@ -99,6 +99,7 @@ public class Server {
 		}
 		try {
 			player1.setTcpNoDelay(true);
+			player1.setSoTimeout(0);
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -114,6 +115,7 @@ public class Server {
 		}
 		try {
 			player2.setTcpNoDelay(true);
+			player2.setSoTimeout(0);
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

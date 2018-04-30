@@ -119,6 +119,7 @@ public class Client {
 		
 		try {
 			server.setTcpNoDelay(true);
+			server.setSoTimeout(0);
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
