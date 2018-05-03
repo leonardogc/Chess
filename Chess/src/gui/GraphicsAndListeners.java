@@ -25,6 +25,7 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 	private final int square_size=75;
 	private final int dx = (660-(square_size*GameUtil.boardSize))/2;
 	private final int dy = (660-(square_size*GameUtil.boardSize))/2;
+	private final PieceColor perspective = PieceColor.Black; 
 	
 	private int sel_x;
 	private int sel_y;
@@ -125,8 +126,19 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 		for(int y=0; y < GameUtil.boardSize; y++) {
 			for(int x=0; x < GameUtil.boardSize; x++) {
 				if(game.getBoard()[x][y] != null) {
-					int pos_x = dx + x*square_size;
-					int pos_y = dy + (GameUtil.boardSize-1-y)*square_size;
+					int pos_x = x;
+					int pos_y = (GameUtil.boardSize-1)-y;
+					
+					if(perspective == PieceColor.Black) {
+						pos_x = (GameUtil.boardSize-1)-pos_x;
+						pos_y = (GameUtil.boardSize-1)-pos_y;
+					}
+					
+					pos_x*=square_size;
+					pos_y*=square_size;
+					
+					pos_x+=dx;
+					pos_y+=dy;
 					
 					switch(game.getBoard()[x][y].getType()) {
 					case King:
@@ -215,7 +227,12 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 				int y2 = (GameUtil.boardSize - 1) - (e.getY() - dy)/square_size;
 				
 				sel_square = false;
-				queue.add(new Move(x, y, x2, y2));
+				if(perspective == PieceColor.White) {
+					queue.add(new Move(x, y, x2, y2));
+				}
+				else {
+					queue.add(new Move((GameUtil.boardSize-1)-x, (GameUtil.boardSize-1)-y, (GameUtil.boardSize-1)-x2, (GameUtil.boardSize-1)-y2));
+				}
 			}
 		}
 		else {
