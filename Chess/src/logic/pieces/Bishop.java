@@ -53,10 +53,29 @@ public class Bishop extends Piece{
 	@Override
 	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queue) {
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
-			addMove(x, y, x+amount, y+amount, game, queue);
-			addMove(x, y, x-amount, y+amount, game, queue);
-			addMove(x, y, x+amount, y-amount, game, queue);
-			addMove(x, y, x-amount, y-amount, game, queue);
+			testMove(x, y, x+amount, y+amount, game, queue);
+			testMove(x, y, x-amount, y+amount, game, queue);
+			testMove(x, y, x+amount, y-amount, game, queue);
+			testMove(x, y, x-amount, y-amount, game, queue);
+		}
+	}
+
+	@Override
+	public void testMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
+		if(isMoveValid(x, y, dest_x, dest_y, game)) {
+			Piece[][] board = game.getBoard();
+			
+			Piece beg = board[x][y];
+			Piece end = board[dest_x][dest_y];
+			
+			move(x, y, dest_x, dest_y, game);
+			
+			if(!game.playerInCheck(game.getTurn())) {
+				queue.add(new Move(x, y, dest_x, dest_y));
+			}
+			
+			board[x][y] = beg;
+			board[dest_x][dest_y] = end;
 		}
 	}
 

@@ -19,6 +19,7 @@ public abstract class Piece {
 	public abstract boolean isMoveValid(int x, int y, int dest_x, int dest_y, Game game);
 	public abstract boolean move(int x, int y, int dest_x, int dest_y, Game game);
 	public abstract void calculateMoves(int x, int y, Game game, LinkedList<Move> queue);
+	public abstract void testMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue);
 	
 	public abstract Piece makeCopy();
 	
@@ -30,7 +31,7 @@ public abstract class Piece {
 		return this.color;
 	}
 	
-	protected void addMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
+	/*protected void addMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
 		if(isMoveValid(x, y, dest_x, dest_y, game)) {
 			Game copy = game.makeCopy();
 			
@@ -40,5 +41,5 @@ public abstract class Piece {
 				queue.add(new Move(x, y, dest_x, dest_y));
 			}
 		}
-	}
+	}*/
 }

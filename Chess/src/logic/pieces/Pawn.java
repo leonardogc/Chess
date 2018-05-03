@@ -210,15 +210,28 @@ public class Pawn extends Piece{
 
 	@Override
 	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queue) {
-		addMove(x, y, x, y+1, game, queue);
-		addMove(x, y, x, y+2, game, queue);
-		addMove(x, y, x+1, y+1, game, queue);
-		addMove(x, y, x-1, y+1, game, queue);
+		testMove(x, y, x, y+1, game, queue);
+		testMove(x, y, x, y+2, game, queue);
+		testMove(x, y, x+1, y+1, game, queue);
+		testMove(x, y, x-1, y+1, game, queue);
 		
-		addMove(x, y, x, y-1, game, queue);
-		addMove(x, y, x, y-2, game, queue);
-		addMove(x, y, x+1, y-1, game, queue);
-		addMove(x, y, x-1, y-1, game, queue);
+		testMove(x, y, x, y-1, game, queue);
+		testMove(x, y, x, y-2, game, queue);
+		testMove(x, y, x+1, y-1, game, queue);
+		testMove(x, y, x-1, y-1, game, queue);
+	}
+	
+	@Override
+	public void testMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
+		if(isMoveValid(x, y, dest_x, dest_y, game)) {
+			Game copy = game.makeCopy();
+
+			copy.getBoard()[x][y].move(x, y, dest_x, dest_y, copy);
+
+			if(!copy.playerInCheck(game.getTurn())) {
+				queue.add(new Move(x, y, dest_x, dest_y));
+			}
+		}
 	}
 
 }

@@ -164,21 +164,34 @@ public class King extends Piece{
 	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queue) {
 			int amount = 1;
 		
-			addMove(x, y, x+amount, y+amount, game, queue);
-			addMove(x, y, x-amount, y+amount, game, queue);
-			addMove(x, y, x+amount, y-amount, game, queue);
-			addMove(x, y, x-amount, y-amount, game, queue);
+			testMove(x, y, x+amount, y+amount, game, queue);
+			testMove(x, y, x-amount, y+amount, game, queue);
+			testMove(x, y, x+amount, y-amount, game, queue);
+			testMove(x, y, x-amount, y-amount, game, queue);
 			
 			
-			addMove(x, y, x, y+amount, game, queue);
-			addMove(x, y, x, y-amount, game, queue);
-			addMove(x, y, x-amount, y, game, queue);
-			addMove(x, y, x+amount, y, game, queue);
+			testMove(x, y, x, y+amount, game, queue);
+			testMove(x, y, x, y-amount, game, queue);
+			testMove(x, y, x-amount, y, game, queue);
+			testMove(x, y, x+amount, y, game, queue);
 			
 			amount = 2;
 			
-			addMove(x, y, x-amount, y, game, queue);
-			addMove(x, y, x+amount, y, game, queue);
+			testMove(x, y, x-amount, y, game, queue);
+			testMove(x, y, x+amount, y, game, queue);
+	}
+
+	@Override
+	public void testMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
+		if(isMoveValid(x, y, dest_x, dest_y, game)) {
+			Game copy = game.makeCopy();
+
+			copy.getBoard()[x][y].move(x, y, dest_x, dest_y, copy);
+
+			if(!copy.playerInCheck(game.getTurn())) {
+				queue.add(new Move(x, y, dest_x, dest_y));
+			}
+		}
 	}
 
 }
