@@ -123,7 +123,6 @@ public class Minimax {
 				color = game.getTurn().change();
 			}
 			
-			
 			return better_heuristic(game, color, 0.7);
 		}
 		
