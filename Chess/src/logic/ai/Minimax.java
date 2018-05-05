@@ -17,7 +17,7 @@ public class Minimax {
 	
 	public static final int win = Integer.MAX_VALUE;
 	public static final int loss = Integer.MIN_VALUE;
-	public static final int max_depth = 6;
+	public static final int max_depth = 5;
 	
 	public static final int king_score = 10;
 	public static final int queen_score = 9;
