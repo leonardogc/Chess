@@ -17,7 +17,7 @@ public class Minimax {
 	
 	public static final int win = Integer.MAX_VALUE;
 	public static final int loss = Integer.MIN_VALUE;
-	public static final int max_depth = 5;
+	public static final int max_depth = 6;
 	
 	public static final int king_score = 10;
 	public static final int queen_score = 9;
@@ -108,6 +108,12 @@ public class Minimax {
 
 		//limit depth
 		if(depth == max_depth) {
+			if(game.playerInCheck(game.getTurn())) {
+				if(game.calculateMoves().size() == 0) {
+					return win_loss_score(turn);
+				}
+			}
+			
 			PieceColor color;
 
 			if(turn == Turn.Max) {
@@ -117,7 +123,6 @@ public class Minimax {
 				color = game.getTurn().change();
 			}
 			
-			
 			return better_heuristic(game, color);
 		}
 		
@@ -126,12 +131,7 @@ public class Minimax {
 
 		//check if game ended
 		if(moves.size() == 0) {
-			if(turn == Turn.Max) {
-				return loss;
-			}
-			else {
-				return win;
-			}
+			return win_loss_score(turn);
 		}
 
 		//iterate through possible plays calling minimax each time
@@ -403,5 +403,14 @@ public class Minimax {
 			return black_score - white_score;
 		}
 		
+	}
+	
+	private static int win_loss_score(Turn turn) {
+		if(turn == Turn.Max) {
+			return loss;
+		}
+		else {
+			return win;
+		}
 	}
 }

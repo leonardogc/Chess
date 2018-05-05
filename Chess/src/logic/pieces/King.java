@@ -184,12 +184,54 @@ public class King extends Piece{
 	@Override
 	public void testMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
 		if(isMoveValid(x, y, dest_x, dest_y, game)) {
-			Game copy = game.makeCopy();
+			Piece[][] board = game.getBoard();
+			
+			Piece beg = board[x][y].makeCopy();
+			Piece end = board[dest_x][dest_y];
+			////
+			Piece rook = null;
+			int rook_x=-1;
+			int rook_y=-1;
+			int rook_dest_x=-1;
+			int rook_dest_y=-1;
+		
+			int dx = dest_x - x;
+			int dy = dest_y - y;
+			int amount;
 
-			copy.getBoard()[x][y].move(x, y, dest_x, dest_y, copy);
-
-			if(!copy.playerInCheck(game.getTurn())) {
+			if(dy == 0) {
+				amount = Math.abs(dx);
+				
+				if(amount != 1) {
+					if(dx > 0) {
+						rook = board[GameUtil.boardSize-1][dest_y].makeCopy();
+						rook_x = GameUtil.boardSize-1;
+						rook_y = dest_y;
+						rook_dest_x = dest_x-1;
+						rook_dest_y = dest_y;
+					}
+					else {
+						rook = board[0][dest_y].makeCopy();
+						rook_x = 0;
+						rook_y = dest_y;
+						rook_dest_x = dest_x+1;
+						rook_dest_y = dest_y;
+					}
+				}
+			}
+			////
+			move(x, y, dest_x, dest_y, game);
+			
+			if(!game.playerInCheck(game.getTurn())) {
 				queue.add(new Move(x, y, dest_x, dest_y));
+			}
+			
+			board[x][y] = beg;
+			board[dest_x][dest_y] = end;
+			
+			if(rook != null) {
+				board[rook_dest_x][rook_dest_y] = null;
+				board[rook_x][rook_y] = rook;
 			}
 		}
 	}
