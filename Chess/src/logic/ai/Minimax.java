@@ -123,7 +123,8 @@ public class Minimax {
 				color = game.getTurn().change();
 			}
 			
-			return better_heuristic(game, color);
+			
+			return better_heuristic(game, color, 0.7);
 		}
 		
 		
@@ -279,7 +280,7 @@ public class Minimax {
 		
 	}
 	
-	private static int better_heuristic(Game game, PieceColor max) {
+	private static int better_heuristic(Game game, PieceColor max, double prop) {
 		int white_score = 0;
 		int black_score = 0;
 		
@@ -314,56 +315,56 @@ public class Minimax {
 					case Rook:
 						if(game.getBoard()[x][y].getColor() == PieceColor.White) {
 							white_score+=rook_score_better;
-							white_score+=rook_board[x][y];
+							white_score+=rook_board[x][y]*prop;
 						}
 						else {
 							black_score+=rook_score_better;
-							black_score+=rook_board[x][GameUtil.boardSize-1-y];
+							black_score+=rook_board[x][GameUtil.boardSize-1-y]*prop;
 						}
 						break;
 					case Queen:
 						if(game.getBoard()[x][y].getColor() == PieceColor.White) {
 							white_score+=queen_score_better;
-							white_score+=queen_board[x][y];
+							white_score+=queen_board[x][y]*prop;
 							white_queen = true;
 						}
 						else {
 							black_score+=queen_score_better;
-							black_score+=queen_board[x][GameUtil.boardSize-1-y];
+							black_score+=queen_board[x][GameUtil.boardSize-1-y]*prop;
 							black_queen = true;
 						}
 						break;
 					case Pawn:
 						if(game.getBoard()[x][y].getColor() == PieceColor.White) {
 							white_score+=pawn_score_better;
-							white_score+=pawn_board[x][y];
+							white_score+=pawn_board[x][y]*prop;
 						}
 						else {
 							black_score+=pawn_score_better;
-							black_score+=pawn_board[x][GameUtil.boardSize-1-y];
+							black_score+=pawn_board[x][GameUtil.boardSize-1-y]*prop;
 						}
 						break;
 					case Knight:
 						if(game.getBoard()[x][y].getColor() == PieceColor.White) {
 							white_score+=knight_score_better;
-							white_score+=knight_board[x][y];
+							white_score+=knight_board[x][y]*prop;
 							white_minor_pieces++;
 						}
 						else {
 							black_score+=knight_score_better;
-							black_score+=knight_board[x][GameUtil.boardSize-1-y];
+							black_score+=knight_board[x][GameUtil.boardSize-1-y]*prop;
 							black_minor_pieces++;
 						}
 						break;
 					case Bishop:
 						if(game.getBoard()[x][y].getColor() == PieceColor.White) {
 							white_score+=bishop_score_better;
-							white_score+=bishop_board[x][y];
+							white_score+=bishop_board[x][y]*prop;
 							white_minor_pieces++;
 						}
 						else {
 							black_score+=bishop_score_better;
-							black_score+=bishop_board[x][GameUtil.boardSize-1-y];
+							black_score+=bishop_board[x][GameUtil.boardSize-1-y]*prop;
 							black_minor_pieces++;
 						}
 						break;
@@ -388,12 +389,12 @@ public class Minimax {
 		}
 		
 		if(endgame) {
-			white_score+=king_board_end[white_king_x][white_king_y];
-			black_score+=king_board_end[black_king_x][GameUtil.boardSize-1-black_king_y];
+			white_score+=king_board_end[white_king_x][white_king_y]*prop;
+			black_score+=king_board_end[black_king_x][GameUtil.boardSize-1-black_king_y]*prop;
 		}
 		else {
-			white_score+=king_board_middle[white_king_x][white_king_y];
-			black_score+=king_board_middle[black_king_x][GameUtil.boardSize-1-black_king_y];
+			white_score+=king_board_middle[white_king_x][white_king_y]*prop;
+			black_score+=king_board_middle[black_king_x][GameUtil.boardSize-1-black_king_y]*prop;
 		}
 		
 		if(max == PieceColor.White) {
