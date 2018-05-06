@@ -26,16 +26,16 @@ public class Minimax {
 	public static final int bishop_score = 3;
 	public static final int pawn_score = 1;
 
-	public static final int king_score_better = 20000;
-	public static final int queen_score_better = 900;
-	public static final int rook_score_better = 500;
-	public static final int knight_score_better = 320;
-	public static final int bishop_score_better = 330;
-	public static final int pawn_score_better = 100;
+	public static final double king_score_better = 20000;
+	public static final double queen_score_better = 900;
+	public static final double rook_score_better = 500;
+	public static final double knight_score_better = 320;
+	public static final double bishop_score_better = 330;
+	public static final double pawn_score_better = 100;
 	
 	//for white pieces
 	//use mirrored for black pieces
-	public static final int[][] king_board_middle = new int[][] {{20,20,-10,-20,-30,-30,-30,-30},
+	public static final double[][] king_board_middle = new double[][] {{20,20,-10,-20,-30,-30,-30,-30},
 																 {30,20,-20,-30,-40,-40,-40,-40},
 																 {10,0,-20,-30,-40,-40,-40,-40},
 																 {0,0,-20,-40,-50,-50,-50,-50},
@@ -44,7 +44,7 @@ public class Minimax {
 																 {30,20,-20,-30,-40,-40,-40,-40},
 																 {20,20,-10,-20,-30,-30,-30,-30}};
 															
-	public static final int[][] king_board_end = new int[][] {{-50,-30,-30,-30,-30,-30,-30,-50},
+	public static final double[][] king_board_end = new double[][] {{-50,-30,-30,-30,-30,-30,-30,-50},
 															  {-30,-30,-10,-10,-10,-10,-20,-40},
 															  {-30,0,20,30,30,20,-10,-30},
 															  {-30,0,30,40,40,30,0,-20},
@@ -53,7 +53,7 @@ public class Minimax {
 															  {-30,-30,-10,-10,-10,-10,-20,-40},
 															  {-50,-30,-30,-30,-30,-30,-30,-50}};
 															
-	public static final int[][] queen_board = new int[][] {{-20,-10,-10,0,-5,-10,-10,-20},
+	public static final double[][] queen_board = new double[][] {{-20,-10,-10,0,-5,-10,-10,-20},
 														   {-10,0,5,0,0,0,0,-10},
 														   {-10,5,5,5,5,5,0,-10},
 														   {-5,0,5,5,5,5,0,-5},
@@ -62,7 +62,7 @@ public class Minimax {
 														   {-10,0,0,0,0,0,0,-10},
 														   {-20,-10,-10,-5,-5,-10,-10,-20}};
 														   
-	public static final int[][] rook_board = new int[][] {{0,-5,-5,-5,-5,-5,5,0},
+	public static final double[][] rook_board = new double[][] {{0,-5,-5,-5,-5,-5,5,0},
 														  {0,0,0,0,0,0,10,0},
 														  {0,0,0,0,0,0,10,0},
 														  {5,0,0,0,0,0,10,0},
@@ -71,7 +71,7 @@ public class Minimax {
 														  {0,0,0,0,0,0,10,0},
 														  {0,-5,-5,-5,-5,-5,5,0}};
 														  
-	public static final int[][] knight_board = new int[][] {{-50,-40,-30,-30,-30,-30,-40,-50},
+	public static final double[][] knight_board = new double[][] {{-50,-40,-30,-30,-30,-30,-40,-50},
 															{-40,-20,5,0,5,0,-20,-40},
 															{-30,0,10,15,15,10,0,-30},
 															{-30,5,15,20,20,15,0,-30},
@@ -80,7 +80,7 @@ public class Minimax {
 															{-40,-20,5,0,5,0,-20,-40},
 															{-50,-40,-30,-30,-30,-30,-40,-50}};
 															
-	public static final int[][] bishop_board = new int[][] {{-20,-10,-10,-10,-10,-10,-10,-20},
+	public static final double[][] bishop_board = new double[][] {{-20,-10,-10,-10,-10,-10,-10,-20},
 															{-10,5,10,0,5,0,0,-10},
 															{-10,0,10,10,5,5,0,-10},
 															{-10,0,10,10,10,10,0,-10},
@@ -89,7 +89,7 @@ public class Minimax {
 															{-10,5,10,0,5,0,0,-10},
 															{-20,-10,-10,-10,-10,-10,-10,-20}};
 															
-	public static final int[][] pawn_board = new int[][] {{0,5,5,0,5,10,50,0},
+	public static final double[][] pawn_board = new double[][] {{0,5,5,0,5,10,50,0},
 														  {0,10,-5,0,5,10,50,0},
 														  {0,10,-10,0,10,20,50,0},
 														  {0,-20,0,20,25,30,50,0},
@@ -123,7 +123,7 @@ public class Minimax {
 				color = game.getTurn().change();
 			}
 			
-			return better_heuristic(game, color, 0.7);
+			return better_heuristic(game, color, 0.2);
 		}
 		
 		
@@ -280,8 +280,8 @@ public class Minimax {
 	}
 	
 	private static int better_heuristic(Game game, PieceColor max, double prop) {
-		int white_score = 0;
-		int black_score = 0;
+		double white_score = 0;
+		double black_score = 0;
 		
 		boolean white_queen = false;
 		boolean black_queen = false;
@@ -397,10 +397,10 @@ public class Minimax {
 		}
 		
 		if(max == PieceColor.White) {
-			return white_score - black_score; 
+			return (int)(white_score - black_score); 
 		}
 		else {
-			return black_score - white_score;
+			return (int)(black_score - white_score);
 		}
 		
 	}
