@@ -131,14 +131,39 @@ public class Game {
 		
 		return false;
 	}
+	
+	public boolean gameEnded() {
+		if(this.state == GameState.ChoosingPiece) {
+			return false;
+		}
+
+		LinkedList<Move> queue = new LinkedList<>();
+
+
+		for(int x=0; x < GameUtil.boardSize; x++) {
+			for(int y=0; y < GameUtil.boardSize; y++) {
+				if(this.board[x][y] != null) {
+					if(this.board[x][y].getColor() == this.turn) {
+						this.board[x][y].calculateMoves(x, y, this, queue);
+						if(queue.size() > 0) {
+							return false;
+						}
+					}
+				}
+			}
+		}
+
+		return true;
+	}
 
 	public boolean playerInCheck(PieceColor color) {
 		int king_x = -1;
 		int king_y = -1;
 
 		search: {
-			for(int y = 0; y < GameUtil.boardSize; y++) {
-				for(int x = 0; x < GameUtil.boardSize; x++) {
+
+			for(int x = 0; x < GameUtil.boardSize; x++) {
+				for(int y = 0; y < GameUtil.boardSize; y++) {
 					if(this.board[x][y] != null) {
 						if(this.board[x][y].getColor() == color && this.board[x][y].getType() == PieceType.King) {
 							king_x = x;
@@ -149,14 +174,15 @@ public class Game {
 				}
 			}
 		}
-		
+
 		if(king_x == -1 || king_y == -1) {
 			System.out.println("There is no king on the board!");
 			return false;
 		}
-		
-		for(int y = 0; y < GameUtil.boardSize; y++) {
-			for(int x = 0; x < GameUtil.boardSize; x++) {
+
+
+		for(int x = 0; x < GameUtil.boardSize; x++) {
+			for(int y = 0; y < GameUtil.boardSize; y++) {
 				if(this.board[x][y] != null) {
 					if(this.board[x][y].getColor() == color.change()) {
 						if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this)) {
@@ -189,8 +215,8 @@ public class Game {
 
 		if(this.state == GameState.RegularMove) {
 
-			for(int y=0; y < GameUtil.boardSize; y++) {
-				for(int x=0; x < GameUtil.boardSize; x++) {
+			for(int x=0; x < GameUtil.boardSize; x++) {
+				for(int y=0; y < GameUtil.boardSize; y++) {
 					if(this.board[x][y] != null) {
 						if(this.board[x][y].getColor() == this.turn) {
 							this.board[x][y].calculateMoves(x, y, this, queue);
@@ -266,8 +292,9 @@ public class Game {
 	}
 
 	private void changeTurns() {
-		for(int y=0; y < GameUtil.boardSize; y++) {
-			for(int x=0; x < GameUtil.boardSize; x++) {
+
+		for(int x=0; x < GameUtil.boardSize; x++) {
+			for(int y=0; y < GameUtil.boardSize; y++) {
 				if(this.board[x][y] != null) {
 					if(this.board[x][y].getType() == PieceType.Pawn) {
 						if(this.board[x][y].getColor() == turn) {

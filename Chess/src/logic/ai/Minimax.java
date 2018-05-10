@@ -2,6 +2,8 @@ package logic.ai;
 
 import java.util.LinkedList;
 
+import org.omg.DynamicAny.DynStructOperations;
+
 import logic.game.Game;
 import logic.game.Move;
 import logic.game.Game.GameState;
@@ -108,10 +110,9 @@ public class Minimax {
 
 		//limit depth
 		if(depth == max_depth) {
-			if(game.playerInCheck(game.getTurn())) {
-				if(game.calculateMoves().size() == 0) {
-					return win_loss_score(turn);
-				}
+			
+			if(game.gameEnded()) {
+				return win_loss_score(turn);
 			}
 			
 			PieceColor color;
