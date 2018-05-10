@@ -15,8 +15,8 @@ public class Minimax {
 		Max, Min
 	}
 	
-	public static final int win = Integer.MAX_VALUE;
-	public static final int loss = Integer.MIN_VALUE;
+	public static final int win = Integer.MAX_VALUE-1;
+	public static final int loss = Integer.MIN_VALUE+1;
 	public static final int max_depth = 5;
 	
 	public static final int king_score = 10;
@@ -123,7 +123,7 @@ public class Minimax {
 				color = game.getTurn().change();
 			}
 			
-			return better_heuristic(game, color, 0.2);
+			return better_heuristic(game, color, 1);
 		}
 		
 		
@@ -153,11 +153,11 @@ public class Minimax {
 					result = minimax_alpha_beta(game_copy, Turn.Min, depth+1, alpha, beta);
 				}
 
-				if(result >= alpha) {
+				if(result > alpha) {
 					alpha = result;
 				}
 
-				if(result >= max_score) {
+				if(result > max_score) {
 					max_score = result;
 
 					//save move
@@ -178,11 +178,11 @@ public class Minimax {
 					result = minimax_alpha_beta(game_copy, Turn.Max, depth+1, alpha, beta);
 				}
 
-				if(result <= beta) {
+				if(result < beta) {
 					beta = result;
 				}
 
-				if(result <= min_score) {
+				if(result < min_score) {
 					min_score = result;
 				}
 			}
