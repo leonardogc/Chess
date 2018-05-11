@@ -137,15 +137,11 @@ public class Game {
 			return false;
 		}
 
-		LinkedList<Move> queue = new LinkedList<>();
-
-
 		for(int x=0; x < GameUtil.boardSize; x++) {
 			for(int y=0; y < GameUtil.boardSize; y++) {
 				if(this.board[x][y] != null) {
 					if(this.board[x][y].getColor() == this.turn) {
-						this.board[x][y].calculateMoves(x, y, this, queue);
-						if(queue.size() > 0) {
+						if(this.board[x][y].canMove(x, y, this)) {
 							return false;
 						}
 					}

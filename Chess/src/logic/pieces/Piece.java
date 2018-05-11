@@ -18,8 +18,11 @@ public abstract class Piece {
 	
 	public abstract boolean isMoveValid(int x, int y, int dest_x, int dest_y, Game game);
 	public abstract boolean move(int x, int y, int dest_x, int dest_y, Game game);
+	
 	public abstract void calculateMoves(int x, int y, Game game, LinkedList<Move> queue);
-	public abstract void testMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue);
+	public abstract boolean canMove(int x, int y, Game game);
+	
+	public abstract boolean testMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue);
 	
 	public abstract Piece makeCopy();
 	

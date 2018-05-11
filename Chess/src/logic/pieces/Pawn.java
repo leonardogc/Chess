@@ -222,7 +222,23 @@ public class Pawn extends Piece{
 	}
 	
 	@Override
-	public void testMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
+	public boolean canMove(int x, int y, Game game) {
+		if(testMove(x, y, x, y+1, game, null)||
+			testMove(x, y, x, y+2, game, null)||
+			testMove(x, y, x+1, y+1, game, null)||
+			testMove(x, y, x-1, y+1, game, null)||
+			testMove(x, y, x, y-1, game, null)||
+			testMove(x, y, x, y-2, game, null)||
+			testMove(x, y, x+1, y-1, game, null)||
+			testMove(x, y, x-1, y-1, game, null)){
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean testMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
+		boolean success = false;
 		if(isMoveValid(x, y, dest_x, dest_y, game)) {
 			Piece[][] board = game.getBoard();
 			
@@ -274,7 +290,10 @@ public class Pawn extends Piece{
 			move(x, y, dest_x, dest_y, game);
 			
 			if(!game.playerInCheck(game.getTurn())) {
-				queue.add(new Move(x, y, dest_x, dest_y));
+				if(queue != null) {
+					queue.add(new Move(x, y, dest_x, dest_y));
+				}
+				success = true;
 			}
 			
 			////
@@ -296,6 +315,8 @@ public class Pawn extends Piece{
 			
 			game.setState(state);
 		}
+		
+		return success;
 	}
 
 }

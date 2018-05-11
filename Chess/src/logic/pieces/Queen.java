@@ -59,7 +59,25 @@ public class Queen extends Piece{
 	}
 	
 	@Override
-	public void testMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
+	public boolean canMove(int x, int y, Game game) {
+		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
+			if(testMove(x, y, x+amount, y+amount, game, null)||
+				testMove(x, y, x-amount, y+amount, game, null)||
+				testMove(x, y, x+amount, y-amount, game, null)||
+				testMove(x, y, x-amount, y-amount, game, null)||
+				testMove(x, y, x+amount, y, game, null)||
+				testMove(x, y, x-amount, y, game, null)||
+				testMove(x, y, x, y+amount, game, null)||
+				testMove(x, y, x, y-amount, game, null)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean testMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
+		boolean success = false;
 		if(isMoveValid(x, y, dest_x, dest_y, game)) {
 			Piece[][] board = game.getBoard();
 			
@@ -69,11 +87,15 @@ public class Queen extends Piece{
 			move(x, y, dest_x, dest_y, game);
 			
 			if(!game.playerInCheck(game.getTurn())) {
-				queue.add(new Move(x, y, dest_x, dest_y));
+				if(queue != null) {
+					queue.add(new Move(x, y, dest_x, dest_y));
+				}
+				success = true;
 			}
 			
 			board[x][y] = beg;
 			board[dest_x][dest_y] = end;
 		}
+		return success;
 	}
 }

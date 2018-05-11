@@ -21,7 +21,7 @@ public class GameLoop extends Thread{
 	public void run() {
 		Scanner scanner = new Scanner(System.in);
 
-		while(gui.game.calculateMoves().size() > 0) {
+		while(!gui.game.gameEnded()) {
 			System.out.println("It's "+gui.game.getTurn()+"'s turn");
 			
 			if(gui.game.getTurn() == PieceColor.White) {
