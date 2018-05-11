@@ -224,13 +224,77 @@ public class Pawn extends Piece{
 	@Override
 	public void testMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
 		if(isMoveValid(x, y, dest_x, dest_y, game)) {
-			Game copy = game.makeCopy();
+			Piece[][] board = game.getBoard();
+			
+			Piece beg = board[x][y].makeCopy();
+			Piece end = board[dest_x][dest_y];
+			
+			GameState state = game.getState();
+			
+			Piece enPassantVictim = null;
+			
+			Piece enPassant_1 = null;
+			Piece enPassant_2 = null;
+			
+			int dx = dest_x - x;
+			int dy = dest_y - y;
+			
+			int amount;
+			boolean diagonal;
 
-			copy.getBoard()[x][y].move(x, y, dest_x, dest_y, copy);
+			if(dx == 0) {
+				amount = Math.abs(dy);
+				diagonal = false;
+			}
+			else {
+				amount = Math.abs(dx);
+				diagonal = true;
+			}
+			
 
-			if(!copy.playerInCheck(game.getTurn())) {
+			if(!diagonal) {
+				if(amount == 2) {
+					if(pawnAt(dest_x - 1, dest_y, board, board[x][y].getColor().change())) {
+						enPassant_1 = board[dest_x - 1][dest_y].makeCopy();
+					}
+
+					if(pawnAt(dest_x + 1, dest_y, board, board[x][y].getColor().change())) {
+						enPassant_2 = board[dest_x + 1][dest_y].makeCopy();
+					}
+				}
+			}
+			else {
+				if(board[dest_x][dest_y] == null) {
+					enPassantVictim = board[dest_x][y];
+				}
+			}
+			
+			////
+			
+			move(x, y, dest_x, dest_y, game);
+			
+			if(!game.playerInCheck(game.getTurn())) {
 				queue.add(new Move(x, y, dest_x, dest_y));
 			}
+			
+			////
+			
+			board[x][y] = beg;
+			board[dest_x][dest_y] = end;
+
+			if(enPassantVictim != null) {
+				board[dest_x][y] = enPassantVictim;
+			}
+
+			if(enPassant_1 != null) {
+				board[dest_x - 1][dest_y] = enPassant_1;
+			}
+
+			if(enPassant_2 != null) {
+				board[dest_x + 1][dest_y] = enPassant_2;
+			}
+			
+			game.setState(state);
 		}
 	}
 
