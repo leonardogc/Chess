@@ -210,28 +210,37 @@ public class Pawn extends Piece{
 
 	@Override
 	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queue) {
-		testMove(x, y, x, y+1, game, queue);
-		testMove(x, y, x, y+2, game, queue);
-		testMove(x, y, x+1, y+1, game, queue);
-		testMove(x, y, x-1, y+1, game, queue);
-		
-		testMove(x, y, x, y-1, game, queue);
-		testMove(x, y, x, y-2, game, queue);
-		testMove(x, y, x+1, y-1, game, queue);
-		testMove(x, y, x-1, y-1, game, queue);
+		if(game.getBoard()[x][y].getColor() == PieceColor.White) {
+			testMove(x, y, x, y+1, game, queue);
+			testMove(x, y, x, y+2, game, queue);
+			testMove(x, y, x+1, y+1, game, queue);
+			testMove(x, y, x-1, y+1, game, queue);
+		}
+		else {
+			testMove(x, y, x, y-1, game, queue);
+			testMove(x, y, x, y-2, game, queue);
+			testMove(x, y, x+1, y-1, game, queue);
+			testMove(x, y, x-1, y-1, game, queue);
+		}
 	}
 	
 	@Override
 	public boolean canMove(int x, int y, Game game) {
-		if(testMove(x, y, x, y+1, game, null)||
-			testMove(x, y, x, y+2, game, null)||
-			testMove(x, y, x+1, y+1, game, null)||
-			testMove(x, y, x-1, y+1, game, null)||
-			testMove(x, y, x, y-1, game, null)||
-			testMove(x, y, x, y-2, game, null)||
-			testMove(x, y, x+1, y-1, game, null)||
-			testMove(x, y, x-1, y-1, game, null)){
-			return true;
+		if(game.getBoard()[x][y].getColor() == PieceColor.White) {
+			if(testMove(x, y, x, y+1, game, null)||
+				testMove(x, y, x, y+2, game, null)||
+				testMove(x, y, x+1, y+1, game, null)||
+				testMove(x, y, x-1, y+1, game, null)) {
+				return true;
+			}
+		}
+		else {
+			if(testMove(x, y, x, y-1, game, null)||
+				testMove(x, y, x, y-2, game, null)||
+				testMove(x, y, x+1, y-1, game, null)||
+				testMove(x, y, x-1, y-1, game, null)) {
+				return true;
+			}
 		}
 		return false;
 	}
