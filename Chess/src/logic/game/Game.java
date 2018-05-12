@@ -233,6 +233,42 @@ public class Game {
 
 		return queue;
 	}
+	
+	public Move generateRandomMove(){
+		LinkedList<Move> queue = new LinkedList<>();
+
+		if(this.state == GameState.RegularMove) {
+			
+			LinkedList<int[]> pieces = new LinkedList<>();
+
+			for(int x=0; x < GameUtil.boardSize; x++) {
+				for(int y=0; y < GameUtil.boardSize; y++) {
+					if(this.board[x][y] != null) {
+						if(this.board[x][y].getColor() == this.turn) {
+							pieces.add(new int[] {x, y});
+						}
+					}
+				}
+			}
+			
+			Collections.shuffle(pieces);
+			
+			while(queue.size() == 0) {
+				int[] coords = pieces.poll();
+				this.board[coords[0]][coords[1]].calculateMoves(coords[0], coords[1], this, queue);
+			}
+		}
+		else if(this.state == GameState.ChoosingPiece) {
+			queue.add(new Move(PieceType.Rook));
+			queue.add(new Move(PieceType.Knight));
+			queue.add(new Move(PieceType.Queen));
+			queue.add(new Move(PieceType.Bishop));
+		}
+
+		Collections.shuffle(queue);
+
+		return queue.get(0);
+	}
 
 
 	public boolean applyMove(Move move) {
