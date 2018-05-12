@@ -2,7 +2,6 @@ package logic.ai;
 
 import java.util.LinkedList;
 
-import org.omg.DynamicAny.DynStructOperations;
 
 import logic.game.Game;
 import logic.game.Move;
