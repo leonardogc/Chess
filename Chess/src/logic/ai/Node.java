@@ -133,6 +133,26 @@ public class Node {
 		});
 	}
 	
+	public Node getBestChildByVisits() {
+		return Collections.max(children, new Comparator<Node>() {
+			@Override
+			public int compare(Node o1, Node o2) {
+				double s1 = o1.visits;
+				double s2 = o2.visits;
+				
+				if(s1 < s2) {
+					return -1;
+				}
+				else if(s1 == s2) {
+					return 0;
+				}
+				else {
+					return 1;
+				}
+			}
+		});
+	}
+	
 	public double calculateOCB1() {
 		if(visits == 0) {
 			return Double.POSITIVE_INFINITY;

@@ -49,7 +49,7 @@ public class MonteCarlo {
 		}*/
 		
 		System.out.println(root.visits);
-		return root.getBestChildByScore().move;
+		return root.getBestChildByVisits().move;
 	}
 	
 	private double rollout(Node node) {
