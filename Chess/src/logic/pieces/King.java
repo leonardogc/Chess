@@ -68,19 +68,27 @@ public class King extends Piece{
 				}
 				
 				int vx = dx/amount;
-				Game copy = game.makeCopy();
+				boolean success = true;
+				PieceColor color = game.getBoard()[x][y].getColor();
 				
 				for(int i = 0; i <= amount; i++) {
-					if(copy.playerInCheck(game.getBoard()[x][y].getColor())) {
-						return false;
+					if(game.playerInCheck(color)) {
+						success = false;
 					}
 					
 					if(i == amount) {
 						break;
 					}
 					
-					copy.getBoard()[x+(i+1)*vx][y] = copy.getBoard()[x+i*vx][y];
-					copy.getBoard()[x+i*vx][y] = null;
+					game.getBoard()[x+(i+1)*vx][y] = game.getBoard()[x+i*vx][y];
+					game.getBoard()[x+i*vx][y] = null;
+				}
+				
+				game.getBoard()[x][y] = game.getBoard()[x+amount*vx][y];
+				game.getBoard()[x+amount*vx][y] = null;
+				
+				if(!success) {
+					return false;
 				}
 			}
 		}
