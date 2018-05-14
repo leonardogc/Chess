@@ -31,8 +31,15 @@ public class GameLoop extends Thread{
 				total.start();
 				Minimax.minimax_alpha_beta(gui.game, Turn.Max, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
 				total.stop();
+				
+				/*if(total.time < 0.6) {
+					Minimax.max_depth++;
+				}
+				else if(total.time > 20 && Minimax.max_depth > 5){
+					Minimax.max_depth--;
+				}*/
 
-				System.out.println(total.time + " s");
+				System.out.println(total.time + " s" + " depth: " + Minimax.max_depth);
 			}
 			/*else if(gui.game.getTurn() == PieceColor.Black) {
 				MonteCarlo mt = new MonteCarlo(gui.game);
