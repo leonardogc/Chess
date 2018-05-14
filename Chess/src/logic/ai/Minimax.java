@@ -289,6 +289,9 @@ public class Minimax {
 		int white_minor_pieces = 0;
 		int black_minor_pieces = 0;
 		
+		int white_major_pieces = 0;
+		int black_major_pieces = 0;
+		
 		int black_king_x = -1;
 		int black_king_y = -1;
 		
@@ -315,10 +318,12 @@ public class Minimax {
 						if(game.getBoard()[x][y].getColor() == PieceColor.White) {
 							white_score+=rook_score_better;
 							white_score+=rook_board[x][y];
+							white_major_pieces++;
 						}
 						else {
 							black_score+=rook_score_better;
 							black_score+=rook_board[x][GameUtil.boardSize-1-y];
+							black_major_pieces++;
 						}
 						break;
 					case Queen:
@@ -326,11 +331,13 @@ public class Minimax {
 							white_score+=queen_score_better;
 							white_score+=queen_board[x][y];
 							white_queen = true;
+							white_major_pieces++;
 						}
 						else {
 							black_score+=queen_score_better;
 							black_score+=queen_board[x][GameUtil.boardSize-1-y];
 							black_queen = true;
+							black_major_pieces++;
 						}
 						break;
 					case Pawn:
@@ -377,13 +384,13 @@ public class Minimax {
 		if(!white_queen && !black_queen) {
 			endgame = true;
 		}
-		else if(!white_queen && (black_queen && black_minor_pieces <= 1)) {
+		else if(!white_queen && (black_queen && black_minor_pieces <= 1 && black_major_pieces == 1)) {
 			endgame = true;
 		}
-		else if(!black_queen && (white_queen && white_minor_pieces <= 1)) {
+		else if(!black_queen && (white_queen && white_minor_pieces <= 1 && white_major_pieces == 1)) {
 			endgame = true;
 		}
-		else if((black_queen && black_minor_pieces <= 1) && (white_queen && white_minor_pieces <= 1)) {
+		else if((black_queen && black_minor_pieces <= 1 && black_major_pieces == 1) && (white_queen && white_minor_pieces <= 1 && white_major_pieces == 1)) {
 			endgame = true;
 		}
 		
