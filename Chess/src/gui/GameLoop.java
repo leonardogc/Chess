@@ -32,10 +32,10 @@ public class GameLoop extends Thread{
 				Minimax.minimax_alpha_beta(gui.game, Turn.Max, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
 				total.stop();
 				
-				/*if(total.time < 0.6) {
+				/*if(total.time < 0.8) {
 					Minimax.max_depth++;
 				}
-				else if(total.time > 20 && Minimax.max_depth > 5){
+				else if(total.time > 25 && Minimax.max_depth > 5){
 					Minimax.max_depth--;
 				}*/
 
