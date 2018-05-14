@@ -56,7 +56,7 @@ public class MonteCarlo {
 		Game game_copy = node.currentGame.makeCopy();
 		int counter = 200;
 		
-		while(!game_copy.gameEnded() && counter > 0) {
+		while(!game_copy.noAvailableMoves() && counter > 0) {
 			game_copy.applyMove(game_copy.generateRandomMove());
 			counter--;
 		}

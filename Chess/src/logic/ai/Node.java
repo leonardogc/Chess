@@ -47,7 +47,7 @@ public class Node {
 	}
 	
 	public void expand() {
-		if(currentGame.gameEnded()) {
+		if(currentGame.noAvailableMoves()) {
 			return;
 		}
 		

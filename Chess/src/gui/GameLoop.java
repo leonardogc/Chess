@@ -22,7 +22,7 @@ public class GameLoop extends Thread{
 	public void run() {
 		Scanner scanner = new Scanner(System.in);
 
-		while(!gui.game.gameEnded()) {
+		while(!gui.game.noAvailableMoves() && !gui.game.tie()) {
 			System.out.println("It's "+gui.game.getTurn()+"'s turn");
 			
 			if(gui.game.getTurn() == PieceColor.White) {
@@ -88,7 +88,10 @@ public class GameLoop extends Thread{
 		
 		scanner.close();
 		
-		if(gui.game.playerInCheck(gui.game.getTurn())) {
+		if(gui.game.tie()) {
+			System.out.println("It's a Tie!");
+		}
+		else if(gui.game.playerInCheck(gui.game.getTurn())) {
 			System.out.println(gui.game.getTurn().change()+" wins!");
 		}
 		else {

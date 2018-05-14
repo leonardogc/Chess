@@ -23,17 +23,20 @@ public class Game {
 	private Piece[][] board;
 	private PieceColor turn;
 	private GameState state;
+	private LinkedList<Move> moves;
 	
 	public Game() {
 		this.turn = PieceColor.White;
 		this.state = GameState.RegularMove;
+		this.moves = new LinkedList<>();
 		initialize_board();
 	}
 	
-	public Game(Piece[][] board, PieceColor turn, GameState state) {
+	public Game(Piece[][] board, PieceColor turn, GameState state, LinkedList<Move> moves) {
 		this.board = board;
 		this.turn = turn;
 		this.state = state;
+		this.moves = moves;
 	}
 
 	private void initialize_board() {
@@ -132,7 +135,7 @@ public class Game {
 		return false;
 	}
 	
-	public boolean gameEnded() {
+	public boolean noAvailableMoves() {
 		if(this.state == GameState.ChoosingPiece) {
 			return false;
 		}
@@ -191,6 +194,20 @@ public class Game {
 
 		return false;
 	}
+	
+	public boolean tie() {
+		if(this.moves.size() < 10) {
+			return false;
+		}
+		
+		for(int i = 0; i+5 < this.moves.size(); i+=2) {
+			if(!this.moves.get(i).equals(this.moves.get(i+4)) || !this.moves.get(i+1).equals(this.moves.get(i+5))) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
 
 	public Game makeCopy() {
 		Piece[][] board = new Piece[GameUtil.boardSize][GameUtil.boardSize];
@@ -203,7 +220,7 @@ public class Game {
 			}
 		}
 		
-		return new Game(board, this.turn, this.state);
+		return new Game(board, this.turn, this.state, new LinkedList<>(this.moves));
 	}
 		
 	public LinkedList<Move> calculateMoves(){
@@ -319,7 +336,13 @@ public class Game {
 				changeTurns();
 			}
 		}
-
+		
+		this.moves.add(move);
+		
+		while(this.moves.size() > 10) {
+			this.moves.removeFirst();
+		}
+		
 		return true;
 	}
 

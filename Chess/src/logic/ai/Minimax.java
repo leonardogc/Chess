@@ -106,10 +106,14 @@ public class Minimax {
 		int result=0;
 
 		Move best_move=null;
+		
+		if(game.tie()) {
+			return 0;
+		}
 
 		//limit depth
 		if(depth == max_depth) {
-			if(game.gameEnded()) {
+			if(game.noAvailableMoves()) {
 				if(game.playerInCheck(game.getTurn())) {
 					return win_loss_score(turn);
 				}
