@@ -109,9 +109,14 @@ public class Minimax {
 
 		//limit depth
 		if(depth == max_depth) {
-			
 			if(game.gameEnded()) {
-				return win_loss_score(turn);
+				if(game.playerInCheck(game.getTurn())) {
+					return win_loss_score(turn);
+				}
+				else {
+					//stalemate
+					return 0;
+				}
 			}
 			
 			PieceColor color;
@@ -131,7 +136,13 @@ public class Minimax {
 
 		//check if game ended
 		if(moves.size() == 0) {
-			return win_loss_score(turn);
+			if(game.playerInCheck(game.getTurn())) {
+				return win_loss_score(turn);
+			}
+			else {
+				//stalemate
+				return 0;
+			}
 		}
 
 		//iterate through possible plays calling minimax each time

@@ -85,7 +85,14 @@ public class GameLoop extends Thread{
 
 			gui.repaint();
 		}
+		
 		scanner.close();
-		System.out.println(gui.game.getTurn().change()+" wins!");
+		
+		if(gui.game.playerInCheck(gui.game.getTurn())) {
+			System.out.println(gui.game.getTurn().change()+" wins!");
+		}
+		else {
+			System.out.println("It's a Tie!");
+		}
 	}
 }
