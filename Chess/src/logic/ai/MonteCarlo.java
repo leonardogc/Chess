@@ -54,35 +54,37 @@ public class MonteCarlo {
 	
 	private double rollout(Node node) {
 		Game game_copy = node.currentGame.makeCopy();
-		int counter = 200;
-		
-		while(!game_copy.noAvailableMoves() && counter > 0) {
+
+		while(!game_copy.noAvailableMoves() && !game_copy.tie()) {
 			game_copy.applyMove(game_copy.generateRandomMove());
-			counter--;
 		}
 		
-		if(counter == 0) {
+		if(game_copy.tie()) {
 			return 0;
 		}
-		else {
-			PieceColor max_color;
-			
-			if(node.turn == Turn.Max) {
-				max_color = node.currentGame.getTurn();
-			}
-			else {
-				max_color = node.currentGame.getTurn().change();
-			}
-			
-			if(game_copy.getTurn() == max_color) {
-				//max lost
-				return -10;
-			}
-			else {
-				//max won
-				return 10;
-			}
+		
+		if(!game_copy.playerInCheck(game_copy.getTurn())) {
+			return 0;
 		}
+		
+		PieceColor max_color;
+
+		if(node.turn == Turn.Max) {
+			max_color = node.currentGame.getTurn();
+		}
+		else {
+			max_color = node.currentGame.getTurn().change();
+		}
+
+		if(game_copy.getTurn() == max_color) {
+			//max lost
+			return -10;
+		}
+		else {
+			//max won
+			return 10;
+		}
+
 	}
 
 	/*private double rollout(Node node) {
