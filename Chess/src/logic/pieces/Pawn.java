@@ -163,6 +163,9 @@ public class Pawn extends Piece{
 			game.setState(GameState.ChoosingPiece);
 		}
 		
+		
+		game.setInactivity(0);
+		
 		return true;
 	}
 	
@@ -255,6 +258,7 @@ public class Pawn extends Piece{
 			Piece end = board[dest_x][dest_y];
 			
 			GameState state = game.getState();
+			int inac = game.getInactivity();
 			
 			Piece enPassantVictim = null;
 			
@@ -323,6 +327,7 @@ public class Pawn extends Piece{
 			}
 			
 			game.setState(state);
+			game.setInactivity(inac);
 		}
 		
 		return success;

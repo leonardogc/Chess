@@ -47,6 +47,13 @@ public class Knight extends Piece{
 	@Override
 	public boolean move(int x, int y, int dest_x, int dest_y, Game game) {
 		Piece[][] board = game.getBoard();
+		
+		if(board[dest_x][dest_y] == null) {
+			game.incInactivity();
+		}
+		else {
+			game.setInactivity(0);
+		}
 
 		board[dest_x][dest_y] = board[x][y];
 
@@ -95,6 +102,7 @@ public class Knight extends Piece{
 			
 			Piece beg = board[x][y];
 			Piece end = board[dest_x][dest_y];
+			int inac = game.getInactivity();
 			
 			move(x, y, dest_x, dest_y, game);
 			
@@ -107,6 +115,7 @@ public class Knight extends Piece{
 			
 			board[x][y] = beg;
 			board[dest_x][dest_y] = end;
+			game.setInactivity(inac);
 		}
 		
 		return success;

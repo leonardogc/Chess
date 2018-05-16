@@ -24,19 +24,22 @@ public class Game {
 	private PieceColor turn;
 	private GameState state;
 	private LinkedList<Move> moves;
+	private int inactivity;
 	
 	public Game() {
 		this.turn = PieceColor.White;
 		this.state = GameState.RegularMove;
 		this.moves = new LinkedList<>();
+		this.inactivity = 0;
 		initialize_board();
 	}
 	
-	public Game(Piece[][] board, PieceColor turn, GameState state, LinkedList<Move> moves) {
+	public Game(Piece[][] board, PieceColor turn, GameState state, LinkedList<Move> moves, int inactivity) {
 		this.board = board;
 		this.turn = turn;
 		this.state = state;
 		this.moves = moves;
+		this.inactivity = inactivity;
 	}
 
 	private void initialize_board() {
@@ -104,8 +107,20 @@ public class Game {
 		return this.state;
 	}
 	
+	public int getInactivity() {
+		return this.inactivity;
+	}
+	
 	public void setState(GameState state) {
 		this.state = state;
+	}
+	
+	public void setInactivity(int inactivity) {
+		this.inactivity = inactivity;
+	}
+	
+	public void incInactivity() {
+		this.inactivity++;
 	}
 	
 	public boolean move(Move move) {
@@ -196,6 +211,10 @@ public class Game {
 	}
 	
 	public boolean tie() {
+		if(this.inactivity >= 150) {
+			return true;
+		}
+		
 		if(this.moves.size() < 10) {
 			return false;
 		}
@@ -220,7 +239,7 @@ public class Game {
 			}
 		}
 		
-		return new Game(board, this.turn, this.state, new LinkedList<>(this.moves));
+		return new Game(board, this.turn, this.state, new LinkedList<>(this.moves), this.inactivity);
 	}
 		
 	public LinkedList<Move> calculateMoves(){

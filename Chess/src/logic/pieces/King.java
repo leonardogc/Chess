@@ -130,6 +130,13 @@ public class King extends Piece{
 		}
 		
 		Piece[][] board = game.getBoard();
+		
+		if(board[dest_x][dest_y] == null) {
+			game.incInactivity();
+		}
+		else {
+			game.setInactivity(0);
+		}
 
 		board[dest_x][dest_y] = board[x][y];
 
@@ -222,7 +229,8 @@ public class King extends Piece{
 			
 			Piece beg = board[x][y].makeCopy();
 			Piece end = board[dest_x][dest_y];
-			////
+			int inac = game.getInactivity();
+			
 			Piece rook = null;
 			int rook_x=-1;
 			int rook_y=-1;
@@ -253,6 +261,7 @@ public class King extends Piece{
 					}
 				}
 			}
+			
 			////
 			move(x, y, dest_x, dest_y, game);
 			
@@ -262,6 +271,7 @@ public class King extends Piece{
 				}
 				success = true;
 			}
+			////
 			
 			board[x][y] = beg;
 			board[dest_x][dest_y] = end;
@@ -270,6 +280,8 @@ public class King extends Piece{
 				board[rook_dest_x][rook_dest_y] = null;
 				board[rook_x][rook_y] = rook;
 			}
+			
+			game.setInactivity(inac);
 		}
 		return success;
 	}
