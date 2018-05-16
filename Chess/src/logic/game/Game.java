@@ -211,11 +211,11 @@ public class Game {
 	}
 	
 	public boolean tie() {
-		if(this.inactivity >= 150) {
+		if(this.inactivity >= GameUtil.inacToTie) {
 			return true;
 		}
 		
-		if(this.moves.size() < 10) {
+		if(this.moves.size() < GameUtil.repToTie) {
 			return false;
 		}
 		
@@ -358,7 +358,7 @@ public class Game {
 		
 		this.moves.add(move);
 		
-		while(this.moves.size() > 10) {
+		while(this.moves.size() > GameUtil.repToTie) {
 			this.moves.removeFirst();
 		}
 		
