@@ -16,6 +16,10 @@ public class StopWatch {
 		this.time+=((double)(System.nanoTime()-this.start))/1000000000;
 	}
 	
+	public double lap() {
+		return ((double)(System.nanoTime()-this.start))/1000000000;
+	}
+	
 	public void restart() {
 		this.time = 0;
 	}
