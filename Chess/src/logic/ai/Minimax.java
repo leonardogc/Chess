@@ -101,12 +101,6 @@ public class Minimax {
 
 
 	public static int minimax_alpha_beta(Game game, Turn turn, int depth, int alpha, int beta) {
-		int max_score=Integer.MIN_VALUE;
-		int min_score=Integer.MAX_VALUE;
-		int result=0;
-
-		Move best_move=null;
-		
 		if(game.tie()) {
 			return 0;
 		}
@@ -135,6 +129,11 @@ public class Minimax {
 			return better_heuristic(game, color);
 		}
 		
+		int max_score=Integer.MIN_VALUE;
+		int min_score=Integer.MAX_VALUE;
+		int result=0;
+
+		Move best_move=null;
 		
 		LinkedList<Move> moves = game.calculateMoves();
 
