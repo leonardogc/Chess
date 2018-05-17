@@ -28,7 +28,7 @@ public class GameLoop extends Thread{
 			if(gui.game.getTurn() == PieceColor.White) {
 				StopWatch total = new StopWatch();
 				
-				System.out.println("Depth: " + (Minimax.depth != Minimax.var_depth ? Minimax.var_depth : Minimax.depth));
+				System.out.println("Depth: " + Minimax.var_depth);
 
 				total.start();
 				Minimax.minimax_alpha_beta(gui.game, Turn.Max, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, null);
