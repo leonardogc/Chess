@@ -31,7 +31,7 @@ public class GameLoop extends Thread{
 				System.out.println("Depth: " + (Minimax.depth != Minimax.var_depth ? Minimax.var_depth : Minimax.depth));
 
 				total.start();
-				Minimax.minimax_alpha_beta(gui.game, Turn.Max, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
+				Minimax.minimax_alpha_beta(gui.game, Turn.Max, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, null);
 				total.stop();
 
 				System.out.println(total.time + " s");

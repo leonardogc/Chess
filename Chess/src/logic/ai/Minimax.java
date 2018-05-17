@@ -22,7 +22,8 @@ public class Minimax {
 	public static int var_depth = depth;
 	
 	public static final double max_time = 20;
-	public static final double inc_at = 0.8;
+	public static final double inc_at = -1; //0.8;
+	
 	
 
 	public static final double king_score = 20000;
@@ -97,127 +98,6 @@ public class Minimax {
 														  {0,10,-5,0,5,10,50,60},
 														  {0,5,5,0,5,10,50,60}};
 
-
-	public static int minimax_alpha_beta(Game game, Turn turn, int curr_depth, int alpha, int beta) {
-		if(game.tie()) {
-			return 0;
-		}
-
-		//limit depth
-		if(curr_depth >= depth) {
-			if(game.noAvailableMoves()) {
-				if(game.playerInCheck(game.getTurn())) {
-					return win_loss_score(turn, curr_depth);
-				}
-				else {
-					//stalemate
-					return 0;
-				}
-			}
-			
-			PieceColor color;
-
-			if(turn == Turn.Max) {
-				color = game.getTurn();
-			}
-			else{
-				color = game.getTurn().change();
-			}
-			
-			return better_heuristic(game, color);
-		}
-		
-		int max_score=Integer.MIN_VALUE;
-		int min_score=Integer.MAX_VALUE;
-		int result=0;
-
-		Move best_move=null;
-		
-		LinkedList<Move> moves = game.calculateMoves();
-
-		//check if game ended
-		if(moves.size() == 0) {
-			if(game.playerInCheck(game.getTurn())) {
-				return win_loss_score(turn, curr_depth);
-			}
-			else {
-				//stalemate
-				return 0;
-			}
-		}
-
-		//iterate through possible plays calling minimax each time
-		while(moves.size() > 0) {
-			/*if(depth == 0) {
-				System.out.println("Size: " + moves.size());
-			}*/
-			Move move = moves.poll();
-			Game game_copy = game.makeCopy();
-
-			game_copy.applyMove(move);
-			
-			if(turn == Turn.Max) {
-				if(game_copy.getState() == GameState.ChoosingPiece) {
-					//max plays again
-					result = minimax_alpha_beta(game_copy, Turn.Max, curr_depth+1, alpha, beta);
-				}
-				else {
-					result = minimax_alpha_beta(game_copy, Turn.Min, curr_depth+1, alpha, beta);
-				}
-
-				if(result > alpha) {
-					alpha = result;
-				}
-
-				if(result > max_score) {
-					max_score = result;
-
-					//save move
-					if(curr_depth==0) {
-						best_move = move;
-					}
-				}
-			}
-			else if(turn == Turn.Min){
-				if(game_copy.getState() == GameState.ChoosingPiece) {
-					//min plays again
-					result = minimax_alpha_beta(game_copy, Turn.Min, curr_depth+1, alpha, beta);
-				}
-				else {
-					result = minimax_alpha_beta(game_copy, Turn.Max, curr_depth+1, alpha, beta);
-				}
-
-				if(result < beta) {
-					beta = result;
-				}
-
-				if(result < min_score) {
-					min_score = result;
-				}
-			}
-
-			if(beta <= alpha) {
-				break;
-			}
-		}
-
-
-		if(curr_depth == 0) {
-			if(best_move != null) {
-				game.applyMove(best_move);
-				best_move.print();
-				return 0;
-			}
-		}
-		
-		if(turn == Turn.Max) {
-			return max_score;
-		}
-		else {
-			return min_score;
-		}
-	}
-	
 	
 	public static int minimax_alpha_beta(Game game, Turn turn, int curr_depth, int alpha, int beta, StopWatch t) {
 		if(curr_depth == 0) {
@@ -225,7 +105,7 @@ public class Minimax {
 			t.start();
 		}
 		else {
-			if(t.lap() > max_time && var_depth > depth) {
+			if(var_depth > depth && t.lap() > max_time) {
 				var_depth = depth;
 			}
 		}
@@ -279,7 +159,7 @@ public class Minimax {
 
 		//iterate through possible plays calling minimax each time
 		while(moves.size() > 0) {
-			/*if(depth == 0) {
+			/*if(curr_depth == 0) {
 				System.out.println("Size: " + moves.size());
 			}*/
 			Move move = moves.poll();
@@ -342,6 +222,10 @@ public class Minimax {
 				game.applyMove(best_move);
 				best_move.print();
 				return 0;
+			}
+			else {
+				System.out.println("Something went very wrong on Minimax algorithm");
+				return -1;
 			}
 		}
 		
