@@ -1,8 +1,5 @@
 package logic.ai;
 
-import java.util.LinkedList;
-import java.util.Random;
-
 import logic.ai.Minimax.Turn;
 import logic.game.Game;
 import logic.game.Move;
