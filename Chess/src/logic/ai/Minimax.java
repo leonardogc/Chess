@@ -221,6 +221,7 @@ public class Minimax {
 				
 				game.applyMove(best_move);
 				best_move.print();
+				System.out.println("Score: " + max_score);
 				return 0;
 			}
 			else {

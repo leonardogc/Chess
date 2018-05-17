@@ -77,7 +77,8 @@ public class GameLoop extends Thread{
 				}
 
 			}
-
+			
+			System.out.println("");
 			gui.repaint();
 		}
 		
