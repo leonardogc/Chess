@@ -107,7 +107,7 @@ public class Minimax {
 		if(curr_depth >= depth) {
 			if(game.noAvailableMoves()) {
 				if(game.playerInCheck(game.getTurn())) {
-					return win_loss_score(turn);
+					return win_loss_score(turn, curr_depth);
 				}
 				else {
 					//stalemate
@@ -138,7 +138,7 @@ public class Minimax {
 		//check if game ended
 		if(moves.size() == 0) {
 			if(game.playerInCheck(game.getTurn())) {
-				return win_loss_score(turn);
+				return win_loss_score(turn, curr_depth);
 			}
 			else {
 				//stalemate
@@ -175,9 +175,6 @@ public class Minimax {
 					//save move
 					if(curr_depth==0) {
 						best_move = move;
-						if(max_score == win) {
-							break;
-						}
 					}
 				}
 			}
@@ -241,7 +238,7 @@ public class Minimax {
 		if(curr_depth >= var_depth) {
 			if(game.noAvailableMoves()) {
 				if(game.playerInCheck(game.getTurn())) {
-					return win_loss_score(turn);
+					return win_loss_score(turn, curr_depth);
 				}
 				else {
 					//stalemate
@@ -272,7 +269,7 @@ public class Minimax {
 		//check if game ended
 		if(moves.size() == 0) {
 			if(game.playerInCheck(game.getTurn())) {
-				return win_loss_score(turn);
+				return win_loss_score(turn, curr_depth);
 			}
 			else {
 				//stalemate
@@ -309,9 +306,6 @@ public class Minimax {
 					//save move
 					if(curr_depth==0) {
 						best_move = move;
-						if(max_score == win) {
-							break;
-						}
 					}
 				}
 			}
@@ -562,12 +556,12 @@ public class Minimax {
 		
 	}
 	
-	private static int win_loss_score(Turn turn) {
+	private static int win_loss_score(Turn turn, int node) {
 		if(turn == Turn.Max) {
-			return loss;
+			return loss+node;
 		}
 		else {
-			return win;
+			return win-node;
 		}
 	}
 }
