@@ -20,6 +20,7 @@ import logic.util.GameUtil.PieceColor;
 public class GraphicsAndListeners extends JPanel implements MouseListener{
 	
 	public Game game;
+	public Game copy;
 	private GameLoop thread;
 	
 	private final int square_size=75;
@@ -81,6 +82,8 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 		this.move_piece = false;
 		
 		this.game = new Game();
+		this.copy = this.game.makeCopy();
+		
 		this.thread = new GameLoop(this);
 		this.thread.start();
 	}
@@ -88,7 +91,6 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		Game copy = this.game.makeCopy();
 		drawBoard(g);
 		drawPieces(g, copy);
 	}

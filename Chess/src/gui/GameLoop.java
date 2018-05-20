@@ -79,6 +79,8 @@ public class GameLoop extends Thread{
 			}
 			
 			System.out.println("");
+			
+			gui.copy = gui.game.makeCopy();
 			gui.repaint();
 		}
 		
