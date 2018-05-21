@@ -45,11 +45,15 @@ public class GameLoop extends Thread{
 				
 				if(gui.game.getState() == GameState.RegularMove) {
 					gui.move_piece = true;
+					gui.sel_square = false;
+					
 					Move move = null;
 					while(move == null) {
 						move = gui.queue.poll();
 					}
+					
 					gui.move_piece = false;
+					gui.sel_square = false;
 
 					gui.game.move(move);
 				}

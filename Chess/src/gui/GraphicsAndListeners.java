@@ -32,7 +32,7 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 	private int sel_y;
 	private int x;
 	private int y;
-	private boolean sel_square;
+	public boolean sel_square;
 	public boolean move_piece;
 	
 	private BufferedImage rook_b;
@@ -109,7 +109,7 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 			}
 		}
 		
-		if(sel_square) {
+		if(sel_square && move_piece) {
 			g.setColor(Color.GREEN);
 			g.fillRect(dx+sel_x*square_size, dy+sel_y*square_size, square_size, square_size);
 		}
@@ -229,6 +229,8 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 				int y2 = (GameUtil.boardSize - 1) - (e.getY() - dy)/square_size;
 				
 				sel_square = false;
+				repaint();
+				
 				if(perspective == PieceColor.White) {
 					queue.add(new Move(x, y, x2, y2));
 				}
@@ -236,9 +238,6 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 					queue.add(new Move((GameUtil.boardSize-1)-x, (GameUtil.boardSize-1)-y, (GameUtil.boardSize-1)-x2, (GameUtil.boardSize-1)-y2));
 				}
 			}
-		}
-		else {
-			sel_square = false;
 		}
 	}
 
