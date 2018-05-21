@@ -1,8 +1,10 @@
 package logic.game;
 
+import java.io.Serializable;
+
 import logic.util.GameUtil.PieceType;
 
-public class Move {
+public class Move implements Serializable{
 	public final int x;
 	public final int y;
 	public final int dest_x;

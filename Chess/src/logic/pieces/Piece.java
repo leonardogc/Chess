@@ -1,5 +1,6 @@
 package logic.pieces;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 import logic.game.Game;
@@ -7,7 +8,7 @@ import logic.game.Move;
 import logic.util.GameUtil.PieceColor;
 import logic.util.GameUtil.PieceType;
 
-public abstract class Piece {
+public abstract class Piece implements Serializable{
 	protected PieceType type;
 	protected PieceColor color;
 	

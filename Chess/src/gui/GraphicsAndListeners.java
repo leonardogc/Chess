@@ -2,11 +2,18 @@ package gui;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.imageio.ImageIO;
@@ -17,7 +24,7 @@ import logic.game.Move;
 import logic.util.GameUtil;
 import logic.util.GameUtil.PieceColor;
 
-public class GraphicsAndListeners extends JPanel implements MouseListener{
+public class GraphicsAndListeners extends JPanel implements MouseListener, KeyListener{
 	
 	public Game game;
 	public Game copy;
@@ -54,6 +61,7 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 	
 	public GraphicsAndListeners() {
 		addMouseListener(this);
+		addKeyListener(this);
 		
 		try {
 			this.rook_b = ImageIO.read(new File("resources/rook_b.png"));
@@ -197,6 +205,36 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 		}
 	}
 
+	private void exportGame() {
+		try {
+			FileOutputStream fileOut = new FileOutputStream("game.ser");
+			ObjectOutputStream out = new ObjectOutputStream(fileOut);
+			out.writeObject(this.game);
+			out.close();
+			fileOut.close();
+		} 
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private Game loadGame(String path) {
+		Game game = null;
+		
+		try {
+			FileInputStream fileIn = new FileInputStream(path);
+			ObjectInputStream in = new ObjectInputStream(fileIn);
+			game = (Game)in.readObject();
+			in.close();
+			fileIn.close();
+		} 
+		catch (IOException | ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return game;
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -255,6 +293,24 @@ public class GraphicsAndListeners extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -1,5 +1,6 @@
 package logic.game;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedList;
 
@@ -14,7 +15,7 @@ import logic.util.GameUtil;
 import logic.util.GameUtil.PieceColor;
 import logic.util.GameUtil.PieceType;
 
-public class Game {
+public class Game implements Serializable{
 	
 	public enum GameState {
 		RegularMove, ChoosingPiece;
