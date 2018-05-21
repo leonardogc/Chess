@@ -9,7 +9,6 @@ import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -24,7 +23,7 @@ import logic.game.Move;
 import logic.util.GameUtil;
 import logic.util.GameUtil.PieceColor;
 
-public class GraphicsAndListeners extends JPanel implements MouseListener, KeyListener{
+public class GraphicsAndListeners extends JPanel implements MouseListener, KeyListener {
 	
 	public Game game;
 	public Game copy;
@@ -205,7 +204,7 @@ public class GraphicsAndListeners extends JPanel implements MouseListener, KeyLi
 		}
 	}
 
-	private void exportGame() {
+	private void saveGame() {
 		try {
 			FileOutputStream fileOut = new FileOutputStream("game.ser");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -243,7 +242,8 @@ public class GraphicsAndListeners extends JPanel implements MouseListener, KeyLi
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-	
+		this.requestFocus();
+		
 		if(move_piece) {
 			if(e.getX() > dx + GameUtil.boardSize * square_size  || e.getX() < dx) {
 				return;
@@ -300,13 +300,15 @@ public class GraphicsAndListeners extends JPanel implements MouseListener, KeyLi
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
+		if(e.getKeyCode() == KeyEvent.VK_S) {
+			saveGame();
+			System.out.println("\nSaved Game!\n");
+		}
 	}
 
 	@Override
