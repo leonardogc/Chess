@@ -124,6 +124,10 @@ public class Game implements Serializable{
 		this.inactivity++;
 	}
 	
+	public void decInactivity() {
+		this.inactivity--;
+	}
+	
 	public boolean move(Move move) {
 		LinkedList<Move> moves = calculateMoves();
 		

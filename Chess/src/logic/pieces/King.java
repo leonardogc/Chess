@@ -126,6 +126,8 @@ public class King extends Piece{
 				else {
 					game.getBoard()[0][dest_y].move(0, dest_y, dest_x+1, dest_y, game);
 				}
+				
+				game.decInactivity();
 			}
 		}
 		
