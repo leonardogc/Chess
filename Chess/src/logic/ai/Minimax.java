@@ -168,7 +168,7 @@ public class Minimax {
 			game_copy.applyMove(move);
 			
 			if(turn == Turn.Max) {
-				if(game_copy.getState() == GameState.ChoosingPiece) {
+				if(game_copy.getTurn() == game.getTurn()) {
 					//max plays again
 					result = minimax_alpha_beta(game_copy, Turn.Max, curr_depth+1, alpha, beta, t);
 				}
@@ -190,7 +190,7 @@ public class Minimax {
 				}
 			}
 			else if(turn == Turn.Min){
-				if(game_copy.getState() == GameState.ChoosingPiece) {
+				if(game_copy.getTurn() == game.getTurn()) {
 					//min plays again
 					result = minimax_alpha_beta(game_copy, Turn.Min, curr_depth+1, alpha, beta, t);
 				}

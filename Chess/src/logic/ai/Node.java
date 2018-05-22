@@ -65,7 +65,7 @@ public class Node {
 		
 		this.currentGame.applyMove(move);
 		
-		if(this.currentGame.getState() == GameState.ChoosingPiece) {
+		if(this.currentGame.getTurn() == parent.currentGame.getTurn()) {
 			this.turn = this.parent.turn;
 		}
 		else {
