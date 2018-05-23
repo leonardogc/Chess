@@ -21,7 +21,7 @@ public class GameUtil {
 	}
 	
 	public static final int boardSize = 8;
-	public static final int repToTie = 5*2;
+	public static final int repToTie = 5;
 	public static final int inacToTie = 75*2;
 	
 	public static boolean isPathValid(Piece[][] board, int x, int y, int dest_x, int dest_y) {

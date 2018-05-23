@@ -22,7 +22,7 @@ public class Minimax {
 	public static int var_depth = depth;
 	
 	public static final double max_time = 20;
-	public static final double inc_at = -1; //0.8;
+	public static final double inc_at = 0.8; //-1;
 	
 	
 

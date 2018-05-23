@@ -2,6 +2,7 @@ package logic.game;
 
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.LinkedList;
 
 import logic.pieces.Bishop;
@@ -24,23 +25,26 @@ public class Game implements Serializable{
 	private Piece[][] board;
 	private PieceColor turn;
 	private GameState state;
-	private LinkedList<Move> moves;
+	private Hashtable<String, Integer> positions;
 	private int inactivity;
+	private boolean tie;
 	
 	public Game() {
 		this.turn = PieceColor.White;
 		this.state = GameState.RegularMove;
-		this.moves = new LinkedList<>();
+		this.positions = new Hashtable<>();
 		this.inactivity = 0;
+		this.tie = false;
 		initialize_board();
 	}
 	
-	public Game(Piece[][] board, PieceColor turn, GameState state, LinkedList<Move> moves, int inactivity) {
+	public Game(Piece[][] board, PieceColor turn, GameState state, Hashtable<String, Integer> positions, int inactivity, boolean tie) {
 		this.board = board;
 		this.turn = turn;
 		this.state = state;
-		this.moves = moves;
+		this.positions = positions;
 		this.inactivity = inactivity;
+		this.tie = tie;
 	}
 
 	private void initialize_board() {
@@ -216,21 +220,7 @@ public class Game implements Serializable{
 	}
 	
 	public boolean tie() {
-		if(this.inactivity >= GameUtil.inacToTie) {
-			return true;
-		}
-		
-		if(this.moves.size() < GameUtil.repToTie) {
-			return false;
-		}
-		
-		for(int i = 0; i+5 < this.moves.size(); i+=2) {
-			if(!this.moves.get(i).equals(this.moves.get(i+4)) || !this.moves.get(i+1).equals(this.moves.get(i+5))) {
-				return false;
-			}
-		}
-		
-		return true;
+		return this.tie;
 	}
 
 	public Game makeCopy() {
@@ -244,7 +234,7 @@ public class Game implements Serializable{
 			}
 		}
 		
-		return new Game(board, this.turn, this.state, new LinkedList<>(this.moves), this.inactivity);
+		return new Game(board, this.turn, this.state, new Hashtable<>(this.positions), this.inactivity, this.tie);
 	}
 		
 	public LinkedList<Move> calculateMoves(){
@@ -351,26 +341,22 @@ public class Game implements Serializable{
 			}
 
 			this.state = GameState.RegularMove;
-			changeTurns();
+			changeTurnsAndUpdateTie();
 		}
 		else {
 			this.board[move.x][move.y].move(move.x, move.y, move.dest_x, move.dest_y, this);
 
 			if(this.state != GameState.ChoosingPiece) {
-				changeTurns();
+				changeTurnsAndUpdateTie();
 			}
-		}
-		
-		this.moves.add(move);
-		
-		while(this.moves.size() > GameUtil.repToTie) {
-			this.moves.removeFirst();
 		}
 		
 		return true;
 	}
 
-	private void changeTurns() {
+	private void changeTurnsAndUpdateTie() {
+		
+		StringBuilder sb = new StringBuilder(170);
 
 		for(int x=0; x < GameUtil.boardSize; x++) {
 			for(int y=0; y < GameUtil.boardSize; y++) {
@@ -383,11 +369,94 @@ public class Game implements Serializable{
 							((Pawn)this.board[x][y]).setEnPassantVictim(false);
 						}
 					}
+					
+					if(this.board[x][y].getColor() == PieceColor.White) {
+						sb.append("w");
+					}
+					else {
+						sb.append("b");
+					}
+					
+					
+					switch(this.board[x][y].getType()) {
+					case King:
+						sb.append("k");
+						if(this.board[x][y].testMove(x, y, x-2, y, this, null)) {
+							sb.append("1");
+						}
+						else {
+							sb.append("0");
+						}
+
+						if(this.board[x][y].testMove(x, y, x+2, y, this, null)) {
+							sb.append("1");
+						}
+						else {
+							sb.append("0");
+						}
+						break;
+					case Rook:
+						sb.append("r");
+						break;
+					case Queen:
+						sb.append("q");
+						break;
+					case Pawn:
+						sb.append("p");
+						if(((Pawn)this.board[x][y]).getEnPassant()) {
+							sb.append("1");
+						}
+						else {
+							sb.append("0");
+						}
+						
+						if(((Pawn)this.board[x][y]).getEnPassantVictim()) {
+							sb.append("1");
+						}
+						else {
+							sb.append("0");
+						}
+						break;
+					case Knight:
+						sb.append("n");
+						break;
+					case Bishop:
+						sb.append("b");
+						break;
+					}
+					
+					sb.append(x);
+					sb.append(y);
 				}
 			}
-		}
+		}		
 		
 		this.turn = turn.change();
+		
+		if(this.turn == PieceColor.White) {
+			sb.append("w");
+		}
+		else {
+			sb.append("b");
+		}
+		
+		String board_state = sb.toString();
+		
+		Integer amount = this.positions.get(board_state);
+		
+		if(amount == null) {
+			amount = 0;
+		}
+		
+		this.positions.put(board_state, amount + 1);
+		
+		if(amount + 1 >= GameUtil.repToTie) {
+			this.tie = true;
+		}
+		
+		if(this.inactivity >= GameUtil.inacToTie) {
+			this.tie = true;
+		}
 	}
 	
 	public static void main(String[] args) {
