@@ -356,9 +356,10 @@ public class Game implements Serializable{
 
 	private void changeTurnsAndUpdateTie() {
 		
-		StringBuilder sb = new StringBuilder(170);
+		StringBuilder sb = new StringBuilder(150);
 
 		for(int x=0; x < GameUtil.boardSize; x++) {
+			sb.append(x);
 			for(int y=0; y < GameUtil.boardSize; y++) {
 				if(this.board[x][y] != null) {
 					if(this.board[x][y].getType() == PieceType.Pawn) {
@@ -425,7 +426,6 @@ public class Game implements Serializable{
 						break;
 					}
 					
-					sb.append(x);
 					sb.append(y);
 				}
 			}
