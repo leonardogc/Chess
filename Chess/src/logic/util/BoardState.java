@@ -1,17 +1,17 @@
 package logic.util;
 
 import java.io.Serializable;
-import java.util.Vector;
+import java.util.LinkedList;
 
 import logic.util.GameUtil.PieceColor;
 import logic.util.GameUtil.PieceType;
 
 public class BoardState implements Serializable{
-	Vector<Integer> data;
+	LinkedList<Integer> data;
 	PieceColor turn;
 	
 	public BoardState() {
-		this.data = new Vector<>();
+		this.data = new LinkedList<>();
 		this.turn = null;
 	}
 	
@@ -69,7 +69,7 @@ public class BoardState implements Serializable{
 		
 		////
 		
-		data.add(result);
+		data.addLast(result);
 	}
 	
 	public void add(PieceColor color) {
@@ -90,9 +90,11 @@ public class BoardState implements Serializable{
 		if (this == obj) {
 			return true;
 		}
+		
 		if (obj == null) {
 			return false;
 		}
+		
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
@@ -110,6 +112,9 @@ public class BoardState implements Serializable{
 		if (turn != other.turn) {
 			return false;
 		}
+		
 		return true;
 	}
+
+	
 }
