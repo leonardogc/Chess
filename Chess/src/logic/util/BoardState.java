@@ -17,76 +17,55 @@ public class BoardState implements Serializable{
 	
 	public void add(PieceColor color, PieceType type, boolean var1, boolean var2, int x, int y) {
 		int result = 0;
-		int buffer = 0;
 		
 		////
 
 		if(color == PieceColor.White) {
-			buffer = 1;
+			result = result | (1 << 11);
 		}
-		
-		buffer = buffer << 11;
-		
-		result = result | buffer;
 		
 		////
 		
-		buffer = 0;
+		int n = 0;
 		
 		switch(type) {
 		case King:
-			buffer = 0;
+			n = 0;
 			break;
 		case Rook:
-			buffer = 1;
+			n = 1;
 			break;
 		case Queen:
-			buffer = 2;
+			n = 2;
 			break;
 		case Pawn:
-			buffer = 3;
+			n = 3;
 			break;
 		case Knight:
-			buffer = 4;
+			n = 4;
 			break;
 		case Bishop:
-			buffer = 5;
+			n = 5;
 			break;
 		}
 		
-		buffer = buffer << 8;
-		
-		result = result | buffer;
-		
+		result = result | (n << 8);
+
 		////
-		
-		buffer = 0;
 
 		if(var1) {
-			buffer = 1;
+			result = result | (1 << 7);
 		}
-
-		buffer = buffer << 7;
-
-		result = result | buffer;
 		
 		////
-		
-		buffer = 0;
 
 		if(var2) {
-			buffer = 1;
+			result = result | (1 << 6);
 		}
-
-		buffer = buffer << 6;
-
-		result = result | buffer;
 		
 		////
 		
-		buffer = y * GameUtil.boardSize + x;
-		
-		result = result | buffer;
+		result = result | (y * GameUtil.boardSize + x);
 		
 		////
 		
