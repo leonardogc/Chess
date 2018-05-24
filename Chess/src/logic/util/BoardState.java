@@ -91,7 +91,31 @@ public class BoardState implements Serializable{
 		result = result | buffer;
 		
 		////
-		System.out.println(Integer.toBinaryString(result));
+		
+		long n;
+		
+		if(data.size() == 0) {
+			n = 0;
+		}
+		else if(bitsUsed < 64){
+			n = data.lastElement();
+			n = data.remove(data.size() - 1);
+		}
+		else {
+			n = 0;
+			bitsUsed = 0;
+		}
+		
+		if(64-bitsUsed < 12) {
+			int remaining = 64-bitsUsed;
+			n = n << remaining;
+			n = n | result;
+		}
+		else{
+			
+		}
+		
+		
 	}
 	
 	public void add(PieceColor color) {
