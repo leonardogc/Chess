@@ -12,6 +12,7 @@ import logic.pieces.Pawn;
 import logic.pieces.Piece;
 import logic.pieces.Queen;
 import logic.pieces.Rook;
+import logic.util.BoardState;
 import logic.util.GameUtil;
 import logic.util.GameUtil.PieceColor;
 import logic.util.GameUtil.PieceType;
@@ -25,7 +26,7 @@ public class Game implements Serializable{
 	private Piece[][] board;
 	private PieceColor turn;
 	private GameState state;
-	private Hashtable<String, Integer> positions;
+	private Hashtable<BoardState, Integer> positions;
 	private int inactivity;
 	private boolean tie;
 	
@@ -38,7 +39,7 @@ public class Game implements Serializable{
 		initialize_board();
 	}
 	
-	public Game(Piece[][] board, PieceColor turn, GameState state, Hashtable<String, Integer> positions, int inactivity, boolean tie) {
+	public Game(Piece[][] board, PieceColor turn, GameState state, Hashtable<BoardState, Integer> positions, int inactivity, boolean tie) {
 		this.board = board;
 		this.turn = turn;
 		this.state = state;
@@ -356,10 +357,9 @@ public class Game implements Serializable{
 
 	private void changeTurnsAndUpdateTie() {
 		
-		StringBuilder sb = new StringBuilder(150);
+		BoardState bs = new BoardState();
 
 		for(int x=0; x < GameUtil.boardSize; x++) {
-			sb.append(x);
 			for(int y=0; y < GameUtil.boardSize; y++) {
 				if(this.board[x][y] != null) {
 					if(this.board[x][y].getType() == PieceType.Pawn) {
@@ -371,84 +371,36 @@ public class Game implements Serializable{
 						}
 					}
 					
-					if(this.board[x][y].getColor() == PieceColor.White) {
-						sb.append("w");
-					}
-					else {
-						sb.append("b");
-					}
-					
+					boolean var1 = false;
+					boolean var2 = false;
 					
 					switch(this.board[x][y].getType()) {
 					case King:
-						sb.append("k");
-						if(this.board[x][y].testMove(x, y, x-2, y, this, null)) {
-							sb.append("1");
-						}
-						else {
-							sb.append("0");
-						}
-
-						if(this.board[x][y].testMove(x, y, x+2, y, this, null)) {
-							sb.append("1");
-						}
-						else {
-							sb.append("0");
-						}
-						break;
-					case Rook:
-						sb.append("r");
-						break;
-					case Queen:
-						sb.append("q");
+						var1=this.board[x][y].testMove(x, y, x-2, y, this, null);
+						var2=this.board[x][y].testMove(x, y, x+2, y, this, null);
 						break;
 					case Pawn:
-						sb.append("p");
-						if(((Pawn)this.board[x][y]).getEnPassant()) {
-							sb.append("1");
-						}
-						else {
-							sb.append("0");
-						}
-						
-						if(((Pawn)this.board[x][y]).getEnPassantVictim()) {
-							sb.append("1");
-						}
-						else {
-							sb.append("0");
-						}
-						break;
-					case Knight:
-						sb.append("n");
-						break;
-					case Bishop:
-						sb.append("b");
+						var1=((Pawn)this.board[x][y]).getEnPassant();
+						var2=((Pawn)this.board[x][y]).getEnPassantVictim();
 						break;
 					}
 					
-					sb.append(y);
+					bs.add(this.board[x][y].getColor(),this.board[x][y].getType(), var1, var2, x, y);
 				}
 			}
 		}		
 		
 		this.turn = turn.change();
 		
-		if(this.turn == PieceColor.White) {
-			sb.append("w");
-		}
-		else {
-			sb.append("b");
-		}
+		bs.add(this.turn);
 		
-		String board_state = sb.toString();
-		
-		Integer amount = this.positions.get(board_state);
+		Integer amount = this.positions.get(bs);
 		
 		if(amount == null) {
 			amount = 0;
 		}
 		
-		this.positions.put(board_state, amount + 1);
+		this.positions.put(bs, amount + 1);
 		
 		if(amount + 1 >= GameUtil.repToTie) {
 			this.tie = true;
