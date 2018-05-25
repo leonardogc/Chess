@@ -32,7 +32,7 @@ public class BoardState implements Serializable{
 					////
 
 					if(game.getBoard()[x][y].getColor() == PieceColor.White) {
-						result = result | (1 << 11);
+						result |= 1 << 11;
 					}
 					
 					////
@@ -43,11 +43,11 @@ public class BoardState implements Serializable{
 					case King:
 						n = 0;
 						if(game.getBoard()[x][y].testMove(x, y, x-2, y, game, null)) {
-							result = result | (1 << 7);
+							result |= 1 << 7;
 						}
 						
 						if(game.getBoard()[x][y].testMove(x, y, x+2, y, game, null)) {
-							result = result | (1 << 6);
+							result |= 1 << 6;
 						}
 						break;
 					case Rook:
@@ -59,11 +59,11 @@ public class BoardState implements Serializable{
 					case Pawn:
 						n = 3;
 						if(((Pawn)game.getBoard()[x][y]).getEnPassant()) {
-							result = result | (1 << 7);
+							result |= 1 << 7;
 						}
 						
 						if(((Pawn)game.getBoard()[x][y]).getEnPassantVictim()) {
-							result = result | (1 << 6);
+							result |= 1 << 6;
 						}
 						break;
 					case Knight:
@@ -74,16 +74,16 @@ public class BoardState implements Serializable{
 						break;
 					}
 					
-					result = result | (n << 8);
+					result |= n << 8;
 					
 					////
 					
-					result = result | (y * GameUtil.boardSize + x);
+					result |= y * GameUtil.boardSize + x;
 					
 					////
 					
-					number = number << 12;
-					number = number | result;
+					number <<= 12;
+					number |= result;
 					
 					counter++;
 					
