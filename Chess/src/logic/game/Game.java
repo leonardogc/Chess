@@ -370,30 +370,8 @@ public class Game implements Serializable{
 	
 	private void updateTie() {
 		BoardState bs = new BoardState();
-
-		for(int x=0; x < GameUtil.boardSize; x++) {
-			for(int y=0; y < GameUtil.boardSize; y++) {
-				if(this.board[x][y] != null) {
-					boolean var1 = false;
-					boolean var2 = false;
-					
-					switch(this.board[x][y].getType()) {
-					case King:
-						var1=this.board[x][y].testMove(x, y, x-2, y, this, null);
-						var2=this.board[x][y].testMove(x, y, x+2, y, this, null);
-						break;
-					case Pawn:
-						var1=((Pawn)this.board[x][y]).getEnPassant();
-						var2=((Pawn)this.board[x][y]).getEnPassantVictim();
-						break;
-					}
-					
-					bs.add(this.board[x][y].getColor(),this.board[x][y].getType(), var1, var2, x, y);
-				}
-			}
-		}		
 		
-		bs.add(this.turn);
+		bs.build(this);
 		
 		Integer amount = this.positions.get(bs);
 		
