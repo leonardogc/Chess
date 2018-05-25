@@ -27,6 +27,7 @@ public class Game implements Serializable{
 	private PieceColor turn;
 	private GameState state;
 	private Hashtable<BoardState, Integer> positions;
+	private LinkedList<Pawn> enPassant;
 	private int inactivity;
 	private boolean tie;
 	
@@ -34,18 +35,20 @@ public class Game implements Serializable{
 		this.turn = PieceColor.White;
 		this.state = GameState.RegularMove;
 		this.positions = new Hashtable<>();
+		this.enPassant = new LinkedList<>();
 		this.inactivity = 0;
 		this.tie = false;
 		initialize_board();
 	}
 	
-	public Game(Piece[][] board, PieceColor turn, GameState state, Hashtable<BoardState, Integer> positions, int inactivity, boolean tie) {
+	public Game(Piece[][] board, PieceColor turn, GameState state, Hashtable<BoardState, Integer> positions, int inactivity, boolean tie, LinkedList<Pawn> enPassant) {
 		this.board = board;
 		this.turn = turn;
 		this.state = state;
 		this.positions = positions;
 		this.inactivity = inactivity;
 		this.tie = tie;
+		this.enPassant = enPassant;
 	}
 
 	private void initialize_board() {
@@ -105,6 +108,10 @@ public class Game implements Serializable{
 		return this.board;
 	}
 	
+	public LinkedList<Pawn> getEnPassant() {
+		return this.enPassant;
+	}
+	
 	public PieceColor getTurn() {
 		return this.turn;
 	}
@@ -123,6 +130,10 @@ public class Game implements Serializable{
 	
 	public void setInactivity(int inactivity) {
 		this.inactivity = inactivity;
+	}
+	
+	public void setEnPassant(LinkedList<Pawn> enPassant) {
+		this.enPassant = enPassant;
 	}
 	
 	public void incInactivity() {
@@ -235,7 +246,7 @@ public class Game implements Serializable{
 			}
 		}
 		
-		return new Game(board, this.turn, this.state, new Hashtable<>(this.positions), this.inactivity, this.tie);
+		return new Game(board, this.turn, this.state, new Hashtable<>(this.positions), this.inactivity, this.tie, new LinkedList<>(this.enPassant));
 	}
 		
 	public LinkedList<Move> calculateMoves(){
@@ -342,35 +353,27 @@ public class Game implements Serializable{
 			}
 
 			this.state = GameState.RegularMove;
-			changeTurnsAndUpdateTie();
+			changeTurns();
+			updateTie();
 		}
 		else {
 			this.board[move.x][move.y].move(move.x, move.y, move.dest_x, move.dest_y, this);
 
 			if(this.state != GameState.ChoosingPiece) {
-				changeTurnsAndUpdateTie();
+				changeTurns();
+				updateTie();
 			}
 		}
 		
 		return true;
 	}
-
-	private void changeTurnsAndUpdateTie() {
-		
+	
+	private void updateTie() {
 		BoardState bs = new BoardState();
 
 		for(int x=0; x < GameUtil.boardSize; x++) {
 			for(int y=0; y < GameUtil.boardSize; y++) {
 				if(this.board[x][y] != null) {
-					if(this.board[x][y].getType() == PieceType.Pawn) {
-						if(this.board[x][y].getColor() == turn) {
-							((Pawn)this.board[x][y]).setEnPassant(false);
-						}
-						else {
-							((Pawn)this.board[x][y]).setEnPassantVictim(false);
-						}
-					}
-					
 					boolean var1 = false;
 					boolean var2 = false;
 					
@@ -390,8 +393,6 @@ public class Game implements Serializable{
 			}
 		}		
 		
-		this.turn = turn.change();
-		
 		bs.add(this.turn);
 		
 		Integer amount = this.positions.get(bs);
@@ -409,6 +410,24 @@ public class Game implements Serializable{
 		if(this.inactivity >= GameUtil.inacToTie) {
 			this.tie = true;
 		}
+	}
+
+	private void changeTurns() {
+		for(int i = 0; i < this.enPassant.size(); i++) {
+			if(this.enPassant.get(i).getColor() == turn) {
+				this.enPassant.get(i).setEnPassant(false);
+			}
+			else {
+				this.enPassant.get(i).setEnPassantVictim(false);
+			}
+			
+			if(!this.enPassant.get(i).getEnPassant() && !this.enPassant.get(i).getEnPassantVictim()) {
+				this.enPassant.remove(i);
+				i--;
+			}
+		}
+		
+		this.turn = turn.change();
 	}
 	
 	public static void main(String[] args) {
