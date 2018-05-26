@@ -2,7 +2,7 @@ package logic.game;
 
 import java.io.Serializable;
 import java.util.Collections;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 import logic.pieces.Bishop;
@@ -26,7 +26,7 @@ public class Game implements Serializable{
 	private Piece[][] board;
 	private PieceColor turn;
 	private GameState state;
-	private Hashtable<BoardState, Integer> positions;
+	private HashMap<BoardState, Integer> positions;
 	private LinkedList<Pawn> enPassant;
 	private int inactivity;
 	private boolean tie;
@@ -34,14 +34,14 @@ public class Game implements Serializable{
 	public Game() {
 		this.turn = PieceColor.White;
 		this.state = GameState.RegularMove;
-		this.positions = new Hashtable<>();
+		this.positions = new HashMap<>();
 		this.enPassant = new LinkedList<>();
 		this.inactivity = 0;
 		this.tie = false;
 		initialize_board();
 	}
 	
-	public Game(Piece[][] board, PieceColor turn, GameState state, Hashtable<BoardState, Integer> positions, int inactivity, boolean tie, LinkedList<Pawn> enPassant) {
+	public Game(Piece[][] board, PieceColor turn, GameState state, HashMap<BoardState, Integer> positions, int inactivity, boolean tie, LinkedList<Pawn> enPassant) {
 		this.board = board;
 		this.turn = turn;
 		this.state = state;
@@ -246,7 +246,7 @@ public class Game implements Serializable{
 			}
 		}
 		
-		return new Game(board, this.turn, this.state, new Hashtable<>(this.positions), this.inactivity, this.tie, new LinkedList<>(this.enPassant));
+		return new Game(board, this.turn, this.state, new HashMap<>(this.positions), this.inactivity, this.tie, new LinkedList<>(this.enPassant));
 	}
 		
 	public LinkedList<Move> calculateMoves(){
