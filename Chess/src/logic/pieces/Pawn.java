@@ -234,18 +234,36 @@ public class Pawn extends Piece{
 	@Override
 	public boolean canMove(int x, int y, Game game) {
 		if(game.getBoard()[x][y].getColor() == PieceColor.White) {
-			if(testMove(x, y, x, y+1, game, null)||
-				testMove(x, y, x, y+2, game, null)||
-				testMove(x, y, x+1, y+1, game, null)||
-				testMove(x, y, x-1, y+1, game, null)) {
+			if(testMove(x, y, x, y+1, game, null)) {
+				return true;
+			}
+			
+			if(testMove(x, y, x, y+2, game, null)) {
+				return true;
+			}
+			
+			if(testMove(x, y, x+1, y+1, game, null)) {
+				return true;
+			}
+			
+			if(testMove(x, y, x-1, y+1, game, null)) {
 				return true;
 			}
 		}
 		else {
-			if(testMove(x, y, x, y-1, game, null)||
-				testMove(x, y, x, y-2, game, null)||
-				testMove(x, y, x+1, y-1, game, null)||
-				testMove(x, y, x-1, y-1, game, null)) {
+			if(testMove(x, y, x, y-1, game, null)) {
+				return true;
+			}
+			
+			if(testMove(x, y, x, y-2, game, null)) {
+				return true;
+			}
+			
+			if(testMove(x, y, x+1, y-1, game, null)) {
+				return true;
+			}
+			
+			if(testMove(x, y, x-1, y-1, game, null)) {
 				return true;
 			}
 		}

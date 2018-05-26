@@ -103,18 +103,38 @@ public class Queen extends Piece{
 	
 	@Override
 	public boolean canMove(int x, int y, Game game) {
-		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
-			if(testMove(x, y, x+amount, y+amount, game, null)||
-				testMove(x, y, x-amount, y+amount, game, null)||
-				testMove(x, y, x+amount, y-amount, game, null)||
-				testMove(x, y, x-amount, y-amount, game, null)||
-				testMove(x, y, x+amount, y, game, null)||
-				testMove(x, y, x-amount, y, game, null)||
-				testMove(x, y, x, y+amount, game, null)||
-				testMove(x, y, x, y-amount, game, null)) {
-				return true;
-			}
+		if(testMove(x, y, x+1, y+1, game, null)) {
+			return true;
 		}
+		
+		if(testMove(x, y, x-1, y+1, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x+1, y-1, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x-1, y-1, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x+1, y, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x-1, y, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x, y+1, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x, y-1, game, null)) {
+			return true;
+		}
+		
 		return false;
 	}
 	

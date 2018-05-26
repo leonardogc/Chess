@@ -81,16 +81,38 @@ public class Knight extends Piece{
 	
 	@Override
 	public boolean canMove(int x, int y, Game game) {
-		if(testMove(x, y, x+2, y+1, game, null)||
-			testMove(x, y, x+1, y+2, game, null)||
-			testMove(x, y, x-2, y+1, game, null)||
-			testMove(x, y, x-1, y+2, game, null)||
-			testMove(x, y, x+2, y-1, game, null)||
-			testMove(x, y, x+1, y-2, game, null)||
-			testMove(x, y, x-2, y-1, game, null)||
-			testMove(x, y, x-1, y-2, game, null)) {
+		if(testMove(x, y, x+2, y+1, game, null)) {
 			return true;
 		}
+		
+		if(testMove(x, y, x+1, y+2, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x-2, y+1, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x-1, y+2, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x+2, y-1, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x+1, y-2, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x-2, y-1, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x-1, y-2, game, null)) {
+			return true;
+		}
+		
 		return false;
 	}
 	

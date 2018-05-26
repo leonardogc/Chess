@@ -179,44 +179,59 @@ public class King extends Piece{
 
 	@Override
 	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queue) {
-			int amount = 1;
-		
-			testMove(x, y, x+amount, y+amount, game, queue);
-			testMove(x, y, x-amount, y+amount, game, queue);
-			testMove(x, y, x+amount, y-amount, game, queue);
-			testMove(x, y, x-amount, y-amount, game, queue);
+			testMove(x, y, x+1, y+1, game, queue);
+			testMove(x, y, x-1, y+1, game, queue);
+			testMove(x, y, x+1, y-1, game, queue);
+			testMove(x, y, x-1, y-1, game, queue);
 			
+			testMove(x, y, x, y+1, game, queue);
+			testMove(x, y, x, y-1, game, queue);
+			testMove(x, y, x-1, y, game, queue);
+			testMove(x, y, x+1, y, game, queue);
 			
-			testMove(x, y, x, y+amount, game, queue);
-			testMove(x, y, x, y-amount, game, queue);
-			testMove(x, y, x-amount, y, game, queue);
-			testMove(x, y, x+amount, y, game, queue);
-			
-			amount = 2;
-			
-			testMove(x, y, x-amount, y, game, queue);
-			testMove(x, y, x+amount, y, game, queue);
+			testMove(x, y, x+2, y, game, queue);
+			testMove(x, y, x-2, y, game, queue);
 	}
 
 	@Override
 	public boolean canMove(int x, int y, Game game) {
-		int amount = 1;
-		
-		if(testMove(x, y, x+amount, y+amount, game, null)||
-			testMove(x, y, x-amount, y+amount, game, null)||
-			testMove(x, y, x+amount, y-amount, game, null)||
-			testMove(x, y, x-amount, y-amount, game, null)||
-			testMove(x, y, x, y+amount, game, null)||
-			testMove(x, y, x, y-amount, game, null)||
-			testMove(x, y, x-amount, y, game, null)||
-			testMove(x, y, x+amount, y, game, null)) {
+		if(testMove(x, y, x+1, y+1, game, null)) {
 			return true;
 		}
 		
-		amount = 2;
+		if(testMove(x, y, x-1, y+1, game, null)) {
+			return true;
+		}
 		
-		if(testMove(x, y, x-amount, y, game, null)||
-			testMove(x, y, x+amount, y, game, null)) {
+		if(testMove(x, y, x+1, y-1, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x-1, y-1, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x+1, y, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x-1, y, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x, y+1, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x, y-1, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x+2, y, game, null)) {
+			return true;
+		}
+		
+		if(testMove(x, y, x-2, y, game, null)) {
 			return true;
 		}
 		
