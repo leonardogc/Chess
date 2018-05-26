@@ -60,10 +60,27 @@ public class Bishop extends Piece{
 	@Override
 	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queue) {
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
-			testMove(x, y, x+amount, y+amount, game, queue);
-			testMove(x, y, x-amount, y+amount, game, queue);
-			testMove(x, y, x+amount, y-amount, game, queue);
-			testMove(x, y, x-amount, y-amount, game, queue);
+			if(!testMove(x, y, x+amount, y+amount, game, queue)) {
+				break;
+			}
+		}
+		
+		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
+			if(!testMove(x, y, x-amount, y+amount, game, queue)) {
+				break;
+			}
+		}
+		
+		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
+			if(!testMove(x, y, x+amount, y-amount, game, queue)) {
+				break;
+			}
+		}
+		
+		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
+			if(!testMove(x, y, x-amount, y-amount, game, queue)) {
+				break;
+			}
 		}
 	}
 	
