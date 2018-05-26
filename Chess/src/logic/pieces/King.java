@@ -49,20 +49,20 @@ public class King extends Piece{
 				
 				
 				if(dx > 0) {
-					if(!rookAt(GameUtil.boardSize - 1, y , game.getBoard(), game.getBoard()[x][y].getColor())) {
+					if(!GameUtil.isBoardFree(game.getBoard(), x+1, y, GameUtil.boardSize - 2, y)) {
 						return false;
 					}
 					
-					if(!GameUtil.isBoardFree(game.getBoard(), x+1, y, GameUtil.boardSize - 2, y)) {
+					if(!rookAt(GameUtil.boardSize - 1, y , game.getBoard(), game.getBoard()[x][y].getColor())) {
 						return false;
 					}
 				}
 				else {
-					if(!rookAt(0, y , game.getBoard(), game.getBoard()[x][y].getColor())) {
+					if(!GameUtil.isBoardFree(game.getBoard(), x-1, y, 1, y)) {
 						return false;
 					}
 					
-					if(!GameUtil.isBoardFree(game.getBoard(), x-1, y, 1, y)) {
+					if(!rookAt(0, y , game.getBoard(), game.getBoard()[x][y].getColor())) {
 						return false;
 					}
 				}
