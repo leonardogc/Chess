@@ -49,6 +49,7 @@ public class MonteCarlo {
 		return root.getBestChildByVisits().move;
 	}
 	
+	
 	private double rollout(Node node) {
 		Game game_copy = node.currentGame.makeCopy();
 
