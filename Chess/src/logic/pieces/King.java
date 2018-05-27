@@ -239,67 +239,67 @@ public class King extends Piece{
 	}
 	
 	@Override
-	public boolean testMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
+	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
 		boolean success = false;
-		if(isMoveValid(x, y, dest_x, dest_y, game)) {
-			Piece[][] board = game.getBoard();
-			
-			Piece beg = board[x][y].makeCopy();
-			Piece end = board[dest_x][dest_y];
-			int inac = game.getInactivity();
-			
-			Piece rook = null;
-			int rook_x=-1;
-			int rook_y=-1;
-			int rook_dest_x=-1;
-			int rook_dest_y=-1;
 		
-			int dx = dest_x - x;
-			int dy = dest_y - y;
-			int amount;
+		Piece[][] board = game.getBoard();
+		
+		Piece beg = board[x][y].makeCopy();
+		Piece end = board[dest_x][dest_y];
+		int inac = game.getInactivity();
+		
+		Piece rook = null;
+		int rook_x=-1;
+		int rook_y=-1;
+		int rook_dest_x=-1;
+		int rook_dest_y=-1;
+	
+		int dx = dest_x - x;
+		int dy = dest_y - y;
+		int amount;
 
-			if(dy == 0) {
-				amount = Math.abs(dx);
-				
-				if(amount != 1) {
-					if(dx > 0) {
-						rook = board[GameUtil.boardSize-1][dest_y].makeCopy();
-						rook_x = GameUtil.boardSize-1;
-						rook_y = dest_y;
-						rook_dest_x = dest_x-1;
-						rook_dest_y = dest_y;
-					}
-					else {
-						rook = board[0][dest_y].makeCopy();
-						rook_x = 0;
-						rook_y = dest_y;
-						rook_dest_x = dest_x+1;
-						rook_dest_y = dest_y;
-					}
+		if(dy == 0) {
+			amount = Math.abs(dx);
+			
+			if(amount != 1) {
+				if(dx > 0) {
+					rook = board[GameUtil.boardSize-1][dest_y].makeCopy();
+					rook_x = GameUtil.boardSize-1;
+					rook_y = dest_y;
+					rook_dest_x = dest_x-1;
+					rook_dest_y = dest_y;
+				}
+				else {
+					rook = board[0][dest_y].makeCopy();
+					rook_x = 0;
+					rook_y = dest_y;
+					rook_dest_x = dest_x+1;
+					rook_dest_y = dest_y;
 				}
 			}
-			
-			////
-			move(x, y, dest_x, dest_y, game);
-			
-			if(!game.playerInCheck(game.getTurn())) {
-				if(queue != null) {
-					queue.add(new Move(x, y, dest_x, dest_y));
-				}
-				success = true;
-			}
-			////
-			
-			board[x][y] = beg;
-			board[dest_x][dest_y] = end;
-			
-			if(rook != null) {
-				board[rook_dest_x][rook_dest_y] = null;
-				board[rook_x][rook_y] = rook;
-			}
-			
-			game.setInactivity(inac);
 		}
+		
+		////
+		move(x, y, dest_x, dest_y, game);
+		
+		if(!game.playerInCheck(game.getTurn())) {
+			if(queue != null) {
+				queue.add(new Move(x, y, dest_x, dest_y));
+			}
+			success = true;
+		}
+		////
+		
+		board[x][y] = beg;
+		board[dest_x][dest_y] = end;
+		
+		if(rook != null) {
+			board[rook_dest_x][rook_dest_y] = null;
+			board[rook_x][rook_y] = rook;
+		}
+		
+		game.setInactivity(inac);
+		
 		return success;
 	}
 

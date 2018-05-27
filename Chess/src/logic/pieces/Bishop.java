@@ -60,34 +60,38 @@ public class Bishop extends Piece{
 	@Override
 	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queue) {
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
-			if(!testMove(x, y, x+amount, y+amount, game, queue)) {
-				if(!isMoveValid(x, y, x+amount, y+amount, game)) {
-					break;
-				}
+			if(isMoveValid(x, y, x+amount, y+amount, game)) {
+				testKingNotCheck(x, y, x+amount, y+amount, game, queue);
+			}
+			else {
+				break;
 			}
 		}
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
-			if(!testMove(x, y, x-amount, y+amount, game, queue)) {
-				if(!isMoveValid(x, y, x-amount, y+amount, game)) {
-					break;
-				}
+			if(isMoveValid(x, y, x-amount, y+amount, game)) {
+				testKingNotCheck(x, y, x-amount, y+amount, game, queue);
+			}
+			else {
+				break;
 			}
 		}
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
-			if(!testMove(x, y, x+amount, y-amount, game, queue)) {
-				if(!isMoveValid(x, y, x+amount, y-amount, game)) {
-					break;
-				}
+			if(isMoveValid(x, y, x+amount, y-amount, game)) {
+				testKingNotCheck(x, y, x+amount, y-amount, game, queue);
+			}
+			else {
+				break;
 			}
 		}
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
-			if(!testMove(x, y, x-amount, y-amount, game, queue)) {
-				if(!isMoveValid(x, y, x-amount, y-amount, game)) {
-					break;
-				}
+			if(isMoveValid(x, y, x-amount, y-amount, game)) {
+				testKingNotCheck(x, y, x-amount, y-amount, game, queue);
+			}
+			else {
+				break;
 			}
 		}
 	}
@@ -95,46 +99,46 @@ public class Bishop extends Piece{
 	@Override
 	public boolean canMove(int x, int y, Game game) {
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
-			if(!testMove(x, y, x+amount, y+amount, game, null)) {
-				if(!isMoveValid(x, y, x+amount, y+amount, game)) {
-					break;
+			if(isMoveValid(x, y, x+amount, y+amount, game)) {
+				if(testKingNotCheck(x, y, x+amount, y+amount, game, null)){
+					return true;
 				}
 			}
 			else {
-				return true;
+				break;
 			}
 		}
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
-			if(!testMove(x, y, x-amount, y+amount, game, null)) {
-				if(!isMoveValid(x, y, x-amount, y+amount, game)) {
-					break;
+			if(isMoveValid(x, y, x-amount, y+amount, game)) {
+				if(testKingNotCheck(x, y, x-amount, y+amount, game, null)){
+					return true;
 				}
 			}
 			else {
-				return true;
+				break;
 			}
 		}
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
-			if(!testMove(x, y, x+amount, y-amount, game, null)) {
-				if(!isMoveValid(x, y, x+amount, y-amount, game)) {
-					break;
+			if(isMoveValid(x, y, x+amount, y-amount, game)) {
+				if(testKingNotCheck(x, y, x+amount, y-amount, game, null)){
+					return true;
 				}
 			}
 			else {
-				return true;
+				break;
 			}
 		}
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
-			if(!testMove(x, y, x-amount, y-amount, game, null)) {
-				if(!isMoveValid(x, y, x-amount, y-amount, game)) {
-					break;
+			if(isMoveValid(x, y, x-amount, y-amount, game)) {
+				if(testKingNotCheck(x, y, x-amount, y-amount, game, null)){
+					return true;
 				}
 			}
 			else {
-				return true;
+				break;
 			}
 		}
 
@@ -142,28 +146,28 @@ public class Bishop extends Piece{
 	}
 
 	@Override
-	public boolean testMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
+	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
 		boolean success = false;
-		if(isMoveValid(x, y, dest_x, dest_y, game)) {
-			Piece[][] board = game.getBoard();
-			
-			Piece beg = board[x][y];
-			Piece end = board[dest_x][dest_y];
-			int inac = game.getInactivity();
-			
-			move(x, y, dest_x, dest_y, game);
-			
-			if(!game.playerInCheck(game.getTurn())) {
-				if(queue != null) {
-					queue.add(new Move(x, y, dest_x, dest_y));
-				}
-				success = true;
+		
+		Piece[][] board = game.getBoard();
+		
+		Piece beg = board[x][y];
+		Piece end = board[dest_x][dest_y];
+		int inac = game.getInactivity();
+		
+		move(x, y, dest_x, dest_y, game);
+		
+		if(!game.playerInCheck(game.getTurn())) {
+			if(queue != null) {
+				queue.add(new Move(x, y, dest_x, dest_y));
 			}
-			
-			board[x][y] = beg;
-			board[dest_x][dest_y] = end;
-			game.setInactivity(inac);
+			success = true;
 		}
+		
+		board[x][y] = beg;
+		board[dest_x][dest_y] = end;
+		game.setInactivity(inac);
+		
 		return success;
 	}
 

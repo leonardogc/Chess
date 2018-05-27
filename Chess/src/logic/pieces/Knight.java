@@ -115,32 +115,30 @@ public class Knight extends Piece{
 		
 		return false;
 	}
-	
+
 	@Override
-	public boolean testMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
+	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
 		boolean success = false;
-		if(isMoveValid(x, y, dest_x, dest_y, game)) {
-			Piece[][] board = game.getBoard();
-			
-			Piece beg = board[x][y];
-			Piece end = board[dest_x][dest_y];
-			int inac = game.getInactivity();
-			
-			move(x, y, dest_x, dest_y, game);
-			
-			if(!game.playerInCheck(game.getTurn())) {
-				if(queue != null) {
-					queue.add(new Move(x, y, dest_x, dest_y));
-				}
-				success = true;
+		
+		Piece[][] board = game.getBoard();
+		
+		Piece beg = board[x][y];
+		Piece end = board[dest_x][dest_y];
+		int inac = game.getInactivity();
+		
+		move(x, y, dest_x, dest_y, game);
+		
+		if(!game.playerInCheck(game.getTurn())) {
+			if(queue != null) {
+				queue.add(new Move(x, y, dest_x, dest_y));
 			}
-			
-			board[x][y] = beg;
-			board[dest_x][dest_y] = end;
-			game.setInactivity(inac);
+			success = true;
 		}
+		
+		board[x][y] = beg;
+		board[dest_x][dest_y] = end;
+		game.setInactivity(inac);
 		
 		return success;
 	}
-
 }
