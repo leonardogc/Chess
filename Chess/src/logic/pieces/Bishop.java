@@ -61,46 +61,81 @@ public class Bishop extends Piece{
 	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queue) {
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(!testMove(x, y, x+amount, y+amount, game, queue)) {
-				break;
+				if(!isMoveValid(x, y, x+amount, y+amount, game)) {
+					break;
+				}
 			}
 		}
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(!testMove(x, y, x-amount, y+amount, game, queue)) {
-				break;
+				if(!isMoveValid(x, y, x-amount, y+amount, game)) {
+					break;
+				}
 			}
 		}
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(!testMove(x, y, x+amount, y-amount, game, queue)) {
-				break;
+				if(!isMoveValid(x, y, x+amount, y-amount, game)) {
+					break;
+				}
 			}
 		}
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(!testMove(x, y, x-amount, y-amount, game, queue)) {
-				break;
+				if(!isMoveValid(x, y, x-amount, y-amount, game)) {
+					break;
+				}
 			}
 		}
 	}
 
 	@Override
 	public boolean canMove(int x, int y, Game game) {
-
-		if(testMove(x, y, x+1, y+1, game, null)) {
-			return true;
+		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
+			if(!testMove(x, y, x+amount, y+amount, game, null)) {
+				if(!isMoveValid(x, y, x+amount, y+amount, game)) {
+					break;
+				}
+			}
+			else {
+				return true;
+			}
 		}
 		
-		if(testMove(x, y, x-1, y+1, game, null)) {
-			return true;
+		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
+			if(!testMove(x, y, x-amount, y+amount, game, null)) {
+				if(!isMoveValid(x, y, x-amount, y+amount, game)) {
+					break;
+				}
+			}
+			else {
+				return true;
+			}
 		}
 		
-		if(testMove(x, y, x+1, y-1, game, null)) {
-			return true;
+		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
+			if(!testMove(x, y, x+amount, y-amount, game, null)) {
+				if(!isMoveValid(x, y, x+amount, y-amount, game)) {
+					break;
+				}
+			}
+			else {
+				return true;
+			}
 		}
 		
-		if(testMove(x, y, x-1, y-1, game, null)) {
-			return true;
+		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
+			if(!testMove(x, y, x-amount, y-amount, game, null)) {
+				if(!isMoveValid(x, y, x-amount, y-amount, game)) {
+					break;
+				}
+			}
+			else {
+				return true;
+			}
 		}
 
 		return false;
