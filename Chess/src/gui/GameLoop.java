@@ -103,6 +103,5 @@ public class GameLoop extends Thread{
 			System.out.println("It's a Tie!");
 			return;
 		}
-		
 	}
 }
