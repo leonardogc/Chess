@@ -82,10 +82,24 @@ public class King extends Piece{
 					
 					game.getBoard()[x+(i+1)*vx][y] = game.getBoard()[x+i*vx][y];
 					game.getBoard()[x+i*vx][y] = null;
+					
+					if(game.getBoard()[x+(i+1)*vx][y].getColor() == PieceColor.White) {
+						game.setWhiteKingCoords(x+(i+1)*vx, y);
+					}
+					else {
+						game.setBlackKingCoords(x+(i+1)*vx, y);
+					}
 				}
 				
 				game.getBoard()[x][y] = game.getBoard()[x+amount*vx][y];
 				game.getBoard()[x+amount*vx][y] = null;
+				
+				if(game.getBoard()[x][y].getColor() == PieceColor.White) {
+					game.setWhiteKingCoords(x, y);
+				}
+				else {
+					game.setBlackKingCoords(x, y);
+				}
 				
 				if(!success) {
 					return false;
@@ -145,6 +159,13 @@ public class King extends Piece{
 		board[x][y] = null;
 		
 		((King)board[dest_x][dest_y]).setMoved(true);
+		
+		if(board[dest_x][dest_y].getColor() == PieceColor.White) {
+			game.setWhiteKingCoords(dest_x, dest_y);
+		}
+		else {
+			game.setBlackKingCoords(dest_x, dest_y);
+		}
 		
 		return true;
 	}
@@ -299,6 +320,13 @@ public class King extends Piece{
 		}
 		
 		game.setInactivity(inac);
+		
+		if(board[x][y].getColor() == PieceColor.White) {
+			game.setWhiteKingCoords(x, y);
+		}
+		else {
+			game.setBlackKingCoords(x, y);
+		}
 		
 		return success;
 	}

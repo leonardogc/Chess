@@ -31,6 +31,11 @@ public class Game implements Serializable{
 	private int inactivity;
 	private boolean tie;
 	
+	private int wk_x;
+	private int wk_y;
+	private int bk_x;
+	private int bk_y;
+	
 	public Game() {
 		this.turn = PieceColor.White;
 		this.state = GameState.RegularMove;
@@ -41,7 +46,8 @@ public class Game implements Serializable{
 		initialize_board();
 	}
 	
-	public Game(Piece[][] board, PieceColor turn, GameState state, HashMap<BoardState, Integer> positions, int inactivity, boolean tie, LinkedList<Pawn> enPassant) {
+	public Game(Piece[][] board, PieceColor turn, GameState state, HashMap<BoardState, Integer> positions, 
+			int inactivity, boolean tie, LinkedList<Pawn> enPassant, int wk_x, int wk_y, int bk_x, int bk_y) {
 		this.board = board;
 		this.turn = turn;
 		this.state = state;
@@ -49,6 +55,11 @@ public class Game implements Serializable{
 		this.inactivity = inactivity;
 		this.tie = tie;
 		this.enPassant = enPassant;
+		
+		this.wk_x = wk_x;
+		this.wk_y = wk_y;
+		this.bk_x = bk_x;
+		this.bk_y = bk_y;
 	}
 
 	private void initialize_board() {
@@ -77,6 +88,8 @@ public class Game implements Serializable{
 		//add white king
 		board[4][0] = new King(PieceColor.White);
 
+		this.wk_x = 4;
+		this.wk_y = 0;
 
 
 		//add black pawns
@@ -101,6 +114,9 @@ public class Game implements Serializable{
 
 		//add black king
 		board[4][7] = new King(PieceColor.Black);
+		
+		this.bk_x = 4;
+		this.bk_y = 7;
 	}
 	
 	
@@ -142,6 +158,16 @@ public class Game implements Serializable{
 	
 	public void decInactivity() {
 		this.inactivity--;
+	}
+	
+	public void setWhiteKingCoords(int x, int y) {
+		this.wk_x = x;
+		this.wk_y = y;
+	}
+	
+	public void setBlackKingCoords(int x, int y) {
+		this.bk_x = x;
+		this.bk_y = y;
 	}
 	
 	public boolean move(Move move) {
@@ -190,31 +216,60 @@ public class Game implements Serializable{
 
 		return true;
 	}
-
-	public boolean playerInCheck(PieceColor color) {
-		int king_x = -1;
-		int king_y = -1;
-
-		search: {
-
-			for(int x = 0; x < GameUtil.boardSize; x++) {
-				for(int y = 0; y < GameUtil.boardSize; y++) {
-					if(this.board[x][y] != null) {
-						if(this.board[x][y].getColor() == color && this.board[x][y].getType() == PieceType.King) {
-							king_x = x;
-							king_y = y;
-							break search;
+	
+	private void findKing(PieceColor color) {
+		for(int x = 0; x < GameUtil.boardSize; x++) {
+			for(int y = 0; y < GameUtil.boardSize; y++) {
+				if(this.board[x][y] != null) {
+					if(this.board[x][y].getColor() == color && this.board[x][y].getType() == PieceType.King) {
+						if(color == PieceColor.White) {
+							this.wk_x = x;
+							this.wk_y = y;
 						}
+						else {
+							this.bk_x = x;
+							this.bk_y = y;
+						}
+						return;
 					}
 				}
 			}
 		}
+	}
 
-		if(king_x == -1 || king_y == -1) {
-			System.out.println("There is no king on the board!");
-			return false;
+	public boolean playerInCheck(PieceColor color) {
+		int king_x;
+		int king_y;
+		
+		if(color == PieceColor.White) {
+			king_x = this.wk_x;
+			king_y = this.wk_y;
 		}
-
+		else {
+			king_x = this.bk_x;
+			king_y = this.bk_y;
+		}
+		
+		boolean foundKing = false;
+		
+		if(this.board[king_x][king_y] != null) {
+			if(this.board[king_x][king_y].getColor() == color && this.board[king_x][king_y].getType() == PieceType.King) {
+				foundKing = true;
+			}
+		}
+		
+		if(!foundKing) {
+			findKing(color);
+		
+			if(color == PieceColor.White) {
+				king_x = this.wk_x;
+				king_y = this.wk_y;
+			}
+			else {
+				king_x = this.bk_x;
+				king_y = this.bk_y;
+			}
+		}
 
 		for(int x = 0; x < GameUtil.boardSize; x++) {
 			for(int y = 0; y < GameUtil.boardSize; y++) {
@@ -246,7 +301,9 @@ public class Game implements Serializable{
 			}
 		}
 		
-		return new Game(board, this.turn, this.state, new HashMap<>(this.positions), this.inactivity, this.tie, new LinkedList<>(this.enPassant));
+		return new Game(board, this.turn, this.state, new HashMap<>(this.positions), 
+				this.inactivity, this.tie, new LinkedList<>(this.enPassant), 
+					this.wk_x, this.wk_y, this.bk_x, this.bk_y);
 	}
 		
 	public LinkedList<Move> calculateMoves(){
