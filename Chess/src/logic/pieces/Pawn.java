@@ -113,6 +113,8 @@ public class Pawn extends Piece{
 	
 	@Override
 	public boolean move(int x, int y, int dest_x, int dest_y, Game game) {
+		boolean pieceCaptured = false;
+		
 		int dx = dest_x - x;
 		int dy = dest_y - y;
 		
@@ -152,6 +154,8 @@ public class Pawn extends Piece{
 			if(game.getBoard()[dest_x][dest_y] == null) {
 				game.getBoard()[dest_x][y] = null;
 			}
+			
+			pieceCaptured = true;
 		}
 
 
@@ -170,7 +174,7 @@ public class Pawn extends Piece{
 		
 		game.setInactivity(0);
 		
-		return true;
+		return pieceCaptured;
 	}
 	
 	private boolean pawnAt(int x, int y, Piece[][] board, PieceColor color) {
@@ -323,11 +327,16 @@ public class Pawn extends Piece{
 		
 		////
 		
-		move(x, y, dest_x, dest_y, game);
+		boolean pieceCaptured = move(x, y, dest_x, dest_y, game);
 		
 		if(!game.playerInCheck(game.getTurn())) {
 			if(queueFront != null && queueBack != null) {
-				queueBack.addLast(new Move(x, y, dest_x, dest_y));
+				if(pieceCaptured) {
+					queueFront.addLast(new Move(x, y, dest_x, dest_y));
+				}
+				else {
+					queueBack.addLast(new Move(x, y, dest_x, dest_y));
+				}
 			}
 			success = true;
 		}

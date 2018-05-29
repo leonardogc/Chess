@@ -44,6 +44,8 @@ public class Rook extends Piece{
 	
 	@Override
 	public boolean move(int x, int y, int dest_x, int dest_y, Game game) {
+		boolean pieceCaptured = false;
+		
 		Piece[][] board = game.getBoard();
 		
 		if(board[dest_x][dest_y] == null) {
@@ -51,6 +53,7 @@ public class Rook extends Piece{
 		}
 		else {
 			game.setInactivity(0);
+			pieceCaptured = true;
 		}
 
 		board[dest_x][dest_y] = board[x][y];
@@ -59,7 +62,7 @@ public class Rook extends Piece{
 		
 		((Rook)board[dest_x][dest_y]).setMoved(true);
 		
-		return true;
+		return pieceCaptured;
 	}
 	
 	public boolean getMoved() {
@@ -173,11 +176,11 @@ public class Rook extends Piece{
 		Piece end = board[dest_x][dest_y];
 		int inac = game.getInactivity();
 		
-		move(x, y, dest_x, dest_y, game);
+		boolean pieceCaptured = move(x, y, dest_x, dest_y, game);
 		
 		if(!game.playerInCheck(game.getTurn())) {
 			if(queueFront != null && queueBack != null) {
-				if(game.getInactivity() == 0) {
+				if(pieceCaptured) {
 					queueFront.addLast(new Move(x, y, dest_x, dest_y));
 				}
 				else {
