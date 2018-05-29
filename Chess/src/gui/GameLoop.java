@@ -2,7 +2,6 @@ package gui;
 
 import logic.ai.Minimax;
 import logic.ai.Minimax.Turn;
-import logic.ai.MonteCarlo;
 import logic.game.Game.GameState;
 import logic.game.Move;
 import logic.util.GameUtil.PieceColor;
