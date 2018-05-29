@@ -42,11 +42,11 @@ public class BoardState implements Serializable{
 					switch(game.getBoard()[x][y].getType()) {
 					case King:
 						n = 0;
-						if(game.getBoard()[x][y].testMove(x, y, x-2, y, game, null)) {
+						if(game.getBoard()[x][y].testMove(x, y, x-2, y, game, null, null)) {
 							result |= 1 << 7;
 						}
 						
-						if(game.getBoard()[x][y].testMove(x, y, x+2, y, game, null)) {
+						if(game.getBoard()[x][y].testMove(x, y, x+2, y, game, null, null)) {
 							result |= 1 << 6;
 						}
 						break;

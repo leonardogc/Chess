@@ -51,10 +51,10 @@ public class Queen extends Piece{
 	}
 
 	@Override
-	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queue) {
+	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queueFront, LinkedList<Move> queueBack) {
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x+amount, y+amount, game)) {
-				testKingNotCheck(x, y, x+amount, y+amount, game, queue);
+				testKingNotCheck(x, y, x+amount, y+amount, game, queueFront, queueBack);
 			}
 			else {
 				break;
@@ -63,7 +63,7 @@ public class Queen extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x-amount, y+amount, game)) {
-				testKingNotCheck(x, y, x-amount, y+amount, game, queue);
+				testKingNotCheck(x, y, x-amount, y+amount, game, queueFront, queueBack);
 			}
 			else {
 				break;
@@ -72,7 +72,7 @@ public class Queen extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x+amount, y-amount, game)) {
-				testKingNotCheck(x, y, x+amount, y-amount, game, queue);
+				testKingNotCheck(x, y, x+amount, y-amount, game, queueFront, queueBack);
 			}
 			else {
 				break;
@@ -81,7 +81,7 @@ public class Queen extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x-amount, y-amount, game)) {
-				testKingNotCheck(x, y, x-amount, y-amount, game, queue);
+				testKingNotCheck(x, y, x-amount, y-amount, game, queueFront, queueBack);
 			}
 			else {
 				break;
@@ -90,7 +90,7 @@ public class Queen extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x+amount, y, game)) {
-				testKingNotCheck(x, y, x+amount, y, game, queue);
+				testKingNotCheck(x, y, x+amount, y, game, queueFront, queueBack);
 			}
 			else {
 				break;
@@ -99,7 +99,7 @@ public class Queen extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x-amount, y, game)) {
-				testKingNotCheck(x, y, x-amount, y, game, queue);
+				testKingNotCheck(x, y, x-amount, y, game, queueFront, queueBack);
 			}
 			else {
 				break;
@@ -108,7 +108,7 @@ public class Queen extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x, y+amount, game)) {
-				testKingNotCheck(x, y, x, y+amount, game, queue);
+				testKingNotCheck(x, y, x, y+amount, game, queueFront, queueBack);
 			}
 			else {
 				break;
@@ -117,7 +117,7 @@ public class Queen extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x, y-amount, game)) {
-				testKingNotCheck(x, y, x, y-amount, game, queue);
+				testKingNotCheck(x, y, x, y-amount, game, queueFront, queueBack);
 			}
 			else {
 				break;
@@ -129,7 +129,7 @@ public class Queen extends Piece{
 	public boolean canMove(int x, int y, Game game) {
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x+amount, y+amount, game)) {
-				if(testKingNotCheck(x, y, x+amount, y+amount, game, null)) {
+				if(testKingNotCheck(x, y, x+amount, y+amount, game, null, null)) {
 					return true;
 				}
 			}
@@ -140,7 +140,7 @@ public class Queen extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x-amount, y+amount, game)) {
-				if(testKingNotCheck(x, y, x-amount, y+amount, game, null)) {
+				if(testKingNotCheck(x, y, x-amount, y+amount, game, null, null)) {
 					return true;
 				}
 			}
@@ -151,7 +151,7 @@ public class Queen extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x+amount, y-amount, game)) {
-				if(testKingNotCheck(x, y, x+amount, y-amount, game, null)) {
+				if(testKingNotCheck(x, y, x+amount, y-amount, game, null, null)) {
 					return true;
 				}
 			}
@@ -162,7 +162,7 @@ public class Queen extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x-amount, y-amount, game)) {
-				if(testKingNotCheck(x, y, x-amount, y-amount, game, null)) {
+				if(testKingNotCheck(x, y, x-amount, y-amount, game, null, null)) {
 					return true;
 				}
 			}
@@ -173,7 +173,7 @@ public class Queen extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x+amount, y, game)) {
-				if(testKingNotCheck(x, y, x+amount, y, game, null)) {
+				if(testKingNotCheck(x, y, x+amount, y, game, null, null)) {
 					return true;
 				}
 			}
@@ -184,7 +184,7 @@ public class Queen extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x-amount, y, game)) {
-				if(testKingNotCheck(x, y, x-amount, y, game, null)) {
+				if(testKingNotCheck(x, y, x-amount, y, game, null, null)) {
 					return true;
 				}
 			}
@@ -195,7 +195,7 @@ public class Queen extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x, y+amount, game)) {
-				if(testKingNotCheck(x, y, x, y+amount, game, null)) {
+				if(testKingNotCheck(x, y, x, y+amount, game, null, null)) {
 					return true;
 				}
 			}
@@ -206,7 +206,7 @@ public class Queen extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x, y-amount, game)) {
-				if(testKingNotCheck(x, y, x, y-amount, game, null)) {
+				if(testKingNotCheck(x, y, x, y-amount, game, null, null)) {
 					return true;
 				}
 			}
@@ -219,7 +219,7 @@ public class Queen extends Piece{
 	}
 	
 	@Override
-	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
+	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queueFront, LinkedList<Move> queueBack) {
 		boolean success = false;
 		
 		Piece[][] board = game.getBoard();
@@ -231,12 +231,12 @@ public class Queen extends Piece{
 		move(x, y, dest_x, dest_y, game);
 		
 		if(!game.playerInCheck(game.getTurn())) {
-			if(queue != null) {
+			if(queueFront != null && queueBack != null) {
 				if(game.getInactivity() == 0) {
-					queue.addFirst(new Move(x, y, dest_x, dest_y));
+					queueFront.addLast(new Move(x, y, dest_x, dest_y));
 				}
 				else {
-					queue.addLast(new Move(x, y, dest_x, dest_y));
+					queueBack.addLast(new Move(x, y, dest_x, dest_y));
 				}
 			}
 			success = true;

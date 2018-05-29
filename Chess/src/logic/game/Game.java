@@ -307,7 +307,8 @@ public class Game implements Serializable{
 	}
 		
 	public LinkedList<Move> calculateMoves(){
-		LinkedList<Move> queue = new LinkedList<>();
+		LinkedList<Move> queueFront = new LinkedList<>();
+		LinkedList<Move> queueBack = new LinkedList<>();
 
 		if(this.state == GameState.RegularMove) {
 
@@ -315,7 +316,7 @@ public class Game implements Serializable{
 				for(int y=0; y < GameUtil.boardSize; y++) {
 					if(this.board[x][y] != null) {
 						if(this.board[x][y].getColor() == this.turn) {
-							this.board[x][y].calculateMoves(x, y, this, queue);
+							this.board[x][y].calculateMoves(x, y, this, queueFront, queueBack);
 						}
 					}
 				}
@@ -323,51 +324,18 @@ public class Game implements Serializable{
 
 		}
 		else if(this.state == GameState.ChoosingPiece) {
-			queue.add(new Move(PieceType.Rook));
-			queue.add(new Move(PieceType.Knight));
-			queue.add(new Move(PieceType.Queen));
-			queue.add(new Move(PieceType.Bishop));
+			queueFront.add(new Move(PieceType.Rook));
+			queueFront.add(new Move(PieceType.Knight));
+			queueFront.add(new Move(PieceType.Queen));
+			queueFront.add(new Move(PieceType.Bishop));
 		}
 
-		//Collections.shuffle(queue);
+		Collections.shuffle(queueFront);
+		Collections.shuffle(queueBack);
+		
+		queueFront.addAll(queueBack);
 
-		return queue;
-	}
-	
-	public Move generateRandomMove(){
-		LinkedList<Move> queue = new LinkedList<>();
-
-		if(this.state == GameState.RegularMove) {
-			
-			LinkedList<int[]> pieces = new LinkedList<>();
-
-			for(int x=0; x < GameUtil.boardSize; x++) {
-				for(int y=0; y < GameUtil.boardSize; y++) {
-					if(this.board[x][y] != null) {
-						if(this.board[x][y].getColor() == this.turn) {
-							pieces.add(new int[] {x, y});
-						}
-					}
-				}
-			}
-			
-			//Collections.shuffle(pieces);
-			
-			while(queue.size() == 0) {
-				int[] coords = pieces.poll();
-				this.board[coords[0]][coords[1]].calculateMoves(coords[0], coords[1], this, queue);
-			}
-		}
-		else if(this.state == GameState.ChoosingPiece) {
-			queue.add(new Move(PieceType.Rook));
-			queue.add(new Move(PieceType.Knight));
-			queue.add(new Move(PieceType.Queen));
-			queue.add(new Move(PieceType.Bishop));
-		}
-
-		//Collections.shuffle(queue);
-
-		return queue.get(0);
+		return queueFront;
 	}
 
 

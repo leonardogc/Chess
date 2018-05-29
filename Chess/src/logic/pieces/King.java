@@ -199,60 +199,60 @@ public class King extends Piece{
 	}
 
 	@Override
-	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queue) {
-			testMove(x, y, x+1, y+1, game, queue);
-			testMove(x, y, x-1, y+1, game, queue);
-			testMove(x, y, x+1, y-1, game, queue);
-			testMove(x, y, x-1, y-1, game, queue);
+	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queueFront, LinkedList<Move> queueBack) {
+			testMove(x, y, x+1, y+1, game, queueFront, queueBack);
+			testMove(x, y, x-1, y+1, game, queueFront, queueBack);
+			testMove(x, y, x+1, y-1, game, queueFront, queueBack);
+			testMove(x, y, x-1, y-1, game, queueFront, queueBack);
 			
-			testMove(x, y, x, y+1, game, queue);
-			testMove(x, y, x, y-1, game, queue);
-			testMove(x, y, x-1, y, game, queue);
-			testMove(x, y, x+1, y, game, queue);
+			testMove(x, y, x, y+1, game, queueFront, queueBack);
+			testMove(x, y, x, y-1, game, queueFront, queueBack);
+			testMove(x, y, x-1, y, game, queueFront, queueBack);
+			testMove(x, y, x+1, y, game, queueFront, queueBack);
 			
-			testMove(x, y, x+2, y, game, queue);
-			testMove(x, y, x-2, y, game, queue);
+			testMove(x, y, x+2, y, game, queueFront, queueBack);
+			testMove(x, y, x-2, y, game, queueFront, queueBack);
 	}
 
 	@Override
 	public boolean canMove(int x, int y, Game game) {
-		if(testMove(x, y, x+1, y+1, game, null)) {
+		if(testMove(x, y, x+1, y+1, game, null, null)) {
 			return true;
 		}
 		
-		if(testMove(x, y, x-1, y+1, game, null)) {
+		if(testMove(x, y, x-1, y+1, game, null, null)) {
 			return true;
 		}
 		
-		if(testMove(x, y, x+1, y-1, game, null)) {
+		if(testMove(x, y, x+1, y-1, game, null, null)) {
 			return true;
 		}
 		
-		if(testMove(x, y, x-1, y-1, game, null)) {
+		if(testMove(x, y, x-1, y-1, game, null, null)) {
 			return true;
 		}
 		
-		if(testMove(x, y, x+1, y, game, null)) {
+		if(testMove(x, y, x+1, y, game, null, null)) {
 			return true;
 		}
 		
-		if(testMove(x, y, x-1, y, game, null)) {
+		if(testMove(x, y, x-1, y, game, null, null)) {
 			return true;
 		}
 		
-		if(testMove(x, y, x, y+1, game, null)) {
+		if(testMove(x, y, x, y+1, game, null, null)) {
 			return true;
 		}
 		
-		if(testMove(x, y, x, y-1, game, null)) {
+		if(testMove(x, y, x, y-1, game, null, null)) {
 			return true;
 		}
 		
-		if(testMove(x, y, x+2, y, game, null)) {
+		if(testMove(x, y, x+2, y, game, null, null)) {
 			return true;
 		}
 		
-		if(testMove(x, y, x-2, y, game, null)) {
+		if(testMove(x, y, x-2, y, game, null, null)) {
 			return true;
 		}
 		
@@ -260,7 +260,7 @@ public class King extends Piece{
 	}
 	
 	@Override
-	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
+	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queueFront, LinkedList<Move> queueBack) {
 		boolean success = false;
 		
 		Piece[][] board = game.getBoard();
@@ -304,12 +304,12 @@ public class King extends Piece{
 		move(x, y, dest_x, dest_y, game);
 		
 		if(!game.playerInCheck(game.getTurn())) {
-			if(queue != null) {
+			if(queueFront != null && queueBack != null) {
 				if(game.getInactivity() == 0) {
-					queue.addFirst(new Move(x, y, dest_x, dest_y));
+					queueFront.addLast(new Move(x, y, dest_x, dest_y));
 				}
 				else {
-					queue.addLast(new Move(x, y, dest_x, dest_y));
+					queueBack.addLast(new Move(x, y, dest_x, dest_y));
 				}
 			}
 			success = true;

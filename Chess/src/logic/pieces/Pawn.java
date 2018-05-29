@@ -216,54 +216,54 @@ public class Pawn extends Piece{
 	}
 
 	@Override
-	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queue) {
+	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queueFront, LinkedList<Move> queueBack) {
 		if(game.getBoard()[x][y].getColor() == PieceColor.White) {
-			testMove(x, y, x, y+1, game, queue);
-			testMove(x, y, x, y+2, game, queue);
-			testMove(x, y, x+1, y+1, game, queue);
-			testMove(x, y, x-1, y+1, game, queue);
+			testMove(x, y, x, y+1, game, queueFront, queueBack);
+			testMove(x, y, x, y+2, game, queueFront, queueBack);
+			testMove(x, y, x+1, y+1, game, queueFront, queueBack);
+			testMove(x, y, x-1, y+1, game, queueFront, queueBack);
 		}
 		else {
-			testMove(x, y, x, y-1, game, queue);
-			testMove(x, y, x, y-2, game, queue);
-			testMove(x, y, x+1, y-1, game, queue);
-			testMove(x, y, x-1, y-1, game, queue);
+			testMove(x, y, x, y-1, game, queueFront, queueBack);
+			testMove(x, y, x, y-2, game, queueFront, queueBack);
+			testMove(x, y, x+1, y-1, game, queueFront, queueBack);
+			testMove(x, y, x-1, y-1, game, queueFront, queueBack);
 		}
 	}
 	
 	@Override
 	public boolean canMove(int x, int y, Game game) {
 		if(game.getBoard()[x][y].getColor() == PieceColor.White) {
-			if(testMove(x, y, x, y+1, game, null)) {
+			if(testMove(x, y, x, y+1, game, null, null)) {
 				return true;
 			}
 			
-			if(testMove(x, y, x, y+2, game, null)) {
+			if(testMove(x, y, x, y+2, game, null, null)) {
 				return true;
 			}
 			
-			if(testMove(x, y, x+1, y+1, game, null)) {
+			if(testMove(x, y, x+1, y+1, game, null, null)) {
 				return true;
 			}
 			
-			if(testMove(x, y, x-1, y+1, game, null)) {
+			if(testMove(x, y, x-1, y+1, game, null, null)) {
 				return true;
 			}
 		}
 		else {
-			if(testMove(x, y, x, y-1, game, null)) {
+			if(testMove(x, y, x, y-1, game, null, null)) {
 				return true;
 			}
 			
-			if(testMove(x, y, x, y-2, game, null)) {
+			if(testMove(x, y, x, y-2, game, null, null)) {
 				return true;
 			}
 			
-			if(testMove(x, y, x+1, y-1, game, null)) {
+			if(testMove(x, y, x+1, y-1, game, null, null)) {
 				return true;
 			}
 			
-			if(testMove(x, y, x-1, y-1, game, null)) {
+			if(testMove(x, y, x-1, y-1, game, null, null)) {
 				return true;
 			}
 		}
@@ -271,7 +271,7 @@ public class Pawn extends Piece{
 	}
 	
 	@Override
-	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
+	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queueFront, LinkedList<Move> queueBack) {
 		boolean success = false;
 		
 		Piece[][] board = game.getBoard();
@@ -326,8 +326,8 @@ public class Pawn extends Piece{
 		move(x, y, dest_x, dest_y, game);
 		
 		if(!game.playerInCheck(game.getTurn())) {
-			if(queue != null) {
-				queue.addLast(new Move(x, y, dest_x, dest_y));
+			if(queueFront != null && queueBack != null) {
+				queueBack.addLast(new Move(x, y, dest_x, dest_y));
 			}
 			success = true;
 		}
