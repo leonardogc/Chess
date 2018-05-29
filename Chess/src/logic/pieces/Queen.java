@@ -232,7 +232,12 @@ public class Queen extends Piece{
 		
 		if(!game.playerInCheck(game.getTurn())) {
 			if(queue != null) {
-				queue.add(new Move(x, y, dest_x, dest_y));
+				if(game.getInactivity() == 0) {
+					queue.addFirst(new Move(x, y, dest_x, dest_y));
+				}
+				else {
+					queue.addLast(new Move(x, y, dest_x, dest_y));
+				}
 			}
 			success = true;
 		}

@@ -329,7 +329,7 @@ public class Game implements Serializable{
 			queue.add(new Move(PieceType.Bishop));
 		}
 
-		Collections.shuffle(queue);
+		//Collections.shuffle(queue);
 
 		return queue;
 	}
@@ -351,7 +351,7 @@ public class Game implements Serializable{
 				}
 			}
 			
-			Collections.shuffle(pieces);
+			//Collections.shuffle(pieces);
 			
 			while(queue.size() == 0) {
 				int[] coords = pieces.poll();
@@ -365,7 +365,7 @@ public class Game implements Serializable{
 			queue.add(new Move(PieceType.Bishop));
 		}
 
-		Collections.shuffle(queue);
+		//Collections.shuffle(queue);
 
 		return queue.get(0);
 	}
