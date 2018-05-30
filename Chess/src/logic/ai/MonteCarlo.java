@@ -11,7 +11,7 @@ import logic.util.GameUtil.PieceColor;
 public class MonteCarlo {
 	private Node root;
 	
-	public static double seconds = 15;
+	public static double seconds = 10;
 	
 	public MonteCarlo(Game game) {
 		this.root = new Node(Turn.Max, game);

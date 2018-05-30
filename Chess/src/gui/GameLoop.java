@@ -2,6 +2,7 @@ package gui;
 
 import logic.ai.Minimax;
 import logic.ai.Minimax.Turn;
+import logic.ai.MonteCarlo;
 import logic.game.Game.GameState;
 import logic.game.Move;
 import logic.util.GameUtil.PieceColor;
@@ -37,7 +38,7 @@ public class GameLoop extends Thread{
 			}
 			/*else if(gui.game.getTurn() == PieceColor.Black) {
 				MonteCarlo mt = new MonteCarlo(gui.game);
-				gui.game.applyMove(mt.calculate(10));
+				gui.game.applyMove(mt.calculate());
 			}*/
 			else {
 				gui.queue.clear();
