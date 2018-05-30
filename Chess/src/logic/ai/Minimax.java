@@ -240,7 +240,7 @@ public class Minimax {
 		}
 	}
 
-	private static int heuristic(Game game, PieceColor max) {
+	public static int heuristic(Game game, PieceColor max) {
 		int white_score = 0;
 		int black_score = 0;
 		
@@ -310,7 +310,7 @@ public class Minimax {
 		
 	}
 	
-	private static int better_heuristic(Game game, PieceColor max) {
+	public static int better_heuristic(Game game, PieceColor max) {
 		int white_score = 0;
 		int black_score = 0;
 		
@@ -443,7 +443,7 @@ public class Minimax {
 		
 	}
 	
-	private static int win_loss_score(Turn turn, int node) {
+	public static int win_loss_score(Turn turn, int node) {
 		if(turn == Turn.Max) {
 			return loss+node;
 		}

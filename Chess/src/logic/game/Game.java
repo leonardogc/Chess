@@ -337,6 +337,45 @@ public class Game implements Serializable{
 
 		return queueFront;
 	}
+	
+	public Move generateRandomMove(){
+		LinkedList<Move> queueFront = new LinkedList<>();
+		LinkedList<Move> queueBack = new LinkedList<>();
+
+		if(this.state == GameState.RegularMove) {
+			
+			LinkedList<int[]> coords = new LinkedList<>();
+
+			for(int x=0; x < GameUtil.boardSize; x++) {
+				for(int y=0; y < GameUtil.boardSize; y++) {
+					if(this.board[x][y] != null) {
+						if(this.board[x][y].getColor() == this.turn) {
+							coords.add(new int[] {x, y});
+						}
+					}
+				}
+			}
+			
+			Collections.shuffle(coords);
+			
+			while(queueFront.size() == 0 && queueBack.size() == 0) {
+				int[] coord = coords.poll();
+				this.board[coord[0]][coord[1]].calculateMoves(coord[0], coord[1], this, queueFront, queueBack);
+			}
+		}
+		else if(this.state == GameState.ChoosingPiece) {
+			queueFront.add(new Move(PieceType.Rook));
+			queueFront.add(new Move(PieceType.Knight));
+			queueFront.add(new Move(PieceType.Queen));
+			queueFront.add(new Move(PieceType.Bishop));
+		}
+		
+		queueFront.addAll(queueBack);
+		
+		Collections.shuffle(queueFront);
+
+		return queueFront.get(0);
+	}
 
 
 	public boolean applyMove(Move move) {
