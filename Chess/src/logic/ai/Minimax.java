@@ -18,11 +18,11 @@ public class Minimax {
 	
 	public static final int win = Integer.MAX_VALUE-1;
 	public static final int loss = Integer.MIN_VALUE+1;
-	public static final int depth = 5;
+	public static final int depth = 6;
 	public static int var_depth = depth;
 	
 	public static final double max_time = 20;
-	public static final double inc_at = -1;
+	public static final double inc_at = 0.8; //-1;
 	
 	
 
@@ -105,11 +105,13 @@ public class Minimax {
 			t.start();
 		}
 		else {
-			if(var_depth > depth && t.lap() > max_time) {
-				var_depth = depth;
+			if(var_depth > depth) {
+				if(t.lap() > max_time) {
+					var_depth = depth;
+				}
 			}
 		}
-		
+
 		if(game.tie()) {
 			return 0;
 		}
