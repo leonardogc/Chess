@@ -63,19 +63,19 @@ public class GraphicsAndListeners extends JPanel implements MouseListener, KeyLi
 		addKeyListener(this);
 		
 		try {
-			this.rook_b = ImageIO.read(new File("resources/rook_b.png"));
-			this.bishop_b = ImageIO.read(new File("resources/bishop_b.png"));
-			this.queen_b = ImageIO.read(new File("resources/queen_b.png"));
-			this.pawn_b = ImageIO.read(new File("resources/pawn_b.png"));
-			this.king_b = ImageIO.read(new File("resources/king_b.png"));
-			this.knight_b = ImageIO.read(new File("resources/knight_b.png"));
+			this.rook_b = ImageIO.read(GraphicsAndListeners.class.getResource("/gui/resources/rook_b.png"));
+			this.bishop_b = ImageIO.read(GraphicsAndListeners.class.getResource("/gui/resources/bishop_b.png"));
+			this.queen_b = ImageIO.read(GraphicsAndListeners.class.getResource("/gui/resources/queen_b.png"));
+			this.pawn_b = ImageIO.read(GraphicsAndListeners.class.getResource("/gui/resources/pawn_b.png"));
+			this.king_b = ImageIO.read(GraphicsAndListeners.class.getResource("/gui/resources/king_b.png"));
+			this.knight_b = ImageIO.read(GraphicsAndListeners.class.getResource("/gui/resources/knight_b.png"));
 			
-			this.rook_w = ImageIO.read(new File("resources/rook_w.png"));
-			this.bishop_w = ImageIO.read(new File("resources/bishop_w.png"));
-			this.queen_w = ImageIO.read(new File("resources/queen_w.png"));
-			this.pawn_w = ImageIO.read(new File("resources/pawn_w.png"));
-			this.king_w = ImageIO.read(new File("resources/king_w.png"));
-			this.knight_w = ImageIO.read(new File("resources/knight_w.png"));
+			this.rook_w = ImageIO.read(GraphicsAndListeners.class.getResource("/gui/resources/rook_w.png"));
+			this.bishop_w = ImageIO.read(GraphicsAndListeners.class.getResource("/gui/resources/bishop_w.png"));
+			this.queen_w = ImageIO.read(GraphicsAndListeners.class.getResource("/gui/resources/queen_w.png"));
+			this.pawn_w = ImageIO.read(GraphicsAndListeners.class.getResource("/gui/resources/pawn_w.png"));
+			this.king_w = ImageIO.read(GraphicsAndListeners.class.getResource("/gui/resources/king_w.png"));
+			this.knight_w = ImageIO.read(GraphicsAndListeners.class.getResource("/gui/resources/knight_w.png"));
 		} 
 		catch (IOException e) {
 			System.out.println("Could not read images");
