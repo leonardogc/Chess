@@ -137,15 +137,15 @@ public class Pawn extends Piece{
 				if(pawnAt(dest_x + 1, dest_y, game.getBoard(), game.getBoard()[x][y].getColor().change())) {
 					((Pawn) game.getBoard()[dest_x + 1][dest_y]).setEnPassant(true);
 					((Pawn) game.getBoard()[x][y]).setEnPassantVictim(true);
-					game.getEnPassant().add((Pawn) game.getBoard()[dest_x + 1][dest_y]);
-					game.getEnPassant().add((Pawn) game.getBoard()[x][y]);
+					game.getEnPassant().addLast((Pawn) game.getBoard()[dest_x + 1][dest_y]);
+					game.getEnPassant().addLast((Pawn) game.getBoard()[x][y]);
 				}
 				
 				if(pawnAt(dest_x - 1, dest_y, game.getBoard(), game.getBoard()[x][y].getColor().change())) {
 					((Pawn) game.getBoard()[dest_x - 1][dest_y]).setEnPassant(true);
 					((Pawn) game.getBoard()[x][y]).setEnPassantVictim(true);
-					game.getEnPassant().add((Pawn) game.getBoard()[dest_x - 1][dest_y]);
-					game.getEnPassant().add((Pawn) game.getBoard()[x][y]);
+					game.getEnPassant().addLast((Pawn) game.getBoard()[dest_x - 1][dest_y]);
+					game.getEnPassant().addLast((Pawn) game.getBoard()[x][y]);
 				}
 
 			}
@@ -285,7 +285,7 @@ public class Pawn extends Piece{
 		
 		GameState state = game.getState();
 		int inac = game.getInactivity();
-		LinkedList<Pawn> enPList = new LinkedList<>(game.getEnPassant());
+		int enPListSize = game.getEnPassant().size();
 		
 		Piece enPassantVictim = null;
 		
@@ -360,7 +360,10 @@ public class Pawn extends Piece{
 		
 		game.setState(state);
 		game.setInactivity(inac);
-		game.setEnPassant(enPList);
+		
+		while(game.getEnPassant().size() > enPListSize) {
+			game.getEnPassant().removeLast();
+		}
 		
 		return success;
 	}

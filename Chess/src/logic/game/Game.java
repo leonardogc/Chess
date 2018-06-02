@@ -148,9 +148,6 @@ public class Game implements Serializable{
 		this.inactivity = inactivity;
 	}
 	
-	public void setEnPassant(LinkedList<Pawn> enPassant) {
-		this.enPassant = enPassant;
-	}
 	
 	public void incInactivity() {
 		this.inactivity++;
