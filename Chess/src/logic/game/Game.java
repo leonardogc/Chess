@@ -128,6 +128,10 @@ public class Game implements Serializable{
 		return this.enPassant;
 	}
 	
+	public HashMap<BoardState, Integer> getPositions() {
+		return this.positions;
+	}
+	
 	public PieceColor getTurn() {
 		return this.turn;
 	}
@@ -140,6 +144,26 @@ public class Game implements Serializable{
 		return this.inactivity;
 	}
 	
+	public int getWK_X() {
+		return this.wk_x;
+	}
+	
+	public int getWK_Y() {
+		return this.wk_y;
+	}
+	
+	public int getBK_X() {
+		return this.bk_x;
+	}
+	
+	public int getBK_Y() {
+		return this.bk_y;
+	}
+	
+	public boolean tie() {
+		return this.tie;
+	}
+	
 	public void setState(GameState state) {
 		this.state = state;
 	}
@@ -147,7 +171,6 @@ public class Game implements Serializable{
 	public void setInactivity(int inactivity) {
 		this.inactivity = inactivity;
 	}
-	
 	
 	public void incInactivity() {
 		this.inactivity++;
@@ -282,10 +305,6 @@ public class Game implements Serializable{
 
 		return false;
 	}
-	
-	public boolean tie() {
-		return this.tie;
-	}
 
 	public Game makeCopy() {
 		Piece[][] board = new Piece[GameUtil.boardSize][GameUtil.boardSize];
@@ -301,6 +320,30 @@ public class Game implements Serializable{
 		return new Game(board, this.turn, this.state, new HashMap<>(this.positions), 
 				this.inactivity, this.tie, new LinkedList<>(this.enPassant), 
 					this.wk_x, this.wk_y, this.bk_x, this.bk_y);
+	}
+	
+	public void copyFrom(Game game) {
+		for(int y=0; y < GameUtil.boardSize; y++) {
+			for(int x=0; x < GameUtil.boardSize; x++) {
+				if(game.getBoard()[x][y] != null) {
+					this.board[x][y] = game.getBoard()[x][y].makeCopy();
+				}
+				else {
+					this.board[x][y] = null;
+				}
+			}
+		}
+		
+		this.turn = game.getTurn();
+		this.state = game.getState();
+		this.positions = new HashMap<>(game.getPositions());
+		this.inactivity = game.getInactivity();
+		this.tie = game.tie();
+		this.enPassant = new LinkedList<>(game.getEnPassant());
+		this.wk_x = game.getWK_X();
+		this.wk_y = game.getWK_Y();
+		this.bk_x = game.getBK_X();
+		this.bk_y = game.getBK_Y();
 	}
 		
 	public LinkedList<Move> calculateMoves(){

@@ -159,13 +159,21 @@ public class Minimax {
 			}
 		}
 
+		Game game_copy = null;
+		
 		//iterate through possible plays calling minimax each time
 		while(moves.size() > 0) {
 			/*if(curr_depth == 0) {
 				System.out.println("Size: " + moves.size());
 			}*/
 			Move move = moves.poll();
-			Game game_copy = game.makeCopy();
+			
+			if(game_copy == null) {
+				game_copy = game.makeCopy();
+			}
+			else {
+				game_copy.copyFrom(game);
+			}
 
 			game_copy.applyMove(move);
 			
