@@ -97,6 +97,88 @@ public class Minimax {
 														  {0,10,-10,0,10,20,50,60},
 														  {0,10,-5,0,5,10,50,60},
 														  {0,5,5,0,5,10,50,60}};
+														  
+														  
+														  
+    public static final double king_score_v2 = 200000;
+	public static final double queen_score_v2 = 9000;
+	public static final double rook_score_v2 = 5000;
+	public static final double knight_score_v2 = 3000;
+	public static final double bishop_score_v2 = 3000;
+	public static final double pawn_score_v2 = 1000;
+	
+	//for white pieces
+	//use mirrored for black pieces
+	public static final int[][] king_board_middle_v2 = new int[][] {{200, -200, -700, -900, -900, -900, -900, -900},
+																	{300, -200, -700, -900, -900, -900, -900, -900},
+																	{100, -500, -700, -900, -900, -900, -900, -900},
+																	{-300, -500, -700, -900, -900, -900, -900, -900},
+																	{300, -500, -700, -900, -900, -900, -900, -900},
+																	{100, -500, -700, -900, -900, -900, -900, -900},
+																	{300, -200, -700, -900, -900, -900, -900, -900},
+																	{200, -200, -700, -900, -900, -900, -900, -900}};
+																	
+															
+	public static final int[][] king_board_end_v2 = new int[][] {{0, 30, 50, 200, 200, 50, 30, 0},
+																 {30, 50, 100, 300, 300, 100, 50, 30},
+																 {50, 100, 200, 400, 400, 200, 100, 50},
+																 {200, 300, 400, 500, 500, 400, 300, 200},
+																 {200, 300, 400, 500, 500, 400, 300, 200},
+																 {50, 100, 200, 400, 400, 200, 100, 50},
+																 {30, 50, 100, 300, 300, 100, 50, 30},
+																 {0, 30, 50, 200, 200, 50, 30, 0}};
+																	
+															
+	public static final int[][] queen_board_v2 = new int[][] {{0, 0, 0, 0, 0, 0, 0, 0},
+															  {0, 0, 0, 0, 0, 0, 0, 0},
+															  {0, 0, 75, 75, 75, 75, 0, 0},
+															  {0, 0, 75, 100, 100, 75, 0, 0},
+															  {0, 0, 75, 100, 100, 75, 0, 0},
+															  {0, 0, 75, 75, 75, 75, 0, 0},
+															  {0, 0, 0, 0, 0, 0, 0, 0},
+															  {0, 0, 0, 0, 0, 0, 0, 0}};
+															  
+														   
+	public static final int[][] rook_board_v2 = new int[][] {{0, 0, 0, 0, 0, 0, 0, 0},
+															 {0, 0, 0, 0, 0, 0, 0, 0},
+														     {10, 10, 10, 10, 10, 10, 10, 10},
+													    	 {15, 15, 15, 15, 15, 15, 15, 15},
+														     {15, 15, 15, 15, 15, 15, 15, 15},
+														     {10, 10, 10, 10, 10, 10, 10, 10},
+														     {0, 0, 0, 0, 0, 0, 0, 0},
+														     {0, 0, 0, 0, 0, 0, 0, 0}};
+		  													 
+														  
+	public static final int[][] knight_board_v2 = new int[][] {{-120, -120, -120, -120, -120, -120, -120, -120},
+															   {-120, 25, 25, 25, 25, 25, 25, -120},
+															   {-120, 25, 50, 50, 50, 50, 25, -120},
+															   {-120, 25, 50, 100, 100, 50, 25, -120},
+															   {-120, 25, 50, 100, 100, 50, 25, -120},
+															   {-120, 25, 50, 50, 50, 50, 25, -120},
+															   {-120, 25, 25, 25, 25, 25, 25, -120},
+															   {-120, -120, -120, -120, -120, -120, -120, -120}};
+															   
+															   
+															
+	public static final int[][] bishop_board_v2 = new int[][] {{-40, -40, -40, -40, -40, -40, -40, -40},
+															   {-40, 20, 20, 20, 20, 20, 20, -40},
+															   {-40, 20, 30, 30, 30, 30, 20, -40},
+															   {-40, 20, 30, 45, 45, 30, 20, -40},
+															   {-40, 20, 30, 45, 45, 30, 20, -40},
+															   {-40, 20, 30, 30, 30, 30, 20, -40},
+															   {-40, 20, 20, 20, 20, 20, 20, -40},
+															   {-40, -40, -40, -40, -40, -40, -40, -40}};
+															
+	public static final int[][] pawn_board_v2 = new int[][] {{0, 0, 0, 0, 0, 0, 0, 0},
+															 {0, 0, 0, 0, 0, 0, 0, 0},
+															 {0, 0, 0, 15, 0, 0, 0, 0},
+															 {0, -100, 40, 75, 75, 0, 0, 0},
+															 {0, -100, 40, 75, 75, 0, 0, 0},
+															 {0, 0, 0, 15, 0, 0, 0, 0},
+															 {0, 0, 0, 0, 0, 0, 0, 0},
+															 {0, 0, 0, 0, 0, 0, 0, 0}};
+														  
+	
 
 	
 	public static int minimax_alpha_beta(Game game, Turn turn, int curr_depth, int alpha, int beta, StopWatch t) {
@@ -440,6 +522,140 @@ public class Minimax {
 		else {
 			white_score+=king_board_middle[white_king_x][white_king_y];
 			black_score+=king_board_middle[black_king_x][GameUtil.boardSize-1-black_king_y];
+		}
+		
+		if(max == PieceColor.White) {
+			return (white_score - black_score); 
+		}
+		else {
+			return (black_score - white_score);
+		}
+		
+	}
+	
+	
+	public static int better_heuristic_v2(Game game, PieceColor max) {
+		int white_score = 0;
+		int black_score = 0;
+		
+		boolean white_queen = false;
+		boolean black_queen = false;
+		
+		int white_minor_pieces = 0;
+		int black_minor_pieces = 0;
+		
+		int white_major_pieces = 0;
+		int black_major_pieces = 0;
+		
+		int black_king_x = -1;
+		int black_king_y = -1;
+		
+		int white_king_x = -1;
+		int white_king_y = -1;
+		
+		for(int y=0; y < GameUtil.boardSize; y++) {
+			for(int x=0; x < GameUtil.boardSize; x++) {
+				if(game.getBoard()[x][y]!=null) {
+					switch(game.getBoard()[x][y].getType()) {
+					case King:
+						if(game.getBoard()[x][y].getColor() == PieceColor.White) {
+							white_score+=king_score_v2;
+							white_king_x = x;
+							white_king_y = y;
+						}
+						else {
+							black_score+=king_score_v2;
+							black_king_x = x;
+							black_king_y = y;
+						}
+						break;
+					case Rook:
+						if(game.getBoard()[x][y].getColor() == PieceColor.White) {
+							white_score+=rook_score_v2;
+							white_score+=rook_board_v2[x][y];
+							white_major_pieces++;
+						}
+						else {
+							black_score+=rook_score_v2;
+							black_score+=rook_board_v2[x][GameUtil.boardSize-1-y];
+							black_major_pieces++;
+						}
+						break;
+					case Queen:
+						if(game.getBoard()[x][y].getColor() == PieceColor.White) {
+							white_score+=queen_score_v2;
+							white_score+=queen_board_v2[x][y];
+							white_queen = true;
+							white_major_pieces++;
+						}
+						else {
+							black_score+=queen_score_v2;
+							black_score+=queen_board_v2[x][GameUtil.boardSize-1-y];
+							black_queen = true;
+							black_major_pieces++;
+						}
+						break;
+					case Pawn:
+						if(game.getBoard()[x][y].getColor() == PieceColor.White) {
+							white_score+=pawn_score_v2;
+							white_score+=pawn_board_v2[x][y];
+						}
+						else {
+							black_score+=pawn_score_v2;
+							black_score+=pawn_board_v2[x][GameUtil.boardSize-1-y];
+						}
+						break;
+					case Knight:
+						if(game.getBoard()[x][y].getColor() == PieceColor.White) {
+							white_score+=knight_score_v2;
+							white_score+=knight_board_v2[x][y];
+							white_minor_pieces++;
+						}
+						else {
+							black_score+=knight_score_v2;
+							black_score+=knight_board_v2[x][GameUtil.boardSize-1-y];
+							black_minor_pieces++;
+						}
+						break;
+					case Bishop:
+						if(game.getBoard()[x][y].getColor() == PieceColor.White) {
+							white_score+=bishop_score_v2;
+							white_score+=bishop_board_v2[x][y];
+							white_minor_pieces++;
+						}
+						else {
+							black_score+=bishop_score_v2;
+							black_score+=bishop_board_v2[x][GameUtil.boardSize-1-y];
+							black_minor_pieces++;
+						}
+						break;
+					}
+				}
+			}
+		}
+		
+		boolean endgame = false;
+		
+		if(!white_queen && !black_queen) {
+			endgame = true;
+		}
+		else if(!white_queen && (black_queen && black_minor_pieces <= 1 && black_major_pieces == 1)) {
+			endgame = true;
+		}
+		else if(!black_queen && (white_queen && white_minor_pieces <= 1 && white_major_pieces == 1)) {
+			endgame = true;
+		}
+		else if((black_queen && black_minor_pieces <= 1 && black_major_pieces == 1) && (white_queen && white_minor_pieces <= 1 && white_major_pieces == 1)) {
+			endgame = true;
+		}
+		
+		if(endgame) {
+			white_score+=king_board_end_v2[white_king_x][white_king_y];
+			black_score+=king_board_end_v2[black_king_x][GameUtil.boardSize-1-black_king_y];
+		}
+		else {
+			white_score+=king_board_middle_v2[white_king_x][white_king_y];
+			black_score+=king_board_middle_v2[black_king_x][GameUtil.boardSize-1-black_king_y];
 		}
 		
 		if(max == PieceColor.White) {
