@@ -76,10 +76,7 @@ public class Pawn extends Piece{
 				return false;
 			}
 			
-			if(amount == 1) {
-				//do nothing
-			}
-			else if(amount == 2) {
+			if(amount == 2) {
 				if(((Pawn)game.getBoard()[x][y]).getMoved()) {
 					return false;
 				}
@@ -102,7 +99,7 @@ public class Pawn extends Piece{
 					
 				}
 			}
-			else if(amount == 2){
+			else {
 				return false;
 			}
 		}
