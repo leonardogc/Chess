@@ -13,8 +13,6 @@ public class Eval_v5 {
 	public static final int pawn_score = 1000;
 	
 	public static final int bishop_pair = 300;
-	public static final int knight_pair = -80;
-	public static final int rook_pair = -160;
 	
 	public static final int[] knight_adj = new int[]{-200, -160, -120, -80, -40, 0, 40, 80, 120};
 	public static final int[] rook_adj = new int[]{150, 120, 90, 60, 30, 0, -30, -60, -90};
@@ -217,26 +215,9 @@ public class Eval_v5 {
 			if(n_bishops_w > 1) {
 				white_score += bishop_pair;
 			}
-	
-			if(n_rooks_w > 1) {
-				white_score += rook_pair;
-			}
-	
-			if(n_knights_w > 1) {
-				white_score += knight_pair;
-			}
-			
 			
 			if(n_bishops_b > 1) {
 				black_score += bishop_pair;
-			}
-	
-			if(n_rooks_b > 1) {
-				black_score += rook_pair;
-			}
-	
-			if(n_knights_b > 1) {
-				black_score += knight_pair;
 			}
 			
 			white_score += n_knights_w*knight_adj[n_pawns_w];
