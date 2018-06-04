@@ -115,6 +115,6 @@ public class MonteCarlo {
 			max_color = node.currentGame.getTurn().change();
 		}
 		
-		return (double)Minimax.better_heuristic(node.currentGame, max_color);
+		return (double)Eval_v1.eval(node.currentGame, max_color);
 	}
 }
