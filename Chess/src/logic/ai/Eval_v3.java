@@ -5,19 +5,19 @@ import logic.util.GameUtil;
 import logic.util.GameUtil.PieceColor;
 
 public class Eval_v3 {
-    public static final int king_score = 20000;
-	public static final int queen_score = 975;
-	public static final int rook_score = 500;
-	public static final int knight_score = 325;
-	public static final int bishop_score = 335;
-	public static final int pawn_score = 100;
+    public static final int king_score = 200000;
+	public static final int queen_score = 9750;
+	public static final int rook_score = 5000;
+	public static final int knight_score = 3250;
+	public static final int bishop_score = 3350;
+	public static final int pawn_score = 1000;
 	
-	public static final int bishop_pair = 30;
-	public static final int knight_pair = 8;
-	public static final int rook_pair = 16;
+	public static final int bishop_pair = 300;
+	public static final int knight_pair = 160;
+	public static final int rook_pair = 80;
 	
-	public static final int[] knight_adj = new int[]{-20, -16, -12, -8, -4, 0, 4, 8, 12};
-	public static final int[] rook_adj = new int[]{15, 12, 9, 6, 3, 0, -3, -6, -9};
+	public static final int[] knight_adj = new int[]{-200, -160, -120, -80, -40, 0, 40, 80, 120};
+	public static final int[] rook_adj = new int[]{150, 120, 90, 60, 30, 0, -30, -60, -90};
 
 	
 	//for white pieces
