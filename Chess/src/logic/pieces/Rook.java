@@ -44,8 +44,6 @@ public class Rook extends Piece{
 	
 	@Override
 	public boolean move(int x, int y, int dest_x, int dest_y, Game game) {
-		boolean pieceCaptured = false;
-		
 		Piece[][] board = game.getBoard();
 		
 		if(board[dest_x][dest_y] == null) {
@@ -53,7 +51,6 @@ public class Rook extends Piece{
 		}
 		else {
 			game.setInactivity(0);
-			pieceCaptured = true;
 		}
 
 		board[dest_x][dest_y] = board[x][y];
@@ -62,7 +59,7 @@ public class Rook extends Piece{
 		
 		((Rook)board[dest_x][dest_y]).setMoved(true);
 		
-		return pieceCaptured;
+		return true;
 	}
 	
 	public boolean getMoved() {
@@ -79,10 +76,10 @@ public class Rook extends Piece{
 	}
 
 	@Override
-	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queueFront, LinkedList<Move> queueBack) {
+	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queue) {
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x+amount, y, game)) {
-				testKingNotCheck(x, y, x+amount, y, game, queueFront, queueBack);
+				testKingNotCheck(x, y, x+amount, y, game, queue);
 			}
 			else {
 				break;
@@ -91,7 +88,7 @@ public class Rook extends Piece{
 
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x-amount, y, game)) {
-				testKingNotCheck(x, y, x-amount, y, game, queueFront, queueBack);
+				testKingNotCheck(x, y, x-amount, y, game, queue);
 			}
 			else {
 				break;
@@ -100,7 +97,7 @@ public class Rook extends Piece{
 
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x, y+amount, game)) {
-				testKingNotCheck(x, y, x, y+amount, game, queueFront, queueBack);
+				testKingNotCheck(x, y, x, y+amount, game, queue);
 			}
 			else {
 				break;
@@ -109,7 +106,7 @@ public class Rook extends Piece{
 
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x, y-amount, game)) {
-				testKingNotCheck(x, y, x, y-amount, game, queueFront, queueBack);
+				testKingNotCheck(x, y, x, y-amount, game, queue);
 			}
 			else {
 				break;
@@ -121,7 +118,7 @@ public class Rook extends Piece{
 	public boolean canMove(int x, int y, Game game) {
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x+amount, y, game)) {
-				if(testKingNotCheck(x, y, x+amount, y, game, null, null)) {
+				if(testKingNotCheck(x, y, x+amount, y, game, null)) {
 					return true;
 				}
 			}
@@ -132,7 +129,7 @@ public class Rook extends Piece{
 
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x-amount, y, game)) {
-				if(testKingNotCheck(x, y, x-amount, y, game, null, null)) {
+				if(testKingNotCheck(x, y, x-amount, y, game, null)) {
 					return true;
 				}
 			}
@@ -143,7 +140,7 @@ public class Rook extends Piece{
 
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x, y+amount, game)) {
-				if(testKingNotCheck(x, y, x, y+amount, game, null, null)) {
+				if(testKingNotCheck(x, y, x, y+amount, game, null)) {
 					return true;
 				}
 			}
@@ -154,7 +151,7 @@ public class Rook extends Piece{
 
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x, y-amount, game)) {
-				if(testKingNotCheck(x, y, x, y-amount, game, null, null)) {
+				if(testKingNotCheck(x, y, x, y-amount, game, null)) {
 					return true;
 				}
 			}
@@ -167,7 +164,7 @@ public class Rook extends Piece{
 	}
 	
 	@Override
-	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queueFront, LinkedList<Move> queueBack) {
+	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
 		boolean success = false;
 		
 		Piece[][] board = game.getBoard();
@@ -176,16 +173,11 @@ public class Rook extends Piece{
 		Piece end = board[dest_x][dest_y];
 		int inac = game.getInactivity();
 		
-		boolean pieceCaptured = move(x, y, dest_x, dest_y, game);
+		move(x, y, dest_x, dest_y, game);
 		
 		if(!game.playerInCheck(game.getTurn())) {
-			if(queueFront != null && queueBack != null) {
-				if(pieceCaptured) {
-					queueFront.addLast(new Move(x, y, dest_x, dest_y));
-				}
-				else {
-					queueBack.addLast(new Move(x, y, dest_x, dest_y));
-				}
+			if(queue != null) {
+				queue.addLast(new Move(x, y, dest_x, dest_y, end));
 			}
 			success = true;
 		}

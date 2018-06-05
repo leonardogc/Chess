@@ -2,6 +2,7 @@ package logic.game;
 
 import java.io.Serializable;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -16,6 +17,7 @@ import logic.util.BoardState;
 import logic.util.GameUtil;
 import logic.util.GameUtil.PieceColor;
 import logic.util.GameUtil.PieceType;
+import logic.util.StopWatch;
 
 public class Game implements Serializable{
 	
@@ -347,8 +349,7 @@ public class Game implements Serializable{
 	}
 		
 	public LinkedList<Move> calculateMoves(){
-		LinkedList<Move> queueFront = new LinkedList<>();
-		LinkedList<Move> queueBack = new LinkedList<>();
+		LinkedList<Move> queue = new LinkedList<>();
 
 		if(this.state == GameState.RegularMove) {
 
@@ -356,7 +357,7 @@ public class Game implements Serializable{
 				for(int y=0; y < GameUtil.boardSize; y++) {
 					if(this.board[x][y] != null) {
 						if(this.board[x][y].getColor() == this.turn) {
-							this.board[x][y].calculateMoves(x, y, this, queueFront, queueBack);
+							this.board[x][y].calculateMoves(x, y, this, queue);
 						}
 					}
 				}
@@ -364,23 +365,35 @@ public class Game implements Serializable{
 
 		}
 		else if(this.state == GameState.ChoosingPiece) {
-			queueFront.add(new Move(PieceType.Rook));
-			queueFront.add(new Move(PieceType.Knight));
-			queueFront.add(new Move(PieceType.Queen));
-			queueFront.add(new Move(PieceType.Bishop));
+			queue.add(new Move(PieceType.Rook));
+			queue.add(new Move(PieceType.Knight));
+			queue.add(new Move(PieceType.Queen));
+			queue.add(new Move(PieceType.Bishop));
 		}
 
-		Collections.shuffle(queueFront);
-		Collections.shuffle(queueBack);
+		Collections.shuffle(queue);
 		
-		queueFront.addAll(queueBack);
+		Collections.sort(queue, new Comparator<Move>() {
+			@Override
+			public int compare(Move o1, Move o2) {
+				if(o1.victim == o2.victim) {
+					return 0;
+				}
+				else if(o1.victim < o2.victim) {
+					return 1;
+				}
+				else{
+					return -1;
+				}
+			}
+		});
 
-		return queueFront;
+		return queue;
 	}
 	
+	
 	public Move generateRandomMove(){
-		LinkedList<Move> queueFront = new LinkedList<>();
-		LinkedList<Move> queueBack = new LinkedList<>();
+		LinkedList<Move> queue = new LinkedList<>();
 
 		if(this.state == GameState.RegularMove) {
 			
@@ -398,23 +411,21 @@ public class Game implements Serializable{
 			
 			Collections.shuffle(coords);
 			
-			while(queueFront.size() == 0 && queueBack.size() == 0) {
+			while(queue.size() == 0) {
 				int[] coord = coords.poll();
-				this.board[coord[0]][coord[1]].calculateMoves(coord[0], coord[1], this, queueFront, queueBack);
+				this.board[coord[0]][coord[1]].calculateMoves(coord[0], coord[1], this, queue);
 			}
 		}
 		else if(this.state == GameState.ChoosingPiece) {
-			queueFront.add(new Move(PieceType.Rook));
-			queueFront.add(new Move(PieceType.Knight));
-			queueFront.add(new Move(PieceType.Queen));
-			queueFront.add(new Move(PieceType.Bishop));
+			queue.add(new Move(PieceType.Rook));
+			queue.add(new Move(PieceType.Knight));
+			queue.add(new Move(PieceType.Queen));
+			queue.add(new Move(PieceType.Bishop));
 		}
 		
-		queueFront.addAll(queueBack);
-		
-		Collections.shuffle(queueFront);
+		Collections.shuffle(queue);
 
-		return queueFront.get(0);
+		return queue.get(0);
 	}
 
 
