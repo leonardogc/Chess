@@ -14,7 +14,7 @@ public class Eval_v6 {
 	
 	public static final int bishop_pair = 300;
 	
-	public static final int center_control_bonus = 50; //per piece
+	public static final int center_control_bonus = 30; //per piece
 	
 	public static final int[] knight_adj = new int[]{-200, -160, -120, -80, -40, 0, 40, 80, 120};
 	public static final int[] rook_adj = new int[]{150, 120, 90, 60, 30, 0, -30, -60, -90};
