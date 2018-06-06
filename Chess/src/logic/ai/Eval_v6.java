@@ -14,7 +14,7 @@ public class Eval_v6 {
 	
 	public static final int bishop_pair = 300;
 	
-	public static final int center_control_bonus = 200;
+	public static final int center_control_bonus = 50; //per piece
 	
 	public static final int[] knight_adj = new int[]{-200, -160, -120, -80, -40, 0, 40, 80, 120};
 	public static final int[] rook_adj = new int[]{150, 120, 90, 60, 30, 0, -30, -60, -90};
@@ -239,11 +239,14 @@ public class Eval_v6 {
 			black_score += n_knights_b*knight_adj[n_pawns_b];
 			black_score += n_rooks_b*rook_adj[n_pawns_b];
 			
-			white_avg/=(n_bishops_w+n_knights_w+n_rooks_w+white_queen);
-			black_avg/=(n_bishops_b+n_knights_b+n_rooks_b+black_queen);
+			double tw = n_bishops_w+n_knights_w+n_rooks_w+white_queen;
+			double tb = n_bishops_b+n_knights_b+n_rooks_b+black_queen;
 			
-			white_score+=center_control_bonus*(1-(Math.abs(white_avg-3.5)/3.5));
-			black_score+=center_control_bonus*(1-(Math.abs(black_avg-3.5)/3.5));
+			white_avg/=tw;
+			black_avg/=tb;
+			
+			white_score+=tw*center_control_bonus*(1.0-(Math.abs(white_avg-3.5)/3.5));
+			black_score+=tb*center_control_bonus*(1.0-(Math.abs(black_avg-3.5)/3.5));
 	
 			if(max == PieceColor.White) {
 				return (white_score - black_score); 
