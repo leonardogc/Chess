@@ -293,7 +293,7 @@ public class Game implements Serializable{
 			}
 		}
 
-		for(int x = 0; x < GameUtil.boardSize; x++) {
+		/*for(int x = 0; x < GameUtil.boardSize; x++) {
 			for(int y = 0; y < GameUtil.boardSize; y++) {
 				if(this.board[x][y] != null) {
 					if(this.board[x][y].getColor() == color.change()) {
@@ -301,6 +301,243 @@ public class Game implements Serializable{
 							return true;
 						}
 					}
+				}
+			}
+		}*/
+		
+		int x;
+		int y;
+
+		for(int i = 1; i < GameUtil.boardSize; i++) {
+			x = king_x+i;
+			y = king_y;
+			
+			if(GameUtil.validCoordinates(x, y)) {
+				if(this.board[x][y] != null) {
+					if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this)) {
+						return true;
+					}
+					
+					break;
+				}
+			}
+			else {
+				break;
+			}
+		}
+		
+		for(int i = 1; i < GameUtil.boardSize; i++) {
+			x = king_x-i;
+			y = king_y;
+			
+			if(GameUtil.validCoordinates(x, y)) {
+				if(this.board[x][y] != null) {
+					if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this)) {
+						return true;
+					}
+					
+					break;
+				}
+			}
+			else {
+				break;
+			}
+		}
+		
+		for(int i = 1; i < GameUtil.boardSize; i++) {
+			x = king_x;
+			y = king_y+i;
+			
+			if(GameUtil.validCoordinates(x, y)) {
+				if(this.board[x][y] != null) {
+					if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this)) {
+						return true;
+					}
+					
+					break;
+				}
+			}
+			else {
+				break;
+			}
+		}
+		
+		for(int i = 1; i < GameUtil.boardSize; i++) {
+			x = king_x;
+			y = king_y-i;
+			
+			if(GameUtil.validCoordinates(x, y)) {
+				if(this.board[x][y] != null) {
+					if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this)) {
+						return true;
+					}
+					
+					break;
+				}
+			}
+			else {
+				break;
+			}
+		}
+		
+		for(int i = 1; i < GameUtil.boardSize; i++) {
+			x = king_x+i;
+			y = king_y+i;
+			
+			if(GameUtil.validCoordinates(x, y)) {
+				if(this.board[x][y] != null) {
+					if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this)) {
+						return true;
+					}
+					
+					break;
+				}
+			}
+			else {
+				break;
+			}
+		}
+		
+		for(int i = 1; i < GameUtil.boardSize; i++) {
+			x = king_x-i;
+			y = king_y+i;
+			
+			if(GameUtil.validCoordinates(x, y)) {
+				if(this.board[x][y] != null) {
+					if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this)) {
+						return true;
+					}
+					
+					break;
+				}
+			}
+			else {
+				break;
+			}
+		}
+		
+		for(int i = 1; i < GameUtil.boardSize; i++) {
+			x = king_x+i;
+			y = king_y-i;
+			
+			if(GameUtil.validCoordinates(x, y)) {
+				if(this.board[x][y] != null) {
+					if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this)) {
+						return true;
+					}
+					
+					break;
+				}
+			}
+			else {
+				break;
+			}
+		}
+		
+		for(int i = 1; i < GameUtil.boardSize; i++) {
+			x = king_x-i;
+			y = king_y-i;
+			
+			if(GameUtil.validCoordinates(x, y)) {
+				if(this.board[x][y] != null) {
+					if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this)) {
+						return true;
+					}
+					
+					break;
+				}
+			}
+			else {
+				break;
+			}
+		}
+		
+		//check knights
+		
+		x = king_x+2;
+		y = king_y+1;
+		
+		if(GameUtil.validCoordinates(x, y)) {
+			if(this.board[x][y] != null) {
+				if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this)) {
+					return true;
+				}
+			}
+		}
+		
+		x = king_x+1;
+		y = king_y+2;
+		
+		if(GameUtil.validCoordinates(x, y)) {
+			if(this.board[x][y] != null) {
+				if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this)) {
+					return true;
+				}
+			}
+		}
+		
+		x = king_x-2;
+		y = king_y+1;
+		
+		if(GameUtil.validCoordinates(x, y)) {
+			if(this.board[x][y] != null) {
+				if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this)) {
+					return true;
+				}
+			}
+		}
+		
+		x = king_x-1;
+		y = king_y+2;
+		
+		if(GameUtil.validCoordinates(x, y)) {
+			if(this.board[x][y] != null) {
+				if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this)) {
+					return true;
+				}
+			}
+		}
+		
+		x = king_x+2;
+		y = king_y-1;
+		
+		if(GameUtil.validCoordinates(x, y)) {
+			if(this.board[x][y] != null) {
+				if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this)) {
+					return true;
+				}
+			}
+		}
+		
+		x = king_x+1;
+		y = king_y-2;
+		
+		if(GameUtil.validCoordinates(x, y)) {
+			if(this.board[x][y] != null) {
+				if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this)) {
+					return true;
+				}
+			}
+		}
+		
+		x = king_x-2;
+		y = king_y-1;
+		
+		if(GameUtil.validCoordinates(x, y)) {
+			if(this.board[x][y] != null) {
+				if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this)) {
+					return true;
+				}
+			}
+		}
+		
+		x = king_x-1;
+		y = king_y-2;
+		
+		if(GameUtil.validCoordinates(x, y)) {
+			if(this.board[x][y] != null) {
+				if(this.board[x][y].isMoveValid(x, y, king_x, king_y, this)) {
+					return true;
 				}
 			}
 		}
