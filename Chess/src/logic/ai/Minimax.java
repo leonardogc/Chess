@@ -1,12 +1,10 @@
 package logic.ai;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 
 import logic.game.Game;
 import logic.game.Move;
-import logic.game.Game.GameState;
-import logic.util.GameUtil;
 import logic.util.GameUtil.PieceColor;
 import logic.util.StopWatch;
 
@@ -72,7 +70,7 @@ public class Minimax {
 
 		Move best_move=null;
 		
-		LinkedList<Move> moves = game.calculateMoves();
+		ArrayList<Move> moves = game.calculateMoves();
 
 		//check if game ended
 		if(moves.size() == 0) {
@@ -92,7 +90,7 @@ public class Minimax {
 			/*if(curr_depth == 0) {
 				System.out.println("Size: " + moves.size());
 			}*/
-			Move move = moves.poll();
+			Move move = moves.remove(0);
 			
 			if(game_copy == null) {
 				game_copy = game.makeCopy();

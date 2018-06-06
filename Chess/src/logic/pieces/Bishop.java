@@ -1,6 +1,6 @@
 package logic.pieces;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import logic.game.Game;
 import logic.game.Move;
@@ -58,7 +58,7 @@ public class Bishop extends Piece{
 	}
 
 	@Override
-	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queue) {
+	public void calculateMoves(int x, int y, Game game, ArrayList<Move> queue) {
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x+amount, y+amount, game)) {
 				testKingNotCheck(x, y, x+amount, y+amount, game, queue);
@@ -146,7 +146,7 @@ public class Bishop extends Piece{
 	}
 
 	@Override
-	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game,  LinkedList<Move> queue) {
+	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game,  ArrayList<Move> queue) {
 		boolean success = false;
 		
 		Piece[][] board = game.getBoard();
@@ -159,7 +159,7 @@ public class Bishop extends Piece{
 		
 		if(!game.playerInCheck(game.getTurn())) {
 			if(queue != null) {
-				queue.addLast(new Move(x, y, dest_x, dest_y, end));
+				queue.add(new Move(x, y, dest_x, dest_y, end));
 			}
 			success = true;
 		}

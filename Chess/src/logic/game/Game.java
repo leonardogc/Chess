@@ -1,10 +1,10 @@
 package logic.game;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 import logic.pieces.Bishop;
 import logic.pieces.King;
@@ -17,7 +17,6 @@ import logic.util.BoardState;
 import logic.util.GameUtil;
 import logic.util.GameUtil.PieceColor;
 import logic.util.GameUtil.PieceType;
-import logic.util.StopWatch;
 
 public class Game implements Serializable{
 	
@@ -29,7 +28,7 @@ public class Game implements Serializable{
 	private PieceColor turn;
 	private GameState state;
 	private HashMap<BoardState, Integer> positions;
-	private LinkedList<Pawn> enPassant;
+	private ArrayList<Pawn> enPassant;
 	private int inactivity;
 	private boolean tie;
 	
@@ -42,14 +41,14 @@ public class Game implements Serializable{
 		this.turn = PieceColor.White;
 		this.state = GameState.RegularMove;
 		this.positions = new HashMap<>();
-		this.enPassant = new LinkedList<>();
+		this.enPassant = new ArrayList<>();
 		this.inactivity = 0;
 		this.tie = false;
 		initialize_board();
 	}
 	
 	public Game(Piece[][] board, PieceColor turn, GameState state, HashMap<BoardState, Integer> positions, 
-			int inactivity, boolean tie, LinkedList<Pawn> enPassant, int wk_x, int wk_y, int bk_x, int bk_y) {
+			int inactivity, boolean tie, ArrayList<Pawn> enPassant, int wk_x, int wk_y, int bk_x, int bk_y) {
 		this.board = board;
 		this.turn = turn;
 		this.state = state;
@@ -126,7 +125,7 @@ public class Game implements Serializable{
 		return this.board;
 	}
 	
-	public LinkedList<Pawn> getEnPassant() {
+	public ArrayList<Pawn> getEnPassant() {
 		return this.enPassant;
 	}
 	
@@ -193,10 +192,10 @@ public class Game implements Serializable{
 	}
 	
 	public boolean move(Move move) {
-		LinkedList<Move> moves = calculateMoves();
+		ArrayList<Move> moves = calculateMoves();
 		
 		while(moves.size() > 0) {
-			if(move.equals(moves.poll())){
+			if(move.equals(moves.remove(0))){
 				applyMove(move);
 				return true;
 			}
@@ -206,11 +205,11 @@ public class Game implements Serializable{
 	}
 	
 	public boolean promotePawn(PieceType piece) {
-		LinkedList<Move> moves = calculateMoves();
+		ArrayList<Move> moves = calculateMoves();
 		Move move = new Move(piece);
 		
 		while(moves.size() > 0) {
-			if(move.equals(moves.poll())){
+			if(move.equals(moves.remove(0))){
 				applyMove(move);
 				return true;
 			}
@@ -557,7 +556,7 @@ public class Game implements Serializable{
 		}
 		
 		return new Game(board, this.turn, this.state, new HashMap<>(this.positions), 
-				this.inactivity, this.tie, new LinkedList<>(this.enPassant), 
+				this.inactivity, this.tie, new ArrayList<>(this.enPassant), 
 					this.wk_x, this.wk_y, this.bk_x, this.bk_y);
 	}
 	
@@ -578,15 +577,15 @@ public class Game implements Serializable{
 		this.positions = new HashMap<>(game.getPositions());
 		this.inactivity = game.getInactivity();
 		this.tie = game.tie();
-		this.enPassant = new LinkedList<>(game.getEnPassant());
+		this.enPassant = new ArrayList<>(game.getEnPassant());
 		this.wk_x = game.getWK_X();
 		this.wk_y = game.getWK_Y();
 		this.bk_x = game.getBK_X();
 		this.bk_y = game.getBK_Y();
 	}
 		
-	public LinkedList<Move> calculateMoves(){
-		LinkedList<Move> queue = new LinkedList<>();
+	public ArrayList<Move> calculateMoves(){
+		ArrayList<Move> queue = new ArrayList<>();
 
 		if(this.state == GameState.RegularMove) {
 
@@ -630,11 +629,11 @@ public class Game implements Serializable{
 	
 	
 	public Move generateRandomMove(){
-		LinkedList<Move> queue = new LinkedList<>();
+		ArrayList<Move> queue = new ArrayList<>();
 
 		if(this.state == GameState.RegularMove) {
 			
-			LinkedList<int[]> coords = new LinkedList<>();
+			ArrayList<int[]> coords = new ArrayList<>();
 
 			for(int x=0; x < GameUtil.boardSize; x++) {
 				for(int y=0; y < GameUtil.boardSize; y++) {
@@ -649,7 +648,7 @@ public class Game implements Serializable{
 			Collections.shuffle(coords);
 			
 			while(queue.size() == 0) {
-				int[] coord = coords.poll();
+				int[] coord = coords.remove(0);
 				this.board[coord[0]][coord[1]].calculateMoves(coord[0], coord[1], this, queue);
 			}
 		}

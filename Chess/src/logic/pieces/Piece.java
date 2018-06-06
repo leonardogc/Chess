@@ -1,7 +1,7 @@
 package logic.pieces;
 
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import logic.game.Game;
 import logic.game.Move;
@@ -20,10 +20,10 @@ public abstract class Piece implements Serializable{
 	public abstract boolean isMoveValid(int x, int y, int dest_x, int dest_y, Game game);
 	public abstract boolean move(int x, int y, int dest_x, int dest_y, Game game);
 	
-	public abstract void calculateMoves(int x, int y, Game game, LinkedList<Move> queue);
+	public abstract void calculateMoves(int x, int y, Game game, ArrayList<Move> queue);
 	public abstract boolean canMove(int x, int y, Game game);
 	
-	public boolean testMove(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
+	public boolean testMove(int x, int y, int dest_x, int dest_y, Game game, ArrayList<Move> queue) {
 		if(isMoveValid(x, y, dest_x, dest_y, game)) {
 			if(testKingNotCheck(x, y, dest_x, dest_y, game, queue)) {
 				return true;
@@ -33,7 +33,7 @@ public abstract class Piece implements Serializable{
 		return false;	
 	}
 	
-	public abstract boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue);
+	public abstract boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, ArrayList<Move> queue);
 	
 	public abstract Piece makeCopy();
 	

@@ -1,6 +1,6 @@
 package logic.pieces;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import logic.game.Game;
 import logic.game.Move;
@@ -199,7 +199,7 @@ public class King extends Piece{
 	}
 
 	@Override
-	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queue) {
+	public void calculateMoves(int x, int y, Game game, ArrayList<Move> queue) {
 			testMove(x, y, x+1, y+1, game, queue);
 			testMove(x, y, x-1, y+1, game, queue);
 			testMove(x, y, x+1, y-1, game, queue);
@@ -260,7 +260,7 @@ public class King extends Piece{
 	}
 	
 	@Override
-	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
+	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, ArrayList<Move> queue) {
 		boolean success = false;
 		
 		Piece[][] board = game.getBoard();
@@ -305,7 +305,7 @@ public class King extends Piece{
 		
 		if(!game.playerInCheck(game.getTurn())) {
 			if(queue != null) {
-				queue.addLast(new Move(x, y, dest_x, dest_y, end));
+				queue.add(new Move(x, y, dest_x, dest_y, end));
 			}
 			success = true;
 		}

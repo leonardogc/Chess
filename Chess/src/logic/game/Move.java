@@ -2,7 +2,6 @@ package logic.game;
 
 import java.io.Serializable;
 
-import logic.pieces.Pawn;
 import logic.pieces.Piece;
 import logic.util.GameUtil.PieceType;
 

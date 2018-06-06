@@ -1,5 +1,6 @@
 package logic.ai;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -52,12 +53,12 @@ public class Node {
 		
 		this.children = new LinkedList<>(); 
 		
-		LinkedList<Move> moves = currentGame.calculateMoves();
+		ArrayList<Move> moves = currentGame.calculateMoves();
 		
 		Collections.shuffle(moves);
 		
 		while(moves.size() > 0) {
-			children.add(new Node(moves.poll(), this));
+			children.add(new Node(moves.remove(0), this));
 		}
 	}
 	

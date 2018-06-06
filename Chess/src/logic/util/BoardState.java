@@ -1,20 +1,18 @@
 package logic.util;
 
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import logic.game.Game;
 import logic.pieces.Pawn;
-import logic.pieces.Piece;
 import logic.util.GameUtil.PieceColor;
-import logic.util.GameUtil.PieceType;
 
 public class BoardState implements Serializable{
-	LinkedList<Long> data;
+	ArrayList<Long> data;
 	PieceColor turn;
 	
 	public BoardState() {
-		this.data = new LinkedList<>();
+		this.data = new ArrayList<>();
 		this.turn = null;
 	}
 	
@@ -88,7 +86,7 @@ public class BoardState implements Serializable{
 					counter++;
 					
 					if(counter == 5) {
-						this.data.addLast(number);
+						this.data.add(number);
 						number = 0;
 						counter = 0;
 					}
@@ -98,7 +96,7 @@ public class BoardState implements Serializable{
 		}	
 		
 		if(counter != 0) {
-			this.data.addLast(number);
+			this.data.add(number);
 		}
 	}
 
@@ -142,6 +140,4 @@ public class BoardState implements Serializable{
 		
 		return true;
 	}
-
-	
 }

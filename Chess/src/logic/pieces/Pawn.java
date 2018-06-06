@@ -1,6 +1,6 @@
 package logic.pieces;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import logic.game.Game;
 import logic.game.Game.GameState;
@@ -132,15 +132,15 @@ public class Pawn extends Piece{
 				if(pawnAt(dest_x + 1, dest_y, game.getBoard(), game.getBoard()[x][y].getColor().change())) {
 					((Pawn) game.getBoard()[dest_x + 1][dest_y]).setEnPassant(true);
 					((Pawn) game.getBoard()[x][y]).setEnPassantVictim(true);
-					game.getEnPassant().addLast((Pawn) game.getBoard()[dest_x + 1][dest_y]);
-					game.getEnPassant().addLast((Pawn) game.getBoard()[x][y]);
+					game.getEnPassant().add((Pawn) game.getBoard()[dest_x + 1][dest_y]);
+					game.getEnPassant().add((Pawn) game.getBoard()[x][y]);
 				}
 				
 				if(pawnAt(dest_x - 1, dest_y, game.getBoard(), game.getBoard()[x][y].getColor().change())) {
 					((Pawn) game.getBoard()[dest_x - 1][dest_y]).setEnPassant(true);
 					((Pawn) game.getBoard()[x][y]).setEnPassantVictim(true);
-					game.getEnPassant().addLast((Pawn) game.getBoard()[dest_x - 1][dest_y]);
-					game.getEnPassant().addLast((Pawn) game.getBoard()[x][y]);
+					game.getEnPassant().add((Pawn) game.getBoard()[dest_x - 1][dest_y]);
+					game.getEnPassant().add((Pawn) game.getBoard()[x][y]);
 				}
 
 			}
@@ -213,7 +213,7 @@ public class Pawn extends Piece{
 	}
 
 	@Override
-	public void calculateMoves(int x, int y, Game game, LinkedList<Move> queue) {
+	public void calculateMoves(int x, int y, Game game, ArrayList<Move> queue) {
 		if(game.getBoard()[x][y].getColor() == PieceColor.White) {
 			testMove(x, y, x, y+1, game, queue);
 			testMove(x, y, x, y+2, game, queue);
@@ -268,7 +268,7 @@ public class Pawn extends Piece{
 	}
 	
 	@Override
-	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, LinkedList<Move> queue) {
+	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, ArrayList<Move> queue) {
 		boolean success = false;
 		
 		Piece[][] board = game.getBoard();
@@ -325,10 +325,10 @@ public class Pawn extends Piece{
 		if(!game.playerInCheck(game.getTurn())) {
 			if(queue != null) {
 				if(enPassantVictim == null) {
-					queue.addLast(new Move(x, y, dest_x, dest_y, end));
+					queue.add(new Move(x, y, dest_x, dest_y, end));
 				}
 				else {
-					queue.addLast(new Move(x, y, dest_x, dest_y, enPassantVictim));
+					queue.add(new Move(x, y, dest_x, dest_y, enPassantVictim));
 				}
 			}
 			success = true;
@@ -355,7 +355,7 @@ public class Pawn extends Piece{
 		game.setInactivity(inac);
 		
 		while(game.getEnPassant().size() > enPListSize) {
-			game.getEnPassant().removeLast();
+			game.getEnPassant().remove(game.getEnPassant().size()-1);
 		}
 		
 		return success;

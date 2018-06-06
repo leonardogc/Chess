@@ -1,7 +1,5 @@
 package logic.ai;
 
-import java.util.Collections;
-import java.util.LinkedList;
 
 import logic.ai.Minimax.Turn;
 import logic.game.Game;
