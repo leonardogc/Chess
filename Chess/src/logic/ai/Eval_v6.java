@@ -242,12 +242,16 @@ public class Eval_v6 {
 			double tw = n_bishops_w+n_knights_w+n_rooks_w+white_queen;
 			double tb = n_bishops_b+n_knights_b+n_rooks_b+black_queen;
 			
-			white_avg/=tw;
-			black_avg/=tb;
+			if(tw > 0) {
+				white_avg/=tw;
+				white_score+=tw*center_control_bonus*(1.0-(Math.abs(white_avg-3.5)/3.5));
+			}
 			
-			white_score+=tw*center_control_bonus*(1.0-(Math.abs(white_avg-3.5)/3.5));
-			black_score+=tb*center_control_bonus*(1.0-(Math.abs(black_avg-3.5)/3.5));
-	
+			if(tb > 0) {
+				black_avg/=tb;
+				black_score+=tb*center_control_bonus*(1.0-(Math.abs(black_avg-3.5)/3.5));
+			}
+			
 			if(max == PieceColor.White) {
 				return (white_score - black_score); 
 			}
