@@ -612,15 +612,29 @@ public class Game implements Serializable{
 		Collections.sort(queue, new Comparator<Move>() {
 			@Override
 			public int compare(Move o1, Move o2) {
-				if(o1.victim == o2.victim) {
+				if(o1.victim == 0 && o2.victim == 0) {
 					return 0;
 				}
-				else if(o1.victim < o2.victim) {
+
+				if(o1.victim < o2.victim) {
 					return 1;
 				}
-				else{
+
+				if(o1.victim > o2.victim) {
 					return -1;
 				}
+				
+				//same victim
+
+				if(o1.attacker > o2.attacker) {
+					return 1;
+				}
+				
+				if(o1.attacker < o2.attacker) {
+					return -1;
+				}
+
+				return 0;
 			}
 		});
 

@@ -13,6 +13,7 @@ public class Move implements Serializable{
 	public final PieceType type;
 	
 	public final int victim;
+	public final int attacker;
 	
 	public Move(int x, int y, int dest_x, int dest_y) {
 		this.x = x;
@@ -22,9 +23,10 @@ public class Move implements Serializable{
 		this.type = null;
 		
 		this.victim = 0;
+		this.attacker = 0;
 	}
 	
-	public Move(int x, int y, int dest_x, int dest_y, Piece victim) {
+	public Move(int x, int y, int dest_x, int dest_y, Piece victim, Piece attacker) {
 		this.x = x;
 		this.y = y;
 		this.dest_x = dest_x;
@@ -59,6 +61,35 @@ public class Move implements Serializable{
 		else {
 			this.victim = 0;
 		}
+		
+		if(attacker != null) {
+			switch(attacker.getType()) {
+			case King:
+				this.attacker = 6;
+				break;
+			case Queen:
+				this.attacker = 5;
+				break;
+			case Rook:
+				this.attacker = 4;
+				break;
+			case Bishop:
+				this.attacker = 3;
+				break;
+			case Knight:
+				this.attacker = 2;
+				break;
+			case Pawn:
+				this.attacker = 1;
+				break;
+			default:
+				this.attacker = 0;
+				break;
+			}
+		}
+		else {
+			this.attacker = 0;
+		}
 	}
 	
 	public Move(PieceType type) {
@@ -69,6 +100,7 @@ public class Move implements Serializable{
 		this.type = type;
 		
 		this.victim = 0;
+		this.attacker = 0;
 	}
 	
 	public boolean equals(Move m) {

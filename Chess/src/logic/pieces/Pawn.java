@@ -325,10 +325,10 @@ public class Pawn extends Piece{
 		if(!game.playerInCheck(game.getTurn())) {
 			if(queue != null) {
 				if(enPassantVictim == null) {
-					queue.add(new Move(x, y, dest_x, dest_y, end));
+					queue.add(new Move(x, y, dest_x, dest_y, end, beg));
 				}
 				else {
-					queue.add(new Move(x, y, dest_x, dest_y, enPassantVictim));
+					queue.add(new Move(x, y, dest_x, dest_y, enPassantVictim, beg));
 				}
 			}
 			success = true;
