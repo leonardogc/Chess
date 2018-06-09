@@ -61,7 +61,7 @@ public class Minimax {
 				color = game.getTurn().change();
 			}
 			
-			return Eval_v5.eval(game, color);
+			return Eval_v6.eval(game, color);
 		}
 		
 		int max_score=Integer.MIN_VALUE;
