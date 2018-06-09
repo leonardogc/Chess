@@ -21,6 +21,7 @@ public class GameLoop extends Thread{
 	@Override
 	public void run() {
 		Scanner scanner = new Scanner(System.in);
+		Move move = null;
 
 		while(!gui.game.noAvailableMoves() && !gui.game.tie()) {
 			System.out.println("It's "+gui.game.getTurn()+"'s turn");
@@ -31,8 +32,14 @@ public class GameLoop extends Thread{
 				System.out.println("Depth: " + Minimax.var_depth);
 
 				total.start();
-				Minimax.minimax_alpha_beta(gui.game, Turn.Max, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, null);
+				move = (Move)Minimax.minimax_alpha_beta(gui.game, Turn.Max, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, null);
 				total.stop();
+				
+				gui.game.applyMove(move);
+				
+				if(move.type == null) {
+					gui.lastMove = move;
+				}
 
 				System.out.println(total.time + " s");
 			}
@@ -47,7 +54,7 @@ public class GameLoop extends Thread{
 					gui.move_piece = true;
 					gui.sel_square = false;
 					
-					Move move = null;
+					move = null;
 					while(move == null) {
 						move = gui.queue.poll();
 					}
@@ -55,7 +62,9 @@ public class GameLoop extends Thread{
 					gui.move_piece = false;
 					gui.sel_square = false;
 
-					gui.game.move(move);
+					if(gui.game.move(move)) {
+						gui.lastMove = move;
+					}
 				}
 				else {
 					System.out.println("Write:\n\tb for Bishop\n\tq for Queen\n\tk for Knight\n\tr for Rook");

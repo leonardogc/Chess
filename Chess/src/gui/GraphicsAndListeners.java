@@ -57,6 +57,8 @@ public class GraphicsAndListeners extends JPanel implements MouseListener, KeyLi
 	
 	public ConcurrentLinkedQueue<Move> queue;
 	
+	public Move lastMove;
+	
 	public GraphicsAndListeners() {
 		addMouseListener(this);
 		addKeyListener(this);
@@ -87,6 +89,8 @@ public class GraphicsAndListeners extends JPanel implements MouseListener, KeyLi
 		this.sel_square = false;
 		this.move_piece = false;
 		
+		this.lastMove = null;
+		
 		this.game = new Game();
 		this.copy = this.game.makeCopy();
 		
@@ -112,6 +116,19 @@ public class GraphicsAndListeners extends JPanel implements MouseListener, KeyLi
 				}
 				
 				g.fillRect(dx+x*square_size, dy+y*square_size, square_size, square_size);
+			}
+		}
+		
+		if(lastMove != null) {
+			g.setColor(new Color(255, 255, 0, 140));
+			
+			if(perspective == PieceColor.White) {
+				g.fillRect(dx+lastMove.x*square_size, dy+(GameUtil.boardSize - 1 - lastMove.y)*square_size, square_size, square_size);
+				g.fillRect(dx+lastMove.dest_x*square_size, dy+(GameUtil.boardSize - 1 - lastMove.dest_y)*square_size, square_size, square_size);
+			}
+			else {
+				g.fillRect(dx+(GameUtil.boardSize - 1 - lastMove.x)*square_size, dy+lastMove.y*square_size, square_size, square_size);
+				g.fillRect(dx+(GameUtil.boardSize - 1 - lastMove.dest_x)*square_size, dy+lastMove.dest_y*square_size, square_size, square_size);
 			}
 		}
 		

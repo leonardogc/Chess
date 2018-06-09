@@ -23,7 +23,7 @@ public class Minimax {
 	public static final double inc_at = 0.8; //-1;
 
 	
-	public static int minimax_alpha_beta(Game game, Turn turn, int curr_depth, int alpha, int beta, StopWatch t) {
+	public static Object minimax_alpha_beta(Game game, Turn turn, int curr_depth, int alpha, int beta, StopWatch t) {
 		if(curr_depth == 0) {
 			t = new StopWatch();
 			t.start();
@@ -104,10 +104,10 @@ public class Minimax {
 			if(turn == Turn.Max) {
 				if(game_copy.getTurn() == game.getTurn()) {
 					//max plays again
-					result = minimax_alpha_beta(game_copy, Turn.Max, curr_depth+1, alpha, beta, t);
+					result = (int)minimax_alpha_beta(game_copy, Turn.Max, curr_depth+1, alpha, beta, t);
 				}
 				else {
-					result = minimax_alpha_beta(game_copy, Turn.Min, curr_depth+1, alpha, beta, t);
+					result = (int)minimax_alpha_beta(game_copy, Turn.Min, curr_depth+1, alpha, beta, t);
 				}
 
 				if(result > alpha) {
@@ -126,10 +126,10 @@ public class Minimax {
 			else if(turn == Turn.Min){
 				if(game_copy.getTurn() == game.getTurn()) {
 					//min plays again
-					result = minimax_alpha_beta(game_copy, Turn.Min, curr_depth+1, alpha, beta, t);
+					result = (int)minimax_alpha_beta(game_copy, Turn.Min, curr_depth+1, alpha, beta, t);
 				}
 				else {
-					result = minimax_alpha_beta(game_copy, Turn.Max, curr_depth+1, alpha, beta, t);
+					result = (int)minimax_alpha_beta(game_copy, Turn.Max, curr_depth+1, alpha, beta, t);
 				}
 
 				if(result < beta) {
@@ -153,15 +153,13 @@ public class Minimax {
 					var_depth++;
 				}
 				
-				game.applyMove(best_move);
-				best_move.print();
 				System.out.println("Score: " + max_score);
-				return 0;
 			}
 			else {
 				System.out.println("Something went very wrong on Minimax algorithm");
-				return -1;
 			}
+			
+			return best_move;
 		}
 		
 		if(turn == Turn.Max) {
