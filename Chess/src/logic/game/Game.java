@@ -548,16 +548,20 @@ public class Game implements Serializable{
 		Piece[][] board = new Piece[GameUtil.boardSize][GameUtil.boardSize];
 		
 		ArrayList<Pawn> enPassant = new ArrayList<>();
+		
+		int size = this.enPassant.size();
 
 		for(int y=0; y < GameUtil.boardSize; y++) {
 			for(int x=0; x < GameUtil.boardSize; x++) {
 				if(this.board[x][y] != null) {
 					board[x][y] = this.board[x][y].makeCopy();
-					
-					if(board[x][y].getType() == PieceType.Pawn) {
-						Pawn p = (Pawn)board[x][y];
-						if(p.getEnPassant() || p.getEnPassantVictim()) {
-							enPassant.add(p);
+
+					if(size != 0) {
+						if(board[x][y].getType() == PieceType.Pawn) {
+							Pawn p = (Pawn)board[x][y];
+							if(p.getEnPassant() || p.getEnPassantVictim()) {
+								enPassant.add(p);
+							}
 						}
 					}
 				}
@@ -568,19 +572,23 @@ public class Game implements Serializable{
 				this.inactivity, this.tie, enPassant, 
 					this.wk_x, this.wk_y, this.bk_x, this.bk_y);
 	}
-	
+
 	public void copyFrom(Game game) {
 		this.enPassant = new ArrayList<>();
-		
+
+		int size = game.getEnPassant().size();
+
 		for(int y=0; y < GameUtil.boardSize; y++) {
 			for(int x=0; x < GameUtil.boardSize; x++) {
 				if(game.getBoard()[x][y] != null) {
 					this.board[x][y] = game.getBoard()[x][y].makeCopy();
-					
-					if(this.board[x][y].getType() == PieceType.Pawn) {
-						Pawn p = (Pawn)this.board[x][y];
-						if(p.getEnPassant() || p.getEnPassantVictim()) {
-							this.enPassant.add(p);
+
+					if(size != 0) {
+						if(this.board[x][y].getType() == PieceType.Pawn) {
+							Pawn p = (Pawn)this.board[x][y];
+							if(p.getEnPassant() || p.getEnPassantVictim()) {
+								this.enPassant.add(p);
+							}
 						}
 					}
 				}
