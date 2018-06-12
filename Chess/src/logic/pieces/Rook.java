@@ -76,10 +76,10 @@ public class Rook extends Piece{
 	}
 
 	@Override
-	public void calculateMoves(int x, int y, Game game, ArrayList<Move> queue) {
+	public void calculateMoves(int x, int y, Game game, ArrayList<Move> queue, boolean deepSort) {
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x+amount, y, game)) {
-				testKingNotCheck(x, y, x+amount, y, game, queue);
+				testKingNotCheck(x, y, x+amount, y, game, queue, deepSort);
 			}
 			else {
 				break;
@@ -88,7 +88,7 @@ public class Rook extends Piece{
 
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x-amount, y, game)) {
-				testKingNotCheck(x, y, x-amount, y, game, queue);
+				testKingNotCheck(x, y, x-amount, y, game, queue, deepSort);
 			}
 			else {
 				break;
@@ -97,7 +97,7 @@ public class Rook extends Piece{
 
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x, y+amount, game)) {
-				testKingNotCheck(x, y, x, y+amount, game, queue);
+				testKingNotCheck(x, y, x, y+amount, game, queue, deepSort);
 			}
 			else {
 				break;
@@ -106,7 +106,7 @@ public class Rook extends Piece{
 
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x, y-amount, game)) {
-				testKingNotCheck(x, y, x, y-amount, game, queue);
+				testKingNotCheck(x, y, x, y-amount, game, queue, deepSort);
 			}
 			else {
 				break;
@@ -118,7 +118,7 @@ public class Rook extends Piece{
 	public boolean canMove(int x, int y, Game game) {
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x+amount, y, game)) {
-				if(testKingNotCheck(x, y, x+amount, y, game, null)) {
+				if(testKingNotCheck(x, y, x+amount, y, game, null, false)) {
 					return true;
 				}
 			}
@@ -129,7 +129,7 @@ public class Rook extends Piece{
 
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x-amount, y, game)) {
-				if(testKingNotCheck(x, y, x-amount, y, game, null)) {
+				if(testKingNotCheck(x, y, x-amount, y, game, null, false)) {
 					return true;
 				}
 			}
@@ -140,7 +140,7 @@ public class Rook extends Piece{
 
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x, y+amount, game)) {
-				if(testKingNotCheck(x, y, x, y+amount, game, null)) {
+				if(testKingNotCheck(x, y, x, y+amount, game, null, false)) {
 					return true;
 				}
 			}
@@ -151,7 +151,7 @@ public class Rook extends Piece{
 
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x, y-amount, game)) {
-				if(testKingNotCheck(x, y, x, y-amount, game, null)) {
+				if(testKingNotCheck(x, y, x, y-amount, game, null, false)) {
 					return true;
 				}
 			}
@@ -164,7 +164,7 @@ public class Rook extends Piece{
 	}
 	
 	@Override
-	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, ArrayList<Move> queue) {
+	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, ArrayList<Move> queue, boolean deepSort) {
 		boolean success = false;
 		
 		Piece[][] board = game.getBoard();
@@ -172,12 +172,17 @@ public class Rook extends Piece{
 		Piece beg = board[x][y].makeCopy();
 		Piece end = board[dest_x][dest_y];
 		int inac = game.getInactivity();
-		
+
 		move(x, y, dest_x, dest_y, game);
-		
+
 		if(!game.playerInCheck(game.getTurn())) {
 			if(queue != null) {
-				queue.add(new Move(x, y, dest_x, dest_y, end, beg));
+				if(deepSort) {
+					queue.add(new Move(x, y, dest_x, dest_y, game));
+				}
+				else{
+					queue.add(new Move(x, y, dest_x, dest_y, end, beg));
+				}
 			}
 			success = true;
 		}

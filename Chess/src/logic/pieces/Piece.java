@@ -20,12 +20,12 @@ public abstract class Piece implements Serializable{
 	public abstract boolean isMoveValid(int x, int y, int dest_x, int dest_y, Game game);
 	public abstract boolean move(int x, int y, int dest_x, int dest_y, Game game);
 	
-	public abstract void calculateMoves(int x, int y, Game game, ArrayList<Move> queue);
+	public abstract void calculateMoves(int x, int y, Game game, ArrayList<Move> queue, boolean deepSort);
 	public abstract boolean canMove(int x, int y, Game game);
 	
-	public boolean testMove(int x, int y, int dest_x, int dest_y, Game game, ArrayList<Move> queue) {
+	public boolean testMove(int x, int y, int dest_x, int dest_y, Game game, ArrayList<Move> queue, boolean deepSort) {
 		if(isMoveValid(x, y, dest_x, dest_y, game)) {
-			if(testKingNotCheck(x, y, dest_x, dest_y, game, queue)) {
+			if(testKingNotCheck(x, y, dest_x, dest_y, game, queue, deepSort)) {
 				return true;
 			}
 		}
@@ -33,7 +33,7 @@ public abstract class Piece implements Serializable{
 		return false;	
 	}
 	
-	public abstract boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, ArrayList<Move> queue);
+	public abstract boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game, ArrayList<Move> queue, boolean deepSort);
 	
 	public abstract Piece makeCopy();
 	

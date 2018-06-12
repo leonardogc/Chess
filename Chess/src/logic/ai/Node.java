@@ -53,7 +53,7 @@ public class Node {
 		
 		this.children = new LinkedList<>(); 
 		
-		ArrayList<Move> moves = currentGame.calculateMoves();
+		ArrayList<Move> moves = currentGame.calculateMoves(false);
 		
 		Collections.shuffle(moves);
 		

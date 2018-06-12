@@ -2,6 +2,7 @@ package logic.game;
 
 import java.io.Serializable;
 
+import logic.ai.Eval_v6;
 import logic.pieces.Piece;
 import logic.util.GameUtil.PieceType;
 
@@ -15,6 +16,8 @@ public class Move implements Serializable{
 	public final int victim;
 	public final int attacker;
 	
+	public final int score;
+	
 	public Move(int x, int y, int dest_x, int dest_y) {
 		this.x = x;
 		this.y = y;
@@ -24,6 +27,19 @@ public class Move implements Serializable{
 		
 		this.victim = 0;
 		this.attacker = 0;
+		this.score = 0;
+	}
+	
+	public Move(int x, int y, int dest_x, int dest_y, Game game) {
+		this.x = x;
+		this.y = y;
+		this.dest_x = dest_x;
+		this.dest_y = dest_y;
+		this.type = null;
+		
+		this.victim = 0;
+		this.attacker = 0;
+		this.score = Eval_v6.eval(game, game.getTurn());
 	}
 	
 	public Move(int x, int y, int dest_x, int dest_y, Piece victim, Piece attacker) {
@@ -32,6 +48,7 @@ public class Move implements Serializable{
 		this.dest_x = dest_x;
 		this.dest_y = dest_y;
 		this.type = null;
+		this.score = 0;
 		
 		if(victim != null) {
 			switch(victim.getType()) {
@@ -101,6 +118,7 @@ public class Move implements Serializable{
 		
 		this.victim = 0;
 		this.attacker = 0;
+		this.score = 0;
 	}
 	
 	public boolean equals(Move m) {

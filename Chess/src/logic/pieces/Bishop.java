@@ -58,10 +58,10 @@ public class Bishop extends Piece{
 	}
 
 	@Override
-	public void calculateMoves(int x, int y, Game game, ArrayList<Move> queue) {
+	public void calculateMoves(int x, int y, Game game, ArrayList<Move> queue, boolean deepSort) {
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x+amount, y+amount, game)) {
-				testKingNotCheck(x, y, x+amount, y+amount, game, queue);
+				testKingNotCheck(x, y, x+amount, y+amount, game, queue, deepSort);
 			}
 			else {
 				break;
@@ -70,7 +70,7 @@ public class Bishop extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x-amount, y+amount, game)) {
-				testKingNotCheck(x, y, x-amount, y+amount, game, queue);
+				testKingNotCheck(x, y, x-amount, y+amount, game, queue, deepSort);
 			}
 			else {
 				break;
@@ -79,7 +79,7 @@ public class Bishop extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x+amount, y-amount, game)) {
-				testKingNotCheck(x, y, x+amount, y-amount, game, queue);
+				testKingNotCheck(x, y, x+amount, y-amount, game, queue, deepSort);
 			}
 			else {
 				break;
@@ -88,7 +88,7 @@ public class Bishop extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x-amount, y-amount, game)) {
-				testKingNotCheck(x, y, x-amount, y-amount, game, queue);
+				testKingNotCheck(x, y, x-amount, y-amount, game, queue, deepSort);
 			}
 			else {
 				break;
@@ -100,7 +100,7 @@ public class Bishop extends Piece{
 	public boolean canMove(int x, int y, Game game) {
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x+amount, y+amount, game)) {
-				if(testKingNotCheck(x, y, x+amount, y+amount, game, null)){
+				if(testKingNotCheck(x, y, x+amount, y+amount, game, null, false)){
 					return true;
 				}
 			}
@@ -111,7 +111,7 @@ public class Bishop extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x-amount, y+amount, game)) {
-				if(testKingNotCheck(x, y, x-amount, y+amount, game, null)){
+				if(testKingNotCheck(x, y, x-amount, y+amount, game, null, false)){
 					return true;
 				}
 			}
@@ -122,7 +122,7 @@ public class Bishop extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x+amount, y-amount, game)) {
-				if(testKingNotCheck(x, y, x+amount, y-amount, game, null)){
+				if(testKingNotCheck(x, y, x+amount, y-amount, game, null, false)){
 					return true;
 				}
 			}
@@ -133,7 +133,7 @@ public class Bishop extends Piece{
 		
 		for(int amount = 1; amount < GameUtil.boardSize; amount++) {
 			if(isMoveValid(x, y, x-amount, y-amount, game)) {
-				if(testKingNotCheck(x, y, x-amount, y-amount, game, null)){
+				if(testKingNotCheck(x, y, x-amount, y-amount, game, null, false)){
 					return true;
 				}
 			}
@@ -146,7 +146,7 @@ public class Bishop extends Piece{
 	}
 
 	@Override
-	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game,  ArrayList<Move> queue) {
+	public boolean testKingNotCheck(int x, int y, int dest_x, int dest_y, Game game,  ArrayList<Move> queue, boolean deepSort) {
 		boolean success = false;
 		
 		Piece[][] board = game.getBoard();
@@ -159,7 +159,12 @@ public class Bishop extends Piece{
 		
 		if(!game.playerInCheck(game.getTurn())) {
 			if(queue != null) {
-				queue.add(new Move(x, y, dest_x, dest_y, end, beg));
+				if(deepSort) {
+					queue.add(new Move(x, y, dest_x, dest_y, game));
+				}
+				else{
+					queue.add(new Move(x, y, dest_x, dest_y, end, beg));
+				}
 			}
 			success = true;
 		}

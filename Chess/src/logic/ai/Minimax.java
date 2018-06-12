@@ -70,7 +70,7 @@ public class Minimax {
 
 		Move best_move=null;
 		
-		ArrayList<Move> moves = game.calculateMoves();
+		ArrayList<Move> moves = game.calculateMoves(true);
 
 		//check if game ended
 		if(moves.size() == 0) {

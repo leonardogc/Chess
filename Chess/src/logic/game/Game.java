@@ -192,7 +192,7 @@ public class Game implements Serializable{
 	}
 	
 	public boolean move(Move move) {
-		ArrayList<Move> moves = calculateMoves();
+		ArrayList<Move> moves = calculateMoves(false);
 		
 		while(moves.size() > 0) {
 			if(move.equals(moves.remove(0))){
@@ -205,7 +205,7 @@ public class Game implements Serializable{
 	}
 	
 	public boolean promotePawn(PieceType piece) {
-		ArrayList<Move> moves = calculateMoves();
+		ArrayList<Move> moves = calculateMoves(false);
 		Move move = new Move(piece);
 		
 		while(moves.size() > 0) {
@@ -609,7 +609,7 @@ public class Game implements Serializable{
 		this.bk_y = game.getBK_Y();
 	}
 		
-	public ArrayList<Move> calculateMoves(){
+	public ArrayList<Move> calculateMoves(boolean deepSort){
 		ArrayList<Move> queue = new ArrayList<>();
 
 		if(this.state == GameState.RegularMove) {
@@ -618,7 +618,7 @@ public class Game implements Serializable{
 				for(int y=0; y < GameUtil.boardSize; y++) {
 					if(this.board[x][y] != null) {
 						if(this.board[x][y].getColor() == this.turn) {
-							this.board[x][y].calculateMoves(x, y, this, queue);
+							this.board[x][y].calculateMoves(x, y, this, queue, deepSort);
 						}
 					}
 				}
@@ -633,35 +633,53 @@ public class Game implements Serializable{
 		}
 
 		Collections.shuffle(queue);
-		
-		Collections.sort(queue, new Comparator<Move>() {
-			@Override
-			public int compare(Move o1, Move o2) {
-				if(o1.victim == 0 && o2.victim == 0) {
+
+		if(deepSort) {
+			Collections.sort(queue, new Comparator<Move>() {
+				@Override
+				public int compare(Move o1, Move o2) {
+					if(o1.score < o2.score) {
+						return 1;
+					}
+					
+					if(o1.score > o2.score) {
+						return -1;
+					}
+
 					return 0;
 				}
+			});
+		}
+		else {
+			Collections.sort(queue, new Comparator<Move>() {
+				@Override
+				public int compare(Move o1, Move o2) {
+					if(o1.victim == 0 && o2.victim == 0) {
+						return 0;
+					}
 
-				if(o1.victim < o2.victim) {
-					return 1;
-				}
+					if(o1.victim < o2.victim) {
+						return 1;
+					}
 
-				if(o1.victim > o2.victim) {
-					return -1;
-				}
-				
-				//same victim
+					if(o1.victim > o2.victim) {
+						return -1;
+					}
 
-				if(o1.attacker > o2.attacker) {
-					return 1;
-				}
-				
-				if(o1.attacker < o2.attacker) {
-					return -1;
-				}
+					//same victim
 
-				return 0;
-			}
-		});
+					if(o1.attacker > o2.attacker) {
+						return 1;
+					}
+
+					if(o1.attacker < o2.attacker) {
+						return -1;
+					}
+
+					return 0;
+				}
+			});
+		}
 
 		return queue;
 	}
@@ -688,7 +706,7 @@ public class Game implements Serializable{
 			
 			while(queue.size() == 0) {
 				int[] coord = coords.remove(0);
-				this.board[coord[0]][coord[1]].calculateMoves(coord[0], coord[1], this, queue);
+				this.board[coord[0]][coord[1]].calculateMoves(coord[0], coord[1], this, queue, false);
 			}
 		}
 		else if(this.state == GameState.ChoosingPiece) {
@@ -801,7 +819,7 @@ public class Game implements Serializable{
 	public static void main(String[] args) {
 		Game g = new Game();
 		
-		System.out.println(g.calculateMoves().size());
+		System.out.println(g.calculateMoves(false).size());
 		
 	}
 }
