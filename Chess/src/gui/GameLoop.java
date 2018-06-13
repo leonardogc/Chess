@@ -32,7 +32,7 @@ public class GameLoop extends Thread{
 				System.out.println("Depth: " + Minimax.var_depth);
 
 				total.start();
-				move = (Move)Minimax.minimax_alpha_beta(gui.game, Turn.Max, 0, Integer.MIN_VALUE, Integer.MAX_VALUE, null);
+				move = (Move)Minimax.minimax_alpha_beta(gui.game, Turn.Max, 0, Integer.MIN_VALUE, Integer.MAX_VALUE);
 				total.stop();
 				
 				gui.game.applyMove(move);

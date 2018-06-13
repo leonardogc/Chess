@@ -21,9 +21,11 @@ public class Minimax {
 	
 	public static final double max_time = 20;
 	public static final double inc_at = 0.8; //-1;
+	
+	public static StopWatch t = null;
 
 	
-	public static Object minimax_alpha_beta(Game game, Turn turn, int curr_depth, int alpha, int beta, StopWatch t) {
+	public static Object minimax_alpha_beta(Game game, Turn turn, int curr_depth, int alpha, int beta) {
 		if(curr_depth == 0) {
 			t = new StopWatch();
 			t.start();
@@ -104,10 +106,10 @@ public class Minimax {
 			if(turn == Turn.Max) {
 				if(game_copy.getTurn() == game.getTurn()) {
 					//max plays again
-					result = (int)minimax_alpha_beta(game_copy, Turn.Max, curr_depth+1, alpha, beta, t);
+					result = (int)minimax_alpha_beta(game_copy, Turn.Max, curr_depth+1, alpha, beta);
 				}
 				else {
-					result = (int)minimax_alpha_beta(game_copy, Turn.Min, curr_depth+1, alpha, beta, t);
+					result = (int)minimax_alpha_beta(game_copy, Turn.Min, curr_depth+1, alpha, beta);
 				}
 
 				if(result > alpha) {
@@ -126,10 +128,10 @@ public class Minimax {
 			else if(turn == Turn.Min){
 				if(game_copy.getTurn() == game.getTurn()) {
 					//min plays again
-					result = (int)minimax_alpha_beta(game_copy, Turn.Min, curr_depth+1, alpha, beta, t);
+					result = (int)minimax_alpha_beta(game_copy, Turn.Min, curr_depth+1, alpha, beta);
 				}
 				else {
-					result = (int)minimax_alpha_beta(game_copy, Turn.Max, curr_depth+1, alpha, beta, t);
+					result = (int)minimax_alpha_beta(game_copy, Turn.Max, curr_depth+1, alpha, beta);
 				}
 
 				if(result < beta) {
