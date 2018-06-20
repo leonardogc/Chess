@@ -261,11 +261,11 @@ public class GraphicsAndListeners extends JPanel implements MouseListener, KeyLi
 		this.requestFocus();
 		
 		if(move_piece) {
-			if(e.getX() > dx + GameUtil.boardSize * square_size  || e.getX() < dx) {
+			if(e.getX() >= dx + GameUtil.boardSize * square_size  || e.getX() <= dx) {
 				return;
 			}
 
-			if(e.getY() > dy + GameUtil.boardSize * square_size  || e.getY() < dy) {
+			if(e.getY() >= dy + GameUtil.boardSize * square_size  || e.getY() <= dy) {
 				return;
 			}
 			
