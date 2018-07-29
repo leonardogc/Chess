@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.imageio.ImageIO;
@@ -29,6 +30,7 @@ public class GraphicsAndListeners extends JPanel implements MouseListener, KeyLi
 	private GameLoop thread;
 	
 	private final int square_size=75;
+	private final int circle_diameter=20;
 	private final int dx = (660-(square_size*GameUtil.boardSize))/2;
 	private final int dy = (660-(square_size*GameUtil.boardSize))/2;
 	private final PieceColor perspective = PieceColor.Black; 
@@ -215,6 +217,37 @@ public class GraphicsAndListeners extends JPanel implements MouseListener, KeyLi
 						}
 						break;
 					}
+				}
+			}
+		}
+		
+		if(sel_square && move_piece) {
+			ArrayList<Move> moves = game.calculateMoves(false);
+			
+			for(int i = 0; i < moves.size(); i++) {
+				Move move = moves.get(i);
+				
+				if(move.type == null) {
+					int x = move.x;
+					int y = move.y;		
+							
+					int dest_x = move.dest_x;
+					int dest_y = move.dest_y;
+					
+					if(perspective == PieceColor.Black) {
+						x = (GameUtil.boardSize-1)-x;
+						y = (GameUtil.boardSize-1)-y;
+						dest_x = (GameUtil.boardSize-1)-dest_x;
+						dest_y = (GameUtil.boardSize-1)-dest_y;
+					}
+					
+					if(x == this.x && y == this.y) {
+						dest_y = (GameUtil.boardSize-1)-dest_y;
+						
+						g.setColor(Color.RED);
+						g.fillOval(dx+dest_x*square_size+square_size/2-circle_diameter/2, dy+dest_y*square_size+square_size/2-circle_diameter/2, circle_diameter, circle_diameter);
+					}
+				
 				}
 			}
 		}
