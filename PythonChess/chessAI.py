@@ -2,7 +2,7 @@ import chess
 import chess.svg
 
 
-def heuristic(maxi_is_white):
+def heuristic(board, maxi_is_white):
     wp = len(board.pieces(chess.PAWN, chess.WHITE))
     bp = len(board.pieces(chess.PAWN, chess.BLACK))
     wn = len(board.pieces(chess.KNIGHT, chess.WHITE))
@@ -22,10 +22,7 @@ def heuristic(maxi_is_white):
         return -material
 
 
-max_depth = 5
-
-
-def minimax(maxi, depth):
+def minimax(board, maxi=True, depth=0, alpha=-10000000, beta=10000000, max_depth=6):
 
     if depth >= max_depth:
         if board.is_game_over():
@@ -38,9 +35,9 @@ def minimax(maxi, depth):
                 return 0, None
         else:
             if maxi:
-                return heuristic(board.turn), None
+                return heuristic(board, board.turn), None
             else:
-                return heuristic(not board.turn), None
+                return heuristic(board, not board.turn), None
 
     if board.is_game_over():
         if board.is_checkmate():
@@ -54,31 +51,44 @@ def minimax(maxi, depth):
     max_score = -10000000
     min_score = 10000000
 
+    best_move = None
+
     for move in board.legal_moves:
         board.push(move)
 
-        result, _ = minimax(not maxi, depth + 1)
+        result, _ = minimax(board, not maxi, depth + 1, alpha, beta)
 
         if maxi:
             if result > max_score:
                 max_score = result
+                if depth == 0:
+                    best_move = move
+
+            if result > alpha:
+                alpha = result
         else:
             if result < min_score:
                 min_score = result
 
+            if result < beta:
+                beta = result
+
         board.pop()
 
+        if alpha >= beta:
+            break
+
     if maxi:
-        return max_score, None
+        return max_score, best_move
     else:
         return min_score, None
 
 
 player_color = chess.WHITE
 
-board = chess.Board()
+board_ori = chess.Board()
 
-value = minimax(True, 0)
+value = minimax(board_ori)
 
 print(value)
 
