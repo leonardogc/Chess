@@ -4,6 +4,7 @@ import time
 
 
 def heuristic(board, maxi_is_white):
+
     wp = len(board.pieces(chess.PAWN, chess.WHITE))
     bp = len(board.pieces(chess.PAWN, chess.BLACK))
     wn = len(board.pieces(chess.KNIGHT, chess.WHITE))
@@ -57,7 +58,7 @@ def minimax(board, maxi=True, depth=0, alpha=-10000000, beta=10000000, max_depth
     for move in board.legal_moves:
         board.push(move)
 
-        result, _ = minimax(board, not maxi, depth + 1, alpha, beta)
+        result, _ = minimax(board, not maxi, depth + 1, alpha, beta, max_depth)
 
         if maxi:
             if result > max_score:
@@ -85,34 +86,39 @@ def minimax(board, maxi=True, depth=0, alpha=-10000000, beta=10000000, max_depth
         return min_score, None
 
 
-player_color = chess.BLACK
+def main():
+    player_color = chess.BLACK
 
-board_ori = chess.Board()
+    board = chess.Board()
 
-while not board_ori.is_game_over():
-    print('----')
+    while not board.is_game_over():
+        print('----')
 
-    print(board_ori)
+        print(board)
 
-    if board_ori.turn == player_color:
+        if board.turn == player_color:
 
-        for move in board_ori.legal_moves:
-            print(move)
+            for move in board.legal_moves:
+                print(move)
 
-        move = None
+            move = None
 
-        while move not in board_ori.legal_moves:
-            user_input = input('Select a move: ')
-            move = chess.Move.from_uci(user_input)
+            while move not in board.legal_moves:
+                user_input = input('Select a move: ')
+                move = chess.Move.from_uci(user_input)
 
-        board_ori.push(move)
-        board_ori.ge
+            board.push(move)
 
-    else:
-        start = time.time()
-        _, move = minimax(board_ori)
-        end = time.time()
+        else:
+            start = time.time()
+            _, move = minimax(board)
+            end = time.time()
 
-        board_ori.push(move)
+            board.push(move)
 
-        print(end-start)
+            print(end - start)
+
+
+if __name__ == '__main__':
+    main()
+
