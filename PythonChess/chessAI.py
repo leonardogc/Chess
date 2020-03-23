@@ -1,5 +1,4 @@
 import chess
-import chess.svg
 import time
 
 king_score = 200000
@@ -10,8 +9,6 @@ bishop_score = 3350
 pawn_score = 1000
 
 bishop_pair = 300
-
-center_control_bonus = 30
 
 knight_adj = [-200, -160, -120, -80, -40, 0, 40, 80, 120]
 rook_adj = [150, 120, 90, 60, 30, 0, -30, -60, -90]
@@ -81,23 +78,71 @@ pawn_board = [0, 0, 0, 0, 0, 0, 0, 0,
 
 
 def heuristic(board, maxi_is_white):
-    wp = len(board.pieces(chess.PAWN, chess.WHITE))
-    bp = len(board.pieces(chess.PAWN, chess.BLACK))
-    wn = len(board.pieces(chess.KNIGHT, chess.WHITE))
-    bn = len(board.pieces(chess.KNIGHT, chess.BLACK))
-    wb = len(board.pieces(chess.BISHOP, chess.WHITE))
-    bb = len(board.pieces(chess.BISHOP, chess.BLACK))
-    wr = len(board.pieces(chess.ROOK, chess.WHITE))
-    br = len(board.pieces(chess.ROOK, chess.BLACK))
-    wq = len(board.pieces(chess.QUEEN, chess.WHITE))
-    bq = len(board.pieces(chess.QUEEN, chess.BLACK))
+    wp = board.pieces(chess.PAWN, chess.WHITE)
+    wn = board.pieces(chess.KNIGHT, chess.WHITE)
+    wb = board.pieces(chess.BISHOP, chess.WHITE)
+    wr = board.pieces(chess.ROOK, chess.WHITE)
+    wq = board.pieces(chess.QUEEN, chess.WHITE)
+    wk = board.pieces(chess.KING, chess.WHITE)
 
-    material = 100 * (wp - bp) + 320 * (wn - bn) + 330 * (wb - bb) + 500 * (wr - br) + 900 * (wq - bq)
+    bp = board.pieces(chess.PAWN, chess.BLACK)
+    bn = board.pieces(chess.KNIGHT, chess.BLACK)
+    bb = board.pieces(chess.BISHOP, chess.BLACK)
+    br = board.pieces(chess.ROOK, chess.BLACK)
+    bq = board.pieces(chess.QUEEN, chess.BLACK)
+    bk = board.pieces(chess.KING, chess.BLACK)
+
+    white_score = 0
+    black_score = 0
+
+    white_score += len(wp)*pawn_score + len(wn)*knight_score + len(wb)*bishop_score + len(wr)*rook_score + len(wq)*queen_score + len(wk)*king_score
+    white_score += sum([pawn_board[p] for p in wp])
+    white_score += sum([knight_board[p] for p in wn])
+    white_score += sum([bishop_board[p] for p in wb])
+    white_score += sum([rook_board[p] for p in wr])
+    white_score += sum([queen_board[p] for p in wq])
+
+    black_score += len(bp)*pawn_score + len(bn)*knight_score + len(bb)*bishop_score + len(br)*rook_score + len(bq)*queen_score + len(bk)*king_score
+    black_score += sum([pawn_board[chess.square_mirror(p)] for p in bp])
+    black_score += sum([knight_board[chess.square_mirror(p)] for p in bn])
+    black_score += sum([bishop_board[chess.square_mirror(p)] for p in bb])
+    black_score += sum([rook_board[chess.square_mirror(p)] for p in br])
+    black_score += sum([queen_board[chess.square_mirror(p)] for p in bq])
+
+    endgame = False
+
+    if len(wq) == 0 and len(bq) == 0:
+        endgame = True
+    elif len(wq) == 0 and (len(bq) == 1 and (len(bb)+len(bn)) <= 1 and len(br) == 0):
+        endgame = True
+    elif len(bq) == 0 and (len(wq) == 1 and (len(wb)+len(wn)) <= 1 and len(wr) == 0):
+        endgame = True
+    elif (len(bq) == 1 and (len(bb)+len(bn)) <= 1 and len(br) == 0) and (len(wq) == 1 and (len(wb)+len(wn)) <= 1 and len(wr) == 0):
+        endgame = True
+
+    if endgame:
+        white_score += sum([king_board_end[p] for p in wk])
+        black_score += sum([king_board_end[chess.square_mirror(p)] for p in bk])
+    else:
+        white_score += sum([king_board_middle[p] for p in wk])
+        black_score += sum([king_board_middle[chess.square_mirror(p)] for p in bk])
+
+    if len(wb) > 1:
+        white_score += bishop_pair
+
+    if len(bb) > 1:
+        black_score += bishop_pair
+
+    white_score += len(wn) * knight_adj[len(wp)]
+    white_score += len(wr) * rook_adj[len(wp)]
+
+    black_score += len(bn) * knight_adj[len(bp)]
+    black_score += len(br) * rook_adj[len(bp)]
 
     if maxi_is_white:
-        return material
+        return white_score-black_score
     else:
-        return -material
+        return black_score-white_score
 
 
 def minimax(board, maxi=True, depth=0, alpha=-10000000, beta=10000000, max_depth=6):
@@ -196,5 +241,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
-
