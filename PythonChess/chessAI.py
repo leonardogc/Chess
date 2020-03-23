@@ -1,5 +1,6 @@
 import chess
 import chess.svg
+import time
 
 
 def heuristic(board, maxi_is_white):
@@ -84,31 +85,34 @@ def minimax(board, maxi=True, depth=0, alpha=-10000000, beta=10000000, max_depth
         return min_score, None
 
 
-player_color = chess.WHITE
+player_color = chess.BLACK
 
 board_ori = chess.Board()
 
-value = minimax(board_ori)
-
-print(value)
-
-'''while not board.is_game_over():
+while not board_ori.is_game_over():
     print('----')
 
-    print(board)
+    print(board_ori)
 
-    if board.turn == player_color:
+    if board_ori.turn == player_color:
 
-        for move in board.legal_moves:
+        for move in board_ori.legal_moves:
             print(move)
 
         move = None
 
-        while move not in board.legal_moves:
+        while move not in board_ori.legal_moves:
             user_input = input('Select a move: ')
             move = chess.Move.from_uci(user_input)
 
-        board.push(move)
+        board_ori.push(move)
+        board_ori.ge
 
     else:
-        minimax()'''
+        start = time.time()
+        _, move = minimax(board_ori)
+        end = time.time()
+
+        board_ori.push(move)
+
+        print(end-start)
